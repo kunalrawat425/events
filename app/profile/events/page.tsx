@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 
 import { EventTable } from "@/components/EventTable";
-import { useUser } from "@/contexts/UserContext";
 
 interface Event {
   id: string;
@@ -20,7 +19,6 @@ interface Event {
 export default function UserEventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user } = useUser();
 
   useEffect(() => {
     // TODO: Replace with actual API call
@@ -51,8 +49,8 @@ export default function UserEventsPage() {
         ];
 
         setEvents(mockEvents);
-      } catch (error) {
-        // Remove console.log statements
+      } catch {
+        // Handle error silently or show a toast notification
       } finally {
         setIsLoading(false);
       }
@@ -65,8 +63,8 @@ export default function UserEventsPage() {
     try {
       // TODO: Replace with actual API call
       setEvents((prev) => prev.map((e) => (e.id === event.id ? event : e)));
-    } catch (error) {
-      // Remove console.log statements
+    } catch {
+      // Handle error silently or show a toast notification
     }
   };
 
@@ -74,8 +72,8 @@ export default function UserEventsPage() {
     try {
       // TODO: Replace with actual API call
       setEvents((prev) => prev.filter((e) => e.id !== eventId));
-    } catch (error) {
-      // Remove console.log statements
+    } catch {
+      // Handle error silently or show a toast notification
     }
   };
 
@@ -88,8 +86,8 @@ export default function UserEventsPage() {
       setEvents((prev) =>
         prev.map((e) => (e.id === eventId ? { ...e, status } : e)),
       );
-    } catch (error) {
-      // Remove console.log statements
+    } catch {
+      // Handle error silently or show a toast notification
     }
   };
 

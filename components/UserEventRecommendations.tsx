@@ -14,8 +14,6 @@ import {
 } from "@heroui/react";
 import Image from "next/image";
 
-import { useUser } from "@/contexts/UserContext";
-
 interface Event {
   id: string;
   title: string;
@@ -35,7 +33,6 @@ interface Interest {
 }
 
 export default function UserEventRecommendations() {
-  const { user } = useUser();
   const [events, setEvents] = useState<Event[]>([]);
   const [interests, setInterests] = useState<Interest[]>([
     { id: "1", name: "Technology", selected: false },

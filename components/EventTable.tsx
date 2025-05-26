@@ -20,8 +20,6 @@ import {
   Textarea,
 } from "@heroui/react";
 
-import { useUser } from "@/contexts/UserContext";
-
 interface Event {
   id: string;
   title: string;
@@ -37,7 +35,6 @@ interface EventTableProps {
   events: Event[];
   onEdit: (event: Event) => void;
   onDelete: (eventId: string) => void;
-  onStatusChange: (eventId: string, status: Event["status"]) => void;
   isPublisher?: boolean;
 }
 
@@ -45,13 +42,11 @@ export const EventTable = ({
   events,
   onEdit,
   onDelete,
-  onStatusChange,
   isPublisher = false,
 }: EventTableProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const { user } = useUser();
 
   const handleEdit = (event: Event) => {
     setSelectedEvent(event);
@@ -203,24 +198,6 @@ export const EventTable = ({
                         })
                       }
                     />
-                    {isPublisher && (
-                      <select
-                        className="p-2 border rounded"
-                        disabled={!editMode}
-                        value={selectedEvent.status}
-                        onChange={(e) =>
-                          setSelectedEvent({
-                            ...selectedEvent,
-                            status: e.target.value as Event["status"],
-                          })
-                        }
-                      >
-                        <option value="upcoming">Upcoming</option>
-                        <option value="ongoing">Ongoing</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
-                      </select>
-                    )}
                   </div>
                 )}
               </ModalBody>

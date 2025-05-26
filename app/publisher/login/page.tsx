@@ -25,8 +25,8 @@ export default function PublisherLoginPage() {
     try {
       await login(formData.email, formData.password);
       router.push("/publisher/dashboard");
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch {
+      // Handle error silently or show a toast notification
     } finally {
       setIsLoading(false);
     }
@@ -36,9 +36,9 @@ export default function PublisherLoginPage() {
     setIsLoading(true);
     try {
       // Implement Google OAuth login
-      console.log("Google login clicked");
-    } catch (error) {
-      console.error("Google login failed:", error);
+      // TODO: Implement Google OAuth login
+    } catch {
+      // Handle error silently or show a toast notification
     } finally {
       setIsLoading(false);
     }

@@ -42,8 +42,8 @@ export default function LoginPage() {
       } else {
         router.push("/events");
       }
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch {
+      // Handle error silently or show a toast notification
     } finally {
       setIsLoading(false);
     }
@@ -54,9 +54,9 @@ export default function LoginPage() {
     try {
       // Implement Google OAuth login
       // This is a placeholder - you'll need to implement the actual Google OAuth flow
-      console.log("Google login clicked");
-    } catch (error) {
-      console.error("Google login failed:", error);
+      // TODO: Implement Google OAuth login
+    } catch {
+      // Handle error silently or show a toast notification
     } finally {
       setIsLoading(false);
     }

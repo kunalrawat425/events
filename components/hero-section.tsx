@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { useRouter } from "next/navigation";
-
 import { useUser } from "@/contexts/UserContext";
 
 const interests = [
@@ -23,98 +22,101 @@ const interests = [
 
 export const HeroSection = () => {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, updateInterests } = useUser();
+  const [mounted, setMounted] = useState(false);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [email, setEmail] = useState("");
   const [isSubscribing, setIsSubscribing] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && user?.interests) {
+      setSelectedInterests(user.interests);
+    }
+  }, [user, mounted]);
+
   const handleSubscribe = async () => {
     if (!user) {
-      // Store the selected interests in localStorage
-      localStorage.setItem(
-        "pendingInterests",
-        JSON.stringify(selectedInterests),
-      );
+      if (!email) {
+        alert("Please enter your email address");
+        return;
+      }
+      if (selectedInterests.length === 0) {
+        alert("Please select at least one interest");
+        return;
+      }
+      localStorage.setItem("pendingInterests", JSON.stringify(selectedInterests));
       localStorage.setItem("pendingEmail", email);
       router.push("/auth?tab=signup");
+      return;
+    }
 
+    if (selectedInterests.length === 0) {
+      alert("Please select at least one interest");
       return;
     }
 
     setIsSubscribing(true);
     try {
-      // TODO: Implement actual subscription logic with your backend
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
-
-      // Mock successful subscription
-      alert("Successfully subscribed to alerts for your selected interests!");
-      setSelectedInterests([]);
-      setEmail("");
+      await updateInterests(selectedInterests);
+      alert("Successfully subscribed to alerts for your interests!");
     } catch (error) {
-      alert("Failed to subscribe. Please try again.");
+      alert("Failed to update interests. Please try again.");
     } finally {
       setIsSubscribing(false);
     }
   };
 
-  const handleInterestChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const options = e.target.options;
-    const selected = [];
-
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected) {
-        selected.push(options[i].value);
-      }
-    }
-    setSelectedInterests(selected);
+  const toggleInterest = (interestId: string) => {
+    setSelectedInterests(prev => 
+      prev.includes(interestId)
+        ? prev.filter(id => id !== interestId)
+        : [...prev, interestId]
+    );
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="relative min-h-[600px] flex items-center justify-center bg-gradient-to-b from-primary-50 to-background">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Never Miss What Matters to You
+            Subscribe to Interest Alerts
           </h1>
           <p className="text-xl text-default-600 max-w-2xl mx-auto">
-            Stay updated with events, summits, and activities that match your
-            interests. Subscribe to personalized alerts and be the first to
-            know.
+            Stay updated with events and activities that match your interests.
+            Get notified when new events are posted in your areas of interest.
           </p>
         </div>
 
         <Card className="max-w-2xl mx-auto">
           <CardHeader className="pb-0">
             <h2 className="text-2xl font-semibold">
-              {user ? "Manage Your Interests" : "Subscribe to Alerts"}
+              {user ? "Manage Your Interest Alerts" : "Select Your Interests"}
             </h2>
           </CardHeader>
           <CardBody>
             <div className="space-y-6">
-              <div>
-                <label
-                  className="block text-sm font-medium mb-2"
-                  htmlFor="interests"
-                >
-                  Select Your Interests
-                </label>
-                <select
-                  multiple
-                  className="w-full px-4 py-2 rounded-lg bg-background border border-divider focus:outline-none focus:ring-2 focus:ring-primary"
-                  id="interests"
-                  value={selectedInterests}
-                  onChange={handleInterestChange}
-                >
-                  {interests.map((interest) => (
-                    <option key={interest.id} value={interest.id}>
-                      {interest.name}
-                    </option>
-                  ))}
-                </select>
-                <p className="text-sm text-default-500 mt-1">
-                  Hold Ctrl (Windows) or Command (Mac) to select multiple
-                  interests
-                </p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {interests.map((interest) => (
+                  <button
+                    key={interest.id}
+                    className={`p-3 rounded-lg border text-left transition-colors ${
+                      selectedInterests.includes(interest.id)
+                        ? "bg-primary text-white border-primary"
+                        : "hover:bg-primary/10 border-divider"
+                    }`}
+                    onClick={() => toggleInterest(interest.id)}
+                  >
+                    {interest.name}
+                  </button>
+                ))}
               </div>
 
               {!user && (
@@ -143,7 +145,7 @@ export const HeroSection = () => {
                 size="lg"
                 onPress={handleSubscribe}
               >
-                {user ? "Update Interests" : "Subscribe to Alerts"}
+                {user ? "Update Interest Alerts" : "Subscribe to Alerts"}
               </Button>
 
               {!user && (
@@ -164,4 +166,4 @@ export const HeroSection = () => {
       </div>
     </div>
   );
-};
+}; 

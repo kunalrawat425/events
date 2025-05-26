@@ -9,10 +9,15 @@ export const metadata: Metadata = {
   description: "Book your tickets for this amazing event",
 };
 
-export default function BookingPage({ params }: { params: { id: string } }) {
+type Props = {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
+export default function BookingPage(props: Props) {
   return (
     <AuthGuard>
-      <BookingForm eventId={params.id} />
+      <BookingForm eventId={props.params.id} />
     </AuthGuard>
   );
 }

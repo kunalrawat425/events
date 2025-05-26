@@ -53,8 +53,8 @@ export default function SignupPage() {
       } else {
         router.push("/events");
       }
-    } catch (error) {
-      console.error("Signup failed:", error);
+    } catch {
+      // Handle error silently or show a toast notification
     } finally {
       setIsLoading(false);
     }
@@ -64,10 +64,9 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       // Implement Google OAuth signup
-      // This is a placeholder - you'll need to implement the actual Google OAuth flow
-      console.log("Google signup clicked");
-    } catch (error) {
-      console.error("Google signup failed:", error);
+      // TODO: Implement Google OAuth signup
+    } catch {
+      // Handle error silently or show a toast notification
     } finally {
       setIsLoading(false);
     }

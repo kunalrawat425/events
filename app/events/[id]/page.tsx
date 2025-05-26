@@ -4,7 +4,7 @@ import EventPageClient from "./EventPageClient";
 
 // Generate metadata for SEO
 export async function generateMetadata({
-  params,
+  _params,
 }: {
   params: { id: string };
 }): Promise<Metadata> {
@@ -45,6 +45,10 @@ export async function generateMetadata({
   };
 }
 
-export default function EventPage({ params }: { params: { id: string } }) {
-  return <EventPageClient eventId={params.id} />;
+export default function EventPage({
+  params: _params,
+}: {
+  params: { id: string };
+}) {
+  return <EventPageClient eventId={_params.id} />;
 }

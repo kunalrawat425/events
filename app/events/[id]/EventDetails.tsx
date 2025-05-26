@@ -73,14 +73,10 @@ const eventData = {
   ],
 };
 
-export default function EventDetails({ id }: { id: string }) {
+export default function EventDetails() {
   const [isSaved, setIsSaved] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [imageError, setImageError] = useState(false);
-
-  const handleShare = (_id: string) => {
-    // Implementation of handleShare function
-  };
 
   return (
     <main className="min-h-screen bg-background">

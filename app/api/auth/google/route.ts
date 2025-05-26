@@ -15,7 +15,7 @@ export async function GET(_request: Request) {
       name: "Google User",
       email: "google@example.com",
     });
-  } catch (_error) {
+  } catch {
     return NextResponse.json(
       { message: "Google authentication failed" },
       { status: 500 },

@@ -7,15 +7,6 @@ import Image from "next/image";
 
 import { useUser } from "@/contexts/UserContext";
 
-const interestsList = [
-  "Tech Conferences",
-  "Music Festivals",
-  "Travel Meetups",
-  "Food Events",
-  "Movies",
-  "Summits",
-];
-
 export default function ProfileClient() {
   const { user, logout } = useUser();
   const router = useRouter();

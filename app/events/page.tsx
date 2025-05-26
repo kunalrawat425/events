@@ -22,7 +22,7 @@ interface Event {
   attendees: number;
 }
 
-export default function EventsPage() {
+function EventsClient() {
   const router = useRouter();
   const [events, setEvents] = useState<Event[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -63,7 +63,6 @@ export default function EventsPage() {
         price: 299.99,
         attendees: 1000,
       },
-      // Add more mock events as needed
     ];
 
     setEvents(mockEvents);
@@ -104,11 +103,8 @@ export default function EventsPage() {
               Discover Amazing Events
             </h1>
             <p className="text-xl text-foreground/80 mb-8">
-              `$
-              {
-                "Find and join events that match your interests. From concerts to workshops, we've got something for everyone."
-              }
-              `
+              Find and join events that match your interests. From concerts to
+              workshops, we&apos;ve got something for everyone.
             </p>
           </div>
         </div>
@@ -259,4 +255,8 @@ export default function EventsPage() {
       <Footer />
     </div>
   );
+}
+
+export default function EventsPage() {
+  return <EventsClient />;
 }

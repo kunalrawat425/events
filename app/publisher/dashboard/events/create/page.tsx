@@ -33,8 +33,8 @@ export default function CreateEventPage() {
 
       // Redirect to events list on success
       router.push("/publisher/dashboard/events");
-    } catch (error) {
-      console.error("Error creating event:", error);
+    } catch {
+      // Handle error silently or show a toast notification
     } finally {
       setIsSubmitting(false);
     }

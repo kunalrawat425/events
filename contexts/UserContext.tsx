@@ -7,6 +7,7 @@ interface User {
   email: string;
   name: string;
   role: "user" | "publisher";
+  interests: string[];
 }
 
 interface UserContextType {
@@ -15,6 +16,7 @@ interface UserContextType {
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
+  updateInterests: (interests: string[]) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -41,6 +43,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         email: email,
         name: "Test User",
         role: "user" as const,
+        interests: [],
       };
 
       setUser(mockUserData);
@@ -58,10 +61,25 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       email,
       name,
       role: "user" as const,
+      interests: [],
     };
 
     setUser(mockUserData);
     localStorage.setItem("user", JSON.stringify(mockUserData));
+  };
+
+  const updateInterests = async (interests: string[]) => {
+    if (!user) {
+      throw new Error("User must be logged in to update interests");
+    }
+
+    const updatedUser = {
+      ...user,
+      interests,
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
   const logout = () => {
@@ -70,7 +88,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, isLoading, login, signup, logout }}>
+    <UserContext.Provider value={{ user, isLoading, login, signup, logout, updateInterests }}>
       {children}
     </UserContext.Provider>
   );

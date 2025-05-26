@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       { message: "Invalid signup data" },
       { status: 400 },
     );
-  } catch (_error) {
+  } catch {
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 },

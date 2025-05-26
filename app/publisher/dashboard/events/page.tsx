@@ -54,8 +54,8 @@ export default function PublisherEventsPage() {
         ];
 
         setEvents(mockEvents);
-      } catch (error) {
-        console.error("Error fetching events:", error);
+      } catch {
+        // Handle error silently or show a toast notification
       } finally {
         setIsLoading(false);
       }
@@ -68,8 +68,8 @@ export default function PublisherEventsPage() {
     try {
       // TODO: Replace with actual API call
       setEvents((prev) => prev.map((e) => (e.id === event.id ? event : e)));
-    } catch (error) {
-      console.error("Error updating event:", error);
+    } catch {
+      // Handle error silently or show a toast notification
     }
   };
 
@@ -77,8 +77,8 @@ export default function PublisherEventsPage() {
     try {
       // TODO: Replace with actual API call
       setEvents((prev) => prev.filter((e) => e.id !== eventId));
-    } catch (error) {
-      console.error("Error deleting event:", error);
+    } catch {
+      // Handle error silently or show a toast notification
     }
   };
 
@@ -91,8 +91,8 @@ export default function PublisherEventsPage() {
       setEvents((prev) =>
         prev.map((e) => (e.id === eventId ? { ...e, status } : e)),
       );
-    } catch (error) {
-      console.error("Error updating event status:", error);
+    } catch {
+      // Handle error silently or show a toast notification
     }
   };
 

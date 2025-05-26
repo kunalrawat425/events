@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
@@ -45,7 +44,6 @@ export default function BookingConfirmation({
   eventId,
 }: BookingConfirmationProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     // Simulate loading booking data

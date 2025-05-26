@@ -2,31 +2,43 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@heroui/button";
 import { useTheme } from "next-themes";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+import { Avatar } from "@heroui/avatar";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@heroui/dropdown";
 
 import { Logo } from "./icons";
 
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/contexts/UserContext";
 
-export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const pathname = usePathname();
+const Navbar = () => {
+  const router = useRouter();
   const { user, logout } = useUser();
+  const [mounted, setMounted] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    setMounted(true);
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    router.push("/");
+  };
+
+  // Don't render anything until mounted
+  if (!mounted) {
+    return null;
+  }
 
   const isActive = (path: string) => pathname === path;
 
@@ -38,7 +50,7 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+        isActive("/")
           ? "bg-background/80 backdrop-blur-xl border-b border-foreground/10 shadow-lg"
           : "bg-background/40 backdrop-blur-md"
       }`}
@@ -98,7 +110,7 @@ export default function Navbar() {
                   className="text-sm hover:bg-danger/10"
                   color="danger"
                   variant="flat"
-                  onClick={logout}
+                  onClick={handleLogout}
                 >
                   Logout
                 </Button>
@@ -209,7 +221,7 @@ export default function Navbar() {
                 <button
                   className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-danger hover:bg-foreground/5"
                   onClick={() => {
-                    logout();
+                    handleLogout();
                     setIsMenuOpen(false);
                   }}
                 >
@@ -247,4 +259,6 @@ export default function Navbar() {
       )}
     </nav>
   );
-}
+};
+
+export default Navbar;

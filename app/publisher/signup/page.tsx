@@ -40,8 +40,8 @@ export default function PublisherSignupPage() {
         companyWebsite: formData.companyWebsite,
       });
       router.push("/publisher/dashboard");
-    } catch (error) {
-      console.error("Signup failed:", error);
+    } catch {
+      // Handle error silently or show a toast notification
     } finally {
       setIsLoading(false);
     }
@@ -51,9 +51,9 @@ export default function PublisherSignupPage() {
     setIsLoading(true);
     try {
       // Implement Google OAuth signup
-      console.log("Google signup clicked");
-    } catch (error) {
-      console.error("Google signup failed:", error);
+      // TODO: Implement Google OAuth signup
+    } catch {
+      // Handle error silently or show a toast notification
     } finally {
       setIsLoading(false);
     }

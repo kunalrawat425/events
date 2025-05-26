@@ -66,7 +66,7 @@ export default function BookingForm({ eventId }: BookingFormProps) {
       // Add your booking logic here
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
       router.push(`/events/${eventId}/confirmation`);
-    } catch (error) {
+    } catch {
       // Remove console.log
     } finally {
       setIsLoading(false);
