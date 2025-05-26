@@ -7,7 +7,7 @@ import { Input } from "@heroui/input";
 import { Card, CardBody } from "@heroui/card";
 import Image from "next/image";
 
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import ThemeToggle from "@/components/ThemeToggle";
 
 export default function PublisherSignupPage() {
@@ -34,8 +34,9 @@ export default function PublisherSignupPage() {
     }
     setIsLoading(true);
     try {
-      await signup(formData.email, formData.password, formData.name, {
-        role: "publisher",
+      await signup(formData.email, formData.password, {
+        role: "publisher" as const,
+        name: formData.name,
         companyName: formData.companyName,
         companyWebsite: formData.companyWebsite,
       });
@@ -74,7 +75,7 @@ export default function PublisherSignupPage() {
           <Image
             fill
             priority
-            alt="Publisher Sign Up"
+            alt="PublisherLogin"
             className="object-cover"
             src="/images/auth/signup.png"
           />
@@ -274,7 +275,7 @@ export default function PublisherSignupPage() {
                   src="/images/google-icon.svg"
                   width={20}
                 />
-                Sign up with Google
+                Login with Google
               </Button>
             </form>
 
@@ -284,7 +285,7 @@ export default function PublisherSignupPage() {
                 className="text-primary hover:underline"
                 href="/publisher/login"
               >
-                Sign in
+                Login
               </a>
             </p>
           </CardBody>

@@ -1,152 +1,169 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
-import { Tabs, Tab } from "@heroui/tabs";
-import {
-  UserCircleIcon,
-  CalendarIcon,
-  TicketIcon,
-  HeartIcon,
-  BellIcon,
-} from "@heroicons/react/24/outline";
 
-import { useUser } from "@/contexts/UserContext";
+const interests = [
+  { id: "food", name: "Food & Dining" },
+  { id: "music", name: "Music & Concerts" },
+  { id: "movies", name: "Movies & Theater" },
+  { id: "sports", name: "Sports & Games" },
+  { id: "arts", name: "Arts & Culture" },
+  { id: "tech", name: "Technology" },
+  { id: "business", name: "Business & Networking" },
+  { id: "fashion", name: "Fashion & Style" },
+  { id: "health", name: "Health & Wellness" },
+  { id: "education", name: "Education & Learning" },
+];
 
 export default function ProfilePage() {
-  const { user, logout } = useUser();
+  const router = useRouter();
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data for user's events
-  const userEvents = [
-    {
-      id: "1",
-      title: "Tech Conference 2024",
-      date: "March 15, 2024",
-      status: "upcoming",
-      ticketType: "VIP Pass",
-    },
-    {
-      id: "2",
-      title: "Music Festival",
-      date: "April 20, 2024",
-      status: "upcoming",
-      ticketType: "General Admission",
-    },
-    {
-      id: "3",
-      title: "Food & Wine Expo",
-      date: "February 10, 2024",
-      status: "past",
-      ticketType: "Weekend Pass",
-    },
-  ];
+  useEffect(() => {
+    const checkAuth = () => {
+      try {
+        const storedUser = localStorage.getItem("user");
 
-  return (
-    <main className="min-h-screen bg-background py-12">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Profile Header */}
-          <Card className="mb-8">
-            <CardBody className="p-6">
-              <div className="flex items-center gap-6">
-                <div className="w-24 h-24 rounded-full bg-primary-100 flex items-center justify-center">
-                  <UserCircleIcon className="w-16 h-16 text-primary" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold mb-2">{user?.name}</h1>
-                  <p className="text-foreground/70 mb-4">{user?.email}</p>
-                  <Button color="danger" variant="bordered" onPress={logout}>
-                    Sign Out
-                  </Button>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
+        if (!storedUser) {
+          router.replace("/auth?tab=login");
+          return;
+        }
 
-          {/* Profile Content */}
-          <Tabs aria-label="Profile sections">
-            <Tab
-              key="events"
-              title={
-                <div className="flex items-center gap-2">
-                  <CalendarIcon className="w-5 h-5" />
-                  <span>My Events</span>
-                </div>
-              }
-            >
-              <div className="space-y-4 mt-4">
-                {userEvents.map((event) => (
-                  <Card key={event.id}>
-                    <CardBody className="p-6">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="text-lg font-semibold mb-2">
-                            {event.title}
-                          </h3>
-                          <div className="flex items-center gap-4 text-foreground/70">
-                            <div className="flex items-center">
-                              <CalendarIcon className="w-5 h-5 mr-2" />
-                              <span>{event.date}</span>
-                            </div>
-                            <div className="flex items-center">
-                              <TicketIcon className="w-5 h-5 mr-2" />
-                              <span>{event.ticketType}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm ${
-                            event.status === "upcoming"
-                              ? "bg-success-100 text-success-600"
-                              : "bg-foreground/10 text-foreground/70"
-                          }`}
-                        >
-                          {event.status}
-                        </span>
-                      </div>
-                    </CardBody>
-                  </Card>
-                ))}
-              </div>
-            </Tab>
+        const parsedUser = JSON.parse(storedUser);
 
-            <Tab
-              key="saved"
-              title={
-                <div className="flex items-center gap-2">
-                  <HeartIcon className="w-5 h-5" />
-                  <span>Saved Events</span>
-                </div>
-              }
-            >
-              <div className="mt-4 text-center text-foreground/70">
-                <p>`${"You haven't saved any events yet."}`</p>
-                <Button
-                  className="mt-4"
-                  variant="light"
-                  onPress={() => (window.location.href = "/events")}
-                >
-                  Browse Events
-                </Button>
-              </div>
-            </Tab>
+        if (!parsedUser || !parsedUser.id) {
+          localStorage.removeItem("user");
+          router.replace("/auth?tab=login");
+          return;
+        }
 
-            <Tab
-              key="notifications"
-              title={
-                <div className="flex items-center gap-2">
-                  <BellIcon className="w-5 h-5" />
-                  <span>Notifications</span>
-                </div>
-              }
-            >
-              <div className="mt-4 text-center text-foreground/70">
-                <p>You have no new notifications.</p>
-              </div>
-            </Tab>
-          </Tabs>
+        setUser(parsedUser);
+      } catch {
+        localStorage.removeItem("user");
+        router.replace("/auth?tab=login");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [router]);
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-foreground/60">Loading profile...</p>
         </div>
       </div>
-    </main>
+    );
+  }
+
+  // Don't render if no user data
+  if (!user) {
+    return null;
+  }
+
+  const userInterests = interests.filter((interest) =>
+    user.interests.includes(interest.id),
+  );
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-primary-50 to-background py-32">
+      <div className="container mx-auto px-4">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold mb-8 text-center">Your Profile</h1>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Personal Information */}
+            <Card className="bg-background/50 backdrop-blur-lg border border-foreground/10">
+              <CardBody className="p-8">
+                <h2 className="text-2xl font-semibold mb-6">
+                  Personal Information
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <label
+                      className="block text-sm font-medium text-foreground/60 mb-1"
+                      htmlFor="name"
+                    >
+                      Full Name
+                    </label>
+                    <p className="text-lg" id="name">
+                      {user.name}
+                    </p>
+                  </div>
+                  <div>
+                    <label
+                      className="block text-sm font-medium text-foreground/60 mb-1"
+                      htmlFor="email"
+                    >
+                      Email Address
+                    </label>
+                    <p className="text-lg" id="email">
+                      {user.email}
+                    </p>
+                  </div>
+                  <div>
+                    <label
+                      className="block text-sm font-medium text-foreground/60 mb-1"
+                      htmlFor="role"
+                    >
+                      Account Type
+                    </label>
+                    <p className="text-lg capitalize" id="role">
+                      {user.role}
+                    </p>
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
+
+            {/* Interests */}
+            <Card className="bg-background/50 backdrop-blur-lg border border-foreground/10">
+              <CardBody className="p-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-semibold">Your Interests</h2>
+                  <Button
+                    color="primary"
+                    variant="light"
+                    onPress={() => router.push("/")}
+                  >
+                    Update Interests
+                  </Button>
+                </div>
+                {userInterests.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-3">
+                    {userInterests.map((interest) => (
+                      <div
+                        key={interest.id}
+                        className="p-3 rounded-lg bg-primary/10 text-primary border border-primary/20"
+                      >
+                        {interest.name}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-foreground/60 mb-4">
+                      You haven&apos;t selected any interests yet.
+                    </p>
+                    <Button color="primary" onPress={() => router.push("/")}>
+                      Select Interests
+                    </Button>
+                  </div>
+                )}
+              </CardBody>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

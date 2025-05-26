@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-import { useRouter } from "next/navigation";
+
 import { useUser } from "@/contexts/UserContext";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const interests = [
   { id: "food", name: "Food & Dining" },
@@ -46,17 +48,22 @@ const InterestAlerts = () => {
     if (!mounted) return;
 
     function handleClickOutside(event: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setShowSuggestions(false);
       }
     }
 
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [mounted]);
 
   const filteredInterests = interests.filter((interest) => {
     const searchLower = searchQuery.toLowerCase();
+
     return (
       interest.name.toLowerCase().includes(searchLower) &&
       !selectedInterests.includes(interest.id)
@@ -69,11 +76,16 @@ const InterestAlerts = () => {
         alert("Please enter your email address");
         return;
       }
+
       if (selectedInterests.length === 0) {
         alert("Please select at least one interest");
         return;
       }
-      localStorage.setItem("pendingInterests", JSON.stringify(selectedInterests));
+
+      localStorage.setItem(
+        "pendingInterests",
+        JSON.stringify(selectedInterests),
+      );
       localStorage.setItem("pendingEmail", email);
       router.push("/auth?tab=signup");
       return;
@@ -85,10 +97,11 @@ const InterestAlerts = () => {
     }
 
     setIsSubscribing(true);
+
     try {
       await updateInterests(selectedInterests);
       alert("Successfully subscribed to alerts for your interests!");
-    } catch (error) {
+    } catch {
       alert("Failed to update interests. Please try again.");
     } finally {
       setIsSubscribing(false);
@@ -115,7 +128,9 @@ const InterestAlerts = () => {
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader className="pb-0">
         <h2 className="text-2xl font-semibold">
-          {user ? "Manage Your Interest Alerts" : "Subscribe to Interest Alerts"}
+          {user
+            ? "Manage Your Interest Alerts"
+            : "Subscribe to Interest Alerts"}
         </h2>
       </CardHeader>
       <CardBody>
@@ -169,6 +184,7 @@ const InterestAlerts = () => {
           <div className="flex flex-wrap gap-2">
             {selectedInterests.map((interestId) => {
               const interest = interests.find((i) => i.id === interestId);
+
               return (
                 <div
                   key={interestId}
@@ -195,9 +211,9 @@ const InterestAlerts = () => {
                 Email Address
               </label>
               <Input
-                className="w-full"
                 id="email"
                 placeholder="Enter your email"
+                required
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -209,28 +225,14 @@ const InterestAlerts = () => {
             className="w-full"
             color="primary"
             isLoading={isSubscribing}
-            size="lg"
             onPress={handleSubscribe}
           >
             {user ? "Update Interest Alerts" : "Subscribe to Alerts"}
           </Button>
-
-          {!user && (
-            <p className="text-center text-sm text-default-500">
-              Already have an account?{" "}
-              <Button
-                className="p-0 h-auto"
-                variant="light"
-                onPress={() => router.push("/auth?tab=login")}
-              >
-                Sign In
-              </Button>
-            </p>
-          )}
         </div>
       </CardBody>
     </Card>
   );
 };
 
-export default InterestAlerts; 
+export default InterestAlerts;

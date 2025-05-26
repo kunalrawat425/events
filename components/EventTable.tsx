@@ -18,6 +18,10 @@ import {
   useDisclosure,
   Input,
   Textarea,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from "@heroui/react";
 
 interface Event {
@@ -35,6 +39,7 @@ interface EventTableProps {
   events: Event[];
   onEdit: (event: Event) => void;
   onDelete: (eventId: string) => void;
+  onStatusChange: (eventId: string, status: Event["status"]) => void;
   isPublisher?: boolean;
 }
 
@@ -42,6 +47,7 @@ export const EventTable = ({
   events,
   onEdit,
   onDelete,
+  onStatusChange,
   isPublisher = false,
 }: EventTableProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -104,6 +110,41 @@ export const EventTable = ({
                 <Chip color={getStatusColor(event.status)} variant="flat">
                   {event.status}
                 </Chip>
+                {isPublisher && (
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button size="sm" variant="light">
+                        Change Status
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="Status options">
+                      <DropdownItem
+                        key="upcoming"
+                        onPress={() => onStatusChange(event.id, "upcoming")}
+                      >
+                        Upcoming
+                      </DropdownItem>
+                      <DropdownItem
+                        key="ongoing"
+                        onPress={() => onStatusChange(event.id, "ongoing")}
+                      >
+                        Ongoing
+                      </DropdownItem>
+                      <DropdownItem
+                        key="completed"
+                        onPress={() => onStatusChange(event.id, "completed")}
+                      >
+                        Completed
+                      </DropdownItem>
+                      <DropdownItem
+                        key="cancelled"
+                        onPress={() => onStatusChange(event.id, "cancelled")}
+                      >
+                        Cancelled
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                )}
               </TableCell>
               <TableCell>{event.organizer}</TableCell>
               <TableCell>

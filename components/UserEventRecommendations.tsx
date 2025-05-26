@@ -9,9 +9,8 @@ import {
   Button,
   Chip,
   Input,
-  Select,
-  SelectItem,
 } from "@heroui/react";
+import { Select, SelectItem } from "@heroui/select";
 import Image from "next/image";
 
 interface Event {
@@ -112,6 +111,17 @@ export default function UserEventRecommendations() {
     );
   });
 
+  const selectItems = [
+    <SelectItem key="all" textValue="all">
+      All Categories
+    </SelectItem>,
+    ...interests.map((interest) => (
+      <SelectItem key={interest.id} textValue={interest.name}>
+        {interest.name}
+      </SelectItem>
+    )),
+  ];
+
   return (
     <div className="space-y-6">
       {/* Search and Filters */}
@@ -125,17 +135,10 @@ export default function UserEventRecommendations() {
         <Select
           className="max-w-xs"
           placeholder="Select Category"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          selectedKeys={[selectedCategory]}
+          onSelectionChange={(keys) => setSelectedCategory(Array.from(keys)[0] as string)}
         >
-          <SelectItem key="all" value="all">
-            All Categories
-          </SelectItem>
-          {interests.map((interest) => (
-            <SelectItem key={interest.id} value={interest.name}>
-              {interest.name}
-            </SelectItem>
-          ))}
+          {selectItems}
         </Select>
       </div>
 

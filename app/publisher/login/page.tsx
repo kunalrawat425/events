@@ -165,7 +165,7 @@ export default function PublisherLoginPage() {
               </div>
 
               <Button className="w-full" isLoading={isLoading} type="submit">
-                Sign In
+                Login
               </Button>
 
               <div className="relative">
@@ -193,7 +193,7 @@ export default function PublisherLoginPage() {
                   src="/images/google-icon.svg"
                   width={20}
                 />
-                Sign in with Google
+                Login with Google
               </Button>
             </form>
 
@@ -203,7 +203,7 @@ export default function PublisherLoginPage() {
                 className="text-primary hover:underline"
                 href="/publisher/signup"
               >
-                Sign up
+                Login
               </a>
             </p>
           </CardBody>

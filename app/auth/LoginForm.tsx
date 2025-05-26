@@ -52,7 +52,7 @@ export function LoginForm() {
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold">Welcome Back</h1>
-        <p className="text-default-500">Sign in to your account</p>
+        <p className="text-default-500">Login to your account</p>
       </CardHeader>
       <CardBody>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -96,7 +96,7 @@ export function LoginForm() {
             size="lg"
             type="submit"
           >
-            Sign In
+            Login
           </Button>
         </form>
       </CardBody>
@@ -109,7 +109,7 @@ export function LoginForm() {
               variant="light"
               onPress={() => router.push("/auth?tab=signup")}
             >
-              Sign Up
+              Login
             </Button>
           </p>
         </div>

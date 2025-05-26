@@ -8,13 +8,15 @@ interface User {
   name: string;
   role: "user" | "publisher";
   interests: string[];
+  companyName?: string;
+  companyWebsite?: string;
 }
 
 interface UserContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, name: string) => Promise<void>;
+  signup: (email: string, password: string, userData: Partial<User>) => Promise<void>;
   logout: () => void;
   updateInterests: (interests: string[]) => Promise<void>;
 }
@@ -54,14 +56,16 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     throw new Error("Invalid email or password");
   };
 
-  const signup = async (email: string, password: string, name: string) => {
+  const signup = async (email: string, password: string, userData: Partial<User>) => {
     // Mock signup - in a real app, this would be handled by the backend
     const mockUserData = {
       id: Date.now().toString(),
       email,
-      name,
-      role: "user" as const,
+      name: userData.name || "",
+      role: userData.role || "user",
       interests: [],
+      companyName: userData.companyName,
+      companyWebsite: userData.companyWebsite,
     };
 
     setUser(mockUserData);
@@ -88,7 +92,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, isLoading, login, signup, logout, updateInterests }}>
+    <UserContext.Provider
+      value={{ user, isLoading, login, signup, logout, updateInterests }}
+    >
       {children}
     </UserContext.Provider>
   );

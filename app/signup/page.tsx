@@ -264,14 +264,14 @@ export default function SignupPage() {
                   src="/images/google-icon.svg"
                   width={20}
                 />
-                Sign up with Google
+                Login with Google
               </Button>
             </form>
 
             <p className="mt-6 text-center text-sm text-foreground/60">
               Already have an account?{" "}
               <a className="text-primary hover:underline" href="/login">
-                Sign in
+                Login
               </a>
             </p>
           </CardBody>

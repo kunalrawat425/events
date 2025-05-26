@@ -123,7 +123,7 @@ export const SignupClient = () => {
 
       const userData = await response.json();
 
-      login(userData);
+      login(userData.email, userData.password);
       router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
       setSubmitError(
@@ -155,7 +155,7 @@ export const SignupClient = () => {
 
       const userData = await response.json();
 
-      login(userData);
+      login(userData.email, userData.password);
       router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
       setSubmitError(
@@ -352,7 +352,7 @@ export const SignupClient = () => {
                   size="lg"
                   type="submit"
                 >
-                  Sign Up
+                  Login
                 </Button>
               </form>
             </div>
@@ -363,10 +363,10 @@ export const SignupClient = () => {
                 as={Link}
                 className="w-full"
                 disabled={isLoading}
-                href={`/login?role=${role}`}
+                href={`/auth?tab=login`}
                 variant="light"
               >
-                Already have an account? Sign In
+                Already have an account? Login
               </Button>
               {role === "user" && (
                 <Link

@@ -77,7 +77,7 @@ export default function LoginPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute bottom-8 left-8 text-white">
             <h2 className="text-3xl font-bold mb-2">Welcome Back!</h2>
-            <p className="text-white/80">Sign in to continue your journey</p>
+            <p className="text-white/80">Login to continue your journey</p>
           </div>
         </div>
 
@@ -85,7 +85,7 @@ export default function LoginPage() {
         <Card className="w-full max-w-md mx-auto bg-background/50 backdrop-blur-lg border border-foreground/10">
           <CardBody className="p-8">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold mb-2">Sign In</h1>
+              <h1 className="text-2xl font-bold mb-2">Login</h1>
               <p className="text-foreground/60">
                 Enter your credentials to continue
               </p>
@@ -130,7 +130,7 @@ export default function LoginPage() {
               </div>
 
               <Button className="w-full" isLoading={isLoading} type="submit">
-                Sign In
+                Login
               </Button>
 
               <div className="relative">
@@ -158,7 +158,7 @@ export default function LoginPage() {
                   src="/images/google-icon.svg"
                   width={20}
                 />
-                Sign in with Google
+                Login with Google
               </Button>
             </form>
 

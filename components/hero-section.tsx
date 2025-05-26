@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-import { useRouter } from "next/navigation";
+
 import { useUser } from "@/contexts/UserContext";
 
 const interests = [
@@ -44,11 +46,16 @@ export const HeroSection = () => {
         alert("Please enter your email address");
         return;
       }
+
       if (selectedInterests.length === 0) {
         alert("Please select at least one interest");
         return;
       }
-      localStorage.setItem("pendingInterests", JSON.stringify(selectedInterests));
+
+      localStorage.setItem(
+        "pendingInterests",
+        JSON.stringify(selectedInterests),
+      );
       localStorage.setItem("pendingEmail", email);
       router.push("/auth?tab=signup");
       return;
@@ -60,10 +67,11 @@ export const HeroSection = () => {
     }
 
     setIsSubscribing(true);
+
     try {
       await updateInterests(selectedInterests);
       alert("Successfully subscribed to alerts for your interests!");
-    } catch (error) {
+    } catch {
       alert("Failed to update interests. Please try again.");
     } finally {
       setIsSubscribing(false);
@@ -71,10 +79,10 @@ export const HeroSection = () => {
   };
 
   const toggleInterest = (interestId: string) => {
-    setSelectedInterests(prev => 
+    setSelectedInterests((prev) =>
       prev.includes(interestId)
-        ? prev.filter(id => id !== interestId)
-        : [...prev, interestId]
+        ? prev.filter((id) => id !== interestId)
+        : [...prev, interestId],
     );
   };
 
@@ -128,9 +136,9 @@ export const HeroSection = () => {
                     Email Address
                   </label>
                   <Input
-                    className="w-full"
                     id="email"
                     placeholder="Enter your email"
+                    required
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -142,7 +150,6 @@ export const HeroSection = () => {
                 className="w-full"
                 color="primary"
                 isLoading={isSubscribing}
-                size="lg"
                 onPress={handleSubscribe}
               >
                 {user ? "Update Interest Alerts" : "Subscribe to Alerts"}
@@ -153,10 +160,10 @@ export const HeroSection = () => {
                   Already have an account?{" "}
                   <Button
                     className="p-0 h-auto"
-                    variant="light"
                     onPress={() => router.push("/auth?tab=login")}
+                    variant="light"
                   >
-                    Sign In
+                    Login
                   </Button>
                 </p>
               )}
@@ -166,4 +173,4 @@ export const HeroSection = () => {
       </div>
     </div>
   );
-}; 
+};

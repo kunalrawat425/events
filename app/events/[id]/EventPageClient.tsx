@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
@@ -19,6 +19,20 @@ import Image from "next/image";
 
 import { useUser } from "@/contexts/UserContext";
 
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  imageUrl: string;
+  price: number;
+  attendees: number;
+  category: string;
+  organizer: string;
+}
+
 interface EventPageClientProps {
   eventId: string;
 }
@@ -27,6 +41,37 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
   const router = useRouter();
   const { user } = useUser();
   const [isSaved, setIsSaved] = useState(false);
+  const [event, setEvent] = useState<Event | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        // TODO: Replace with actual API call
+        // Mock data for now
+        const mockEvent: Event = {
+          id: eventId,
+          title: "Tech Conference 2024",
+          description: "Join us for the biggest tech conference of the year, featuring industry leaders, innovative workshops, and networking opportunities.",
+          date: "March 15, 2024",
+          time: "9:00 AM - 5:00 PM",
+          location: "Convention Center",
+          imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
+          price: 299,
+          attendees: 234,
+          category: "Technology",
+          organizer: "Tech Events Inc."
+        };
+        setEvent(mockEvent);
+      } catch (error) {
+        console.error("Error fetching event:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvent();
+  }, [eventId]);
 
   const handleGetTickets = () => {
     if (!user) {
@@ -44,10 +89,12 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
   };
 
   const shareEvent = () => {
+    if (!event) return;
+    
     if (navigator.share) {
       navigator.share({
-        title: "Tech Conference 2024",
-        text: "Check out this amazing tech conference!",
+        title: event.title,
+        text: event.description,
         url: window.location.href,
       });
     } else {
@@ -56,6 +103,22 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
       alert("Link copied to clipboard!");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-foreground/80">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!event) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-foreground/80">Event not found</div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-background">
@@ -74,20 +137,20 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
             <div className="flex justify-between items-start">
               <div>
                 <h1 className="text-4xl font-bold text-white mb-4">
-                  Tech Conference 2024
+                  {event.title}
                 </h1>
                 <div className="flex items-center space-x-4 text-white/90">
                   <div className="flex items-center">
                     <CalendarIcon className="w-5 h-5 mr-2" />
-                    <span>March 15, 2024</span>
+                    <span>{event.date}</span>
                   </div>
                   <div className="flex items-center">
                     <ClockIcon className="w-5 h-5 mr-2" />
-                    <span>9:00 AM - 5:00 PM</span>
+                    <span>{event.time}</span>
                   </div>
                   <div className="flex items-center">
                     <MapPinIcon className="w-5 h-5 mr-2" />
-                    <span>Convention Center</span>
+                    <span>{event.location}</span>
                   </div>
                 </div>
               </div>
@@ -125,25 +188,21 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
               <CardBody className="p-6">
                 <h2 className="text-2xl font-bold mb-4">About This Event</h2>
                 <p className="text-foreground/70 mb-4">
-                  Join us for the biggest tech conference of the year, featuring
-                  industry leaders, innovative workshops, and networking
-                  opportunities. This event brings together technology
-                  enthusiasts, professionals, and thought leaders from around
-                  the world.
+                  {event.description}
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="flex items-center text-foreground/70">
                     <BuildingOfficeIcon className="w-5 h-5 mr-2" />
-                    <span>Organized by Tech Events Inc.</span>
+                    <span>Organized by {event.organizer}</span>
                   </div>
                   <div className="flex items-center text-foreground/70">
                     <UserIcon className="w-5 h-5 mr-2" />
-                    <span>234 attendees</span>
+                    <span>{event.attendees} attendees</span>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <span className="px-3 py-1 rounded-full bg-primary-100 text-primary-600 text-sm">
-                    Technology
+                    {event.category}
                   </span>
                   <span className="px-3 py-1 rounded-full bg-primary-100 text-primary-600 text-sm">
                     Conference
@@ -199,11 +258,7 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
                   {/* Add map component here */}
                 </div>
                 <p className="text-foreground/70">
-                  Convention Center
-                  <br />
-                  123 Tech Street
-                  <br />
-                  San Francisco, CA 94105
+                  {event.location}
                 </p>
               </CardBody>
             </Card>
@@ -216,7 +271,7 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-foreground/70">Price</span>
-                    <span className="text-2xl font-bold">$299</span>
+                    <span className="text-2xl font-bold">${event.price}</span>
                   </div>
                   <Button
                     className="w-full"
@@ -229,7 +284,7 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
                   <div className="text-sm text-foreground/70 space-y-2">
                     <p className="flex items-center">
                       <UserGroupIcon className="w-5 h-5 mr-2" />
-                      234 people are attending
+                      {event.attendees} people are attending
                     </p>
                     <p className="flex items-center">
                       <TagIcon className="w-5 h-5 mr-2" />

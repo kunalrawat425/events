@@ -99,7 +99,7 @@ export const LoginClient = () => {
 
       const userData = await response.json();
 
-      login(userData);
+      await login(userData.email, userData.password);
       router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
       setSubmitError(
@@ -133,7 +133,7 @@ export const LoginClient = () => {
 
       const userData = await response.json();
 
-      login(userData);
+      await login(userData.email, userData.password);
       router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
       setSubmitError(
@@ -192,7 +192,7 @@ export const LoginClient = () => {
         <Card className="w-full">
           <CardHeader className="flex flex-col gap-1">
             <h1 className="text-2xl font-bold">Welcome Back</h1>
-            <p className="text-default-500">Sign in to your {role} account</p>
+            <p className="text-default-500">Login to your {role} account</p>
           </CardHeader>
           <CardBody>
             <div className="flex flex-col gap-4">
@@ -283,7 +283,7 @@ export const LoginClient = () => {
                   size="lg"
                   type="submit"
                 >
-                  Sign In
+                  Login
                 </Button>
               </form>
             </div>
@@ -297,7 +297,7 @@ export const LoginClient = () => {
                 href={`/signup?role=${role}`}
                 variant="light"
               >
-                Don&apos;t have an account? Sign Up
+                Don&apos;t have an account?Login
               </Button>
               {role === "user" && (
                 <Link

@@ -4,10 +4,10 @@ import EventPageClient from "./EventPageClient";
 
 // Generate metadata for SEO
 export async function generateMetadata({
-  _params,
+  params,
 }: {
-  params: { id: string };
-}): Promise<Metadata> {
+  params: any;
+}): Promise<any> {
   // In a real app, fetch event data here
   const eventData = {
     title: "Tech Conference 2024",
@@ -45,10 +45,10 @@ export async function generateMetadata({
   };
 }
 
-export default function EventPage({
-  params: _params,
+export default async function EventPage({
+  params,
 }: {
-  params: { id: string };
+  params: any;
 }) {
-  return <EventPageClient eventId={_params.id} />;
+  return <EventPageClient eventId={params.id} />;
 }

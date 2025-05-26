@@ -193,7 +193,7 @@ export default function PublisherLanding() {
               </Link>
               <Link href="/publisher/login">
                 <Button className="text-lg px-8" size="lg" variant="bordered">
-                  Sign In
+                  Login
                 </Button>
               </Link>
             </div>

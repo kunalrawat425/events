@@ -128,7 +128,9 @@ function EventsClient() {
                 setCategoryFilter(Array.from(keys)[0] as string)
               }
             >
-              <SelectItem key="all">All Categories</SelectItem>
+              <SelectItem key="all" textValue="all">
+                All Categories
+              </SelectItem>
               <SelectItem key="Music">Music</SelectItem>
               <SelectItem key="Technology">Technology</SelectItem>
               <SelectItem key="Sports">Sports</SelectItem>

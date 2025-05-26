@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function ConfirmationPage({
   params,
 }: {
-  params: { id: string };
+  params: any;
 }) {
   return (
     <AuthGuard>

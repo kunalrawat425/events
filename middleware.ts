@@ -20,8 +20,6 @@ const publisherPaths = [
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get("token")?.value;
-  const userRole = request.cookies.get("userRole")?.value;
 
   // Check if the path requires authentication
   const isProtectedPath = protectedPaths.some((path) =>
@@ -31,18 +29,14 @@ export function middleware(request: NextRequest) {
     pathname.startsWith(path),
   );
 
-  // Redirect to login if accessing protected path without token
-  if (isProtectedPath && !token) {
-    const url = new URL("/auth", request.url);
-
-    url.searchParams.set("redirect", pathname);
-
-    return NextResponse.redirect(url);
+  // For protected paths, we'll let the client-side handle the auth check
+  if (isProtectedPath) {
+    return NextResponse.next();
   }
 
-  // Redirect to home if accessing publisher path without publisher role
-  if (isPublisherPath && userRole !== "publisher") {
-    return NextResponse.redirect(new URL("/", request.url));
+  // For publisher paths, we'll let the client-side handle the role check
+  if (isPublisherPath) {
+    return NextResponse.next();
   }
 
   return NextResponse.next();
@@ -59,5 +53,6 @@ export const config = {
      * - public folder
      */
     "/((?!api|_next/static|_next/image|favicon.ico|public).*)",
+    "/profile/:path*",
   ],
 };
