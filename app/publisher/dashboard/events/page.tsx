@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Button } from "@heroui/button";
+import { useRouter } from "next/navigation";
+
 import { EventTable } from "@/components/EventTable";
 import { useUser } from "@/contexts/UserContext";
-import { useRouter } from "next/navigation";
 
 interface Event {
   id: string;
@@ -51,6 +52,7 @@ export default function PublisherEventsPage() {
             organizer: user?.name || "Your Organization",
           },
         ];
+
         setEvents(mockEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -65,9 +67,7 @@ export default function PublisherEventsPage() {
   const handleEdit = async (event: Event) => {
     try {
       // TODO: Replace with actual API call
-      setEvents((prev) =>
-        prev.map((e) => (e.id === event.id ? event : e))
-      );
+      setEvents((prev) => prev.map((e) => (e.id === event.id ? event : e)));
     } catch (error) {
       console.error("Error updating event:", error);
     }
@@ -82,13 +82,14 @@ export default function PublisherEventsPage() {
     }
   };
 
-  const handleStatusChange = async (eventId: string, status: Event["status"]) => {
+  const handleStatusChange = async (
+    eventId: string,
+    status: Event["status"],
+  ) => {
     try {
       // TODO: Replace with actual API call
       setEvents((prev) =>
-        prev.map((e) =>
-          e.id === eventId ? { ...e, status } : e
-        )
+        prev.map((e) => (e.id === eventId ? { ...e, status } : e)),
       );
     } catch (error) {
       console.error("Error updating event status:", error);
@@ -115,13 +116,13 @@ export default function PublisherEventsPage() {
         <CardBody>
           <EventTable
             events={events}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onStatusChange={handleStatusChange}
             isPublisher={true}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+            onStatusChange={handleStatusChange}
           />
         </CardBody>
       </Card>
     </div>
   );
-} 
+}

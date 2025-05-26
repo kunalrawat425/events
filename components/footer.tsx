@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
+
 import { TwitterIcon, FacebookIcon, InstagramIcon } from "@/components/icons";
 
 export default function Footer() {
@@ -20,28 +21,28 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-white">EventHub</h3>
             <p className="text-foreground/70">
-              Connecting people through amazing events. Discover, create, and share
-              unforgettable experiences.
+              Connecting people through amazing events. Discover, create, and
+              share unforgettable experiences.
             </p>
             <div className="flex space-x-4">
               <Button
                 isIconOnly
-                variant="light"
                 className="text-foreground/70 hover:text-white"
+                variant="light"
               >
                 <TwitterIcon />
               </Button>
               <Button
                 isIconOnly
-                variant="light"
                 className="text-foreground/70 hover:text-white"
+                variant="light"
               >
                 <FacebookIcon />
               </Button>
               <Button
                 isIconOnly
-                variant="light"
                 className="text-foreground/70 hover:text-white"
+                variant="light"
               >
                 <InstagramIcon />
               </Button>
@@ -54,32 +55,32 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/events"
                   className="text-foreground/70 hover:text-white transition-colors"
+                  href="/events"
                 >
                   Browse Events
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/publisher"
                   className="text-foreground/70 hover:text-white transition-colors"
+                  href="/publisher"
                 >
                   Become a Publisher
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/about"
                   className="text-foreground/70 hover:text-white transition-colors"
+                  href="/about"
                 >
                   About Us
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/contact"
                   className="text-foreground/70 hover:text-white transition-colors"
+                  href="/contact"
                 >
                   Contact
                 </Link>
@@ -93,32 +94,32 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/help"
                   className="text-foreground/70 hover:text-white transition-colors"
+                  href="/help"
                 >
                   Help Center
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/faq"
                   className="text-foreground/70 hover:text-white transition-colors"
+                  href="/faq"
                 >
                   FAQ
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/privacy"
                   className="text-foreground/70 hover:text-white transition-colors"
+                  href="/privacy"
                 >
                   Privacy Policy
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/terms"
                   className="text-foreground/70 hover:text-white transition-colors"
+                  href="/terms"
                 >
                   Terms of Service
                 </Link>
@@ -135,13 +136,13 @@ export default function Footer() {
             </p>
             <form className="space-y-2">
               <Input
-                type="email"
-                placeholder="Enter your email"
                 className="bg-background/50 border-divider/50 text-white placeholder:text-foreground/50"
+                placeholder="Enter your email"
+                type="email"
               />
               <Button
-                color="primary"
                 className="w-full text-white hover:text-white/90"
+                color="primary"
               >
                 Subscribe
               </Button>
@@ -157,20 +158,20 @@ export default function Footer() {
             </p>
             <div className="flex space-x-6">
               <Link
-                href="/privacy"
                 className="text-foreground/70 hover:text-white text-sm transition-colors"
+                href="/privacy"
               >
                 Privacy
               </Link>
               <Link
-                href="/terms"
                 className="text-foreground/70 hover:text-white text-sm transition-colors"
+                href="/terms"
               >
                 Terms
               </Link>
               <Link
-                href="/cookies"
                 className="text-foreground/70 hover:text-white text-sm transition-colors"
+                href="/cookies"
               >
                 Cookies
               </Link>
@@ -180,4 +181,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-} 
+}

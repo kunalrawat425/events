@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
@@ -12,18 +12,18 @@ export async function POST(request: Request) {
       return NextResponse.json({
         id: "1",
         name: name,
-        email: email
+        email: email,
       });
     }
 
     return NextResponse.json(
       { message: "Invalid signup data" },
-      { status: 400 }
+      { status: 400 },
     );
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { message: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

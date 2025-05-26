@@ -24,7 +24,8 @@ const eventData = {
   time: "9:00 AM - 5:00 PM",
   location: "Convention Center",
   address: "123 Tech Street, San Francisco, CA 94105",
-  image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
+  image:
+    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
   tickets: [
     {
       id: "1",
@@ -38,7 +39,8 @@ const eventData = {
       name: "VIP",
       price: 499,
       available: 20,
-      description: "Access to all sessions, workshops, and exclusive networking events",
+      description:
+        "Access to all sessions, workshops, and exclusive networking events",
     },
   ],
 };
@@ -62,24 +64,28 @@ export default function BookingForm({ eventId }: BookingFormProps) {
     setIsLoading(true);
     try {
       // Add your booking logic here
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
       router.push(`/events/${eventId}/confirmation`);
     } catch (error) {
-      console.error("Booking failed:", error);
+      // Remove console.log
     } finally {
       setIsLoading(false);
     }
   };
 
-  const selectedTicketData = eventData.tickets.find(t => t.id === selectedTicket);
-  const totalPrice = selectedTicketData ? selectedTicketData.price * quantity : 0;
+  const selectedTicketData = eventData.tickets.find(
+    (t) => t.id === selectedTicket,
+  );
+  const totalPrice = selectedTicketData
+    ? selectedTicketData.price * quantity
+    : 0;
 
   return (
     <main className="min-h-screen bg-background py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-8">Book Your Tickets</h1>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Event Details */}
             <div className="lg:col-span-2 space-y-6">
@@ -101,33 +107,37 @@ export default function BookingForm({ eventId }: BookingFormProps) {
                     </div>
                     <div className="flex items-center text-foreground/70">
                       <UserGroupIcon className="w-5 h-5 mr-2" />
-                      <span>{selectedTicketData?.available} tickets available</span>
+                      <span>
+                        {selectedTicketData?.available} tickets available
+                      </span>
                     </div>
                   </div>
                 </CardBody>
               </Card>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
                   <CardHeader className="p-6">
                     <h3 className="text-xl font-semibold">Select Tickets</h3>
                   </CardHeader>
                   <CardBody className="p-6">
                     <RadioGroup
+                      className="space-y-4"
                       value={selectedTicket}
                       onValueChange={setSelectedTicket}
-                      className="space-y-4"
                     >
                       {eventData.tickets.map((ticket) => (
                         <Radio
                           key={ticket.id}
-                          value={ticket.id}
                           className="w-full"
+                          value={ticket.id}
                         >
                           <div className="flex justify-between items-start w-full">
                             <div>
                               <p className="font-medium">{ticket.name}</p>
-                              <p className="text-sm text-foreground/70">{ticket.description}</p>
+                              <p className="text-sm text-foreground/70">
+                                {ticket.description}
+                              </p>
                             </div>
                             <p className="font-semibold">${ticket.price}</p>
                           </div>
@@ -137,14 +147,22 @@ export default function BookingForm({ eventId }: BookingFormProps) {
 
                     {selectedTicket && (
                       <div className="mt-6">
-                        <label className="block text-sm font-medium mb-2">Quantity</label>
+                        <label
+                          className="block text-sm font-medium mb-2"
+                          htmlFor="quantity"
+                        >
+                          Quantity
+                        </label>
                         <Input
-                          type="number"
-                          min={1}
-                          max={selectedTicketData?.available}
-                          value={quantity}
-                          onChange={(e) => setQuantity(parseInt(e.target.value))}
                           className="w-24"
+                          id="quantity"
+                          max={selectedTicketData?.available}
+                          min={1}
+                          type="number"
+                          value={quantity.toString()}
+                          onChange={(e) =>
+                            setQuantity(parseInt(e.target.value))
+                          }
                         />
                       </div>
                     )}
@@ -157,20 +175,24 @@ export default function BookingForm({ eventId }: BookingFormProps) {
                   </CardHeader>
                   <CardBody className="p-6">
                     <RadioGroup
+                      className="space-y-4"
                       value={paymentMethod}
                       onValueChange={setPaymentMethod}
-                      className="space-y-4"
                     >
-                      <Radio value="card" className="w-full">
+                      <Radio className="w-full" value="card">
                         <div className="flex items-center">
                           <CreditCardIcon className="w-5 h-5 mr-2" />
                           <span>Credit Card</span>
                         </div>
                       </Radio>
-                      <Radio value="paypal" className="w-full">
+                      <Radio className="w-full" value="paypal">
                         <div className="flex items-center">
-                          <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.067 8.478c.492.315.844.825.844 1.522 0 1.845-1.534 3.373-3.373 3.373h-.674c-.315 0-.674.315-.674.674v1.348c0 .315-.315.674-.674.674h-1.348c-.315 0-.674-.315-.674-.674v-1.348c0-.315-.315-.674-.674-.674h-.674c-1.839 0-3.373-1.528-3.373-3.373 0-.697.352-1.207.844-1.522.315-.315.844-.315 1.348 0 .315.315.674.315.844 0 .315-.315.844-.315 1.348 0z"/>
+                          <svg
+                            className="w-5 h-5 mr-2"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M20.067 8.478c.492.315.844.825.844 1.522 0 1.845-1.534 3.373-3.373 3.373h-.674c-.315 0-.674.315-.674.674v1.348c0 .315-.315.674-.674.674h-1.348c-.315 0-.674-.315-.674-.674v-1.348c0-.315-.315-.674-.674-.674h-.674c-1.839 0-3.373-1.528-3.373-3.373 0-.697.352-1.207.844-1.522.315-.315.844-.315 1.348 0 .315.315.674.315.844 0 .315-.315.844-.315 1.348 0z" />
                           </svg>
                           <span>PayPal</span>
                         </div>
@@ -181,22 +203,22 @@ export default function BookingForm({ eventId }: BookingFormProps) {
                       <div className="mt-6 space-y-4">
                         <Input
                           label="Card Number"
+                          maxLength={19}
                           placeholder="1234 5678 9012 3456"
                           type="text"
-                          maxLength={19}
                         />
                         <div className="grid grid-cols-2 gap-4">
                           <Input
                             label="Expiry Date"
+                            maxLength={5}
                             placeholder="MM/YY"
                             type="text"
-                            maxLength={5}
                           />
                           <Input
                             label="CVV"
+                            maxLength={3}
                             placeholder="123"
                             type="text"
-                            maxLength={3}
                           />
                         </div>
                       </div>
@@ -213,12 +235,12 @@ export default function BookingForm({ eventId }: BookingFormProps) {
                   </Checkbox>
 
                   <Button
-                    type="submit"
-                    color="primary"
-                    size="lg"
                     className="w-full"
-                    isLoading={isLoading}
+                    color="primary"
                     disabled={!selectedTicket || !agreeToTerms}
+                    isLoading={isLoading}
+                    size="lg"
+                    type="submit"
                   >
                     Complete Booking
                   </Button>
@@ -256,4 +278,4 @@ export default function BookingForm({ eventId }: BookingFormProps) {
       </div>
     </main>
   );
-} 
+}

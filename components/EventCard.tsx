@@ -1,6 +1,12 @@
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Button } from "@heroui/button";
-import { CalendarIcon, MapPinIcon, UserGroupIcon, ClockIcon, HeartIcon } from "@heroicons/react/24/outline";
+import {
+  CalendarIcon,
+  MapPinIcon,
+  UserGroupIcon,
+  ClockIcon,
+  HeartIcon,
+} from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -29,10 +35,14 @@ export default function EventCard({ event }: EventCardProps) {
       {/* Image Container */}
       <div className="relative h-48 w-full overflow-hidden">
         <Image
-          src={imageError ? "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop" : event.image}
-          alt={event.title}
           fill
+          alt={event.title}
           className="object-cover transition-transform duration-500 group-hover:scale-110"
+          src={
+            imageError
+              ? "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop"
+              : event.image
+          }
           onError={() => setImageError(true)}
         />
         {/* Category Badge */}
@@ -49,13 +59,15 @@ export default function EventCard({ event }: EventCardProps) {
         </div>
         {/* Save Button */}
         <button
+          className="absolute bottom-4 right-4 p-2 rounded-full bg-background/90 backdrop-blur-sm text-foreground/70 hover:text-danger transition-colors duration-200"
           onClick={(e) => {
             e.preventDefault();
             setIsSaved(!isSaved);
           }}
-          className="absolute bottom-4 right-4 p-2 rounded-full bg-background/90 backdrop-blur-sm text-foreground/70 hover:text-danger transition-colors duration-200"
         >
-          <HeartIcon className={`w-5 h-5 ${isSaved ? 'text-danger fill-danger' : ''}`} />
+          <HeartIcon
+            className={`w-5 h-5 ${isSaved ? "text-danger fill-danger" : ""}`}
+          />
         </button>
       </div>
 
@@ -92,10 +104,10 @@ export default function EventCard({ event }: EventCardProps) {
       </CardBody>
 
       <CardFooter className="p-6 pt-0">
-        <Link href={`/events/${event.id}`} className="w-full">
+        <Link className="w-full" href={`/events/${event.id}`}>
           <Button
-            color="primary"
             className="w-full group-hover:scale-[1.02] transition-transform duration-200"
+            color="primary"
           >
             View Details
           </Button>
@@ -103,4 +115,4 @@ export default function EventCard({ event }: EventCardProps) {
       </CardFooter>
     </Card>
   );
-} 
+}

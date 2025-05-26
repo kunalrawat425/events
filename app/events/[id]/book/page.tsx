@@ -1,6 +1,8 @@
 import { Metadata } from "next";
-import AuthGuard from "@/components/AuthGuard";
+
 import BookingForm from "./BookingForm";
+
+import AuthGuard from "@/components/AuthGuard";
 
 export const metadata: Metadata = {
   title: "Book Event | EventHub",
@@ -13,4 +15,4 @@ export default function BookingPage({ params }: { params: { id: string } }) {
       <BookingForm eventId={params.id} />
     </AuthGuard>
   );
-} 
+}

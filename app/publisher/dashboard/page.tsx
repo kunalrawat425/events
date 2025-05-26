@@ -102,12 +102,20 @@ const recentEvents = [
 export default function PublisherDashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const [events, setEvents] = useState<Event[]>([]);
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
-  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get("status") || "all");
-  const [dateFilter, setDateFilter] = useState<string>(searchParams.get("date") || "all");
-  const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || "",
+  );
+  const [statusFilter, setStatusFilter] = useState<string>(
+    searchParams.get("status") || "all",
+  );
+  const [dateFilter, setDateFilter] = useState<string>(
+    searchParams.get("date") || "all",
+  );
+  const [currentPage, setCurrentPage] = useState(
+    Number(searchParams.get("page")) || 1,
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -117,11 +125,12 @@ export default function PublisherDashboard() {
   useEffect(() => {
     // Update URL with current filters and pagination
     const params = new URLSearchParams();
+
     if (searchQuery) params.set("search", searchQuery);
     if (statusFilter !== "all") params.set("status", statusFilter);
     if (dateFilter !== "all") params.set("date", dateFilter);
     if (currentPage > 1) params.set("page", currentPage.toString());
-    
+
     router.push(`/publisher/dashboard?${params.toString()}`);
   }, [searchQuery, statusFilter, dateFilter, currentPage]);
 
@@ -177,24 +186,31 @@ export default function PublisherDashboard() {
       ...Array.from({ length: 15 }, (_, i) => ({
         id: `${i + 6}`,
         title: `Event ${i + 6}`,
-        date: new Date(2024, 11, i + 1).toISOString().split('T')[0],
+        date: new Date(2024, 11, i + 1).toISOString().split("T")[0],
         location: `Venue ${i + 1}`,
-        status: ["draft", "published", "cancelled"][Math.floor(Math.random() * 3)] as Event["status"],
+        status: ["draft", "published", "cancelled"][
+          Math.floor(Math.random() * 3)
+        ] as Event["status"],
         attendees: Math.floor(Math.random() * 1000),
         revenue: Math.floor(Math.random() * 50000),
       })),
     ];
+
     setEvents(mockEvents);
     setIsLoading(false);
   };
 
   const filteredEvents = events.filter((event) => {
-    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch =
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.location.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === "all" || event.status === statusFilter;
-    const matchesDate = dateFilter === "all" || 
+    const matchesStatus =
+      statusFilter === "all" || event.status === statusFilter;
+    const matchesDate =
+      dateFilter === "all" ||
       (dateFilter === "upcoming" && new Date(event.date) > new Date()) ||
       (dateFilter === "past" && new Date(event.date) < new Date());
+
     return matchesSearch && matchesStatus && matchesDate;
   });
 
@@ -202,19 +218,24 @@ export default function PublisherDashboard() {
   const totalPages = Math.ceil(filteredEvents.length / ITEMS_PER_PAGE);
   const paginatedEvents = filteredEvents.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handleDelete = async (eventId: string) => {
     // TODO: Implement actual delete functionality
-    setEvents(events.filter(event => event.id !== eventId));
+    setEvents(events.filter((event) => event.id !== eventId));
   };
 
-  const handleStatusChange = async (eventId: string, newStatus: Event["status"]) => {
+  const handleStatusChange = async (
+    eventId: string,
+    newStatus: Event["status"],
+  ) => {
     // TODO: Implement actual status update functionality
-    setEvents(events.map(event => 
-      event.id === eventId ? { ...event, status: newStatus } : event
-    ));
+    setEvents(
+      events.map((event) =>
+        event.id === eventId ? { ...event, status: newStatus } : event,
+      ),
+    );
   };
 
   if (isLoading) {
@@ -229,17 +250,24 @@ export default function PublisherDashboard() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="text-foreground/70">Welcome back! Here's an overview of your events.</p>
+        <p className="text-foreground/70">
+          Welcome back! Here&apos;s an overview of your events.
+        </p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
-          <Card key={stat.name} className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+          <Card
+            key={stat.name}
+            className="bg-background/50 backdrop-blur-sm border border-foreground/10"
+          >
             <CardBody className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-foreground/70">{stat.name}</p>
+                  <p className="text-sm font-medium text-foreground/70">
+                    {stat.name}
+                  </p>
                   <p className="text-2xl font-semibold mt-1">{stat.value}</p>
                 </div>
                 <div className="p-3 rounded-full bg-primary/10">
@@ -249,12 +277,16 @@ export default function PublisherDashboard() {
               <div className="mt-4">
                 <span
                   className={`text-sm font-medium ${
-                    stat.changeType === "increase" ? "text-green-600" : "text-red-600"
+                    stat.changeType === "increase"
+                      ? "text-green-600"
+                      : "text-red-600"
                   }`}
                 >
                   {stat.change}
                 </span>
-                <span className="text-sm text-foreground/70 ml-2">from last month</span>
+                <span className="text-sm text-foreground/70 ml-2">
+                  from last month
+                </span>
               </div>
             </CardBody>
           </Card>
@@ -271,11 +303,21 @@ export default function PublisherDashboard() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-foreground/10">
-                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">Event</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">Date</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">Attendees</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">Revenue</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">Status</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">
+                    Event
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">
+                    Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">
+                    Attendees
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">
+                    Revenue
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-foreground/70">
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-foreground/10">
@@ -285,13 +327,19 @@ export default function PublisherDashboard() {
                       <div className="text-sm font-medium">{event.title}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-foreground/70">{event.date}</div>
+                      <div className="text-sm text-foreground/70">
+                        {event.date}
+                      </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-foreground/70">{event.attendees}</div>
+                      <div className="text-sm text-foreground/70">
+                        {event.attendees}
+                      </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-foreground/70">{event.revenue}</div>
+                      <div className="text-sm text-foreground/70">
+                        {event.revenue}
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <span
@@ -325,9 +373,9 @@ export default function PublisherDashboard() {
               </p>
             </div>
             <Button
+              className="px-6"
               color="primary"
               onClick={() => router.push("/publisher/dashboard/events/create")}
-              className="px-6"
             >
               Create New Event
             </Button>
@@ -336,24 +384,29 @@ export default function PublisherDashboard() {
           {/* Stats Overview */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
             <div className="p-6 rounded-xl bg-background/50 backdrop-blur-sm border border-divider/50">
-              <div className="text-2xl font-bold text-primary mb-1">{events.length}</div>
+              <div className="text-2xl font-bold text-primary mb-1">
+                {events.length}
+              </div>
               <div className="text-foreground/80">Total Events</div>
             </div>
             <div className="p-6 rounded-xl bg-background/50 backdrop-blur-sm border border-divider/50">
               <div className="text-2xl font-bold text-success mb-1">
-                {events.filter(e => e.status === "published").length}
+                {events.filter((e) => e.status === "published").length}
               </div>
               <div className="text-foreground/80">Published Events</div>
             </div>
             <div className="p-6 rounded-xl bg-background/50 backdrop-blur-sm border border-divider/50">
               <div className="text-2xl font-bold text-warning mb-1">
-                {events.filter(e => e.status === "draft").length}
+                {events.filter((e) => e.status === "draft").length}
               </div>
               <div className="text-foreground/80">Draft Events</div>
             </div>
             <div className="p-6 rounded-xl bg-background/50 backdrop-blur-sm border border-divider/50">
               <div className="text-2xl font-bold text-primary mb-1">
-                ${events.reduce((sum, event) => sum + event.revenue, 0).toLocaleString()}
+                $
+                {events
+                  .reduce((sum, event) => sum + event.revenue, 0)
+                  .toLocaleString()}
               </div>
               <div className="text-foreground/80">Total Revenue</div>
             </div>
@@ -362,22 +415,22 @@ export default function PublisherDashboard() {
           {/* Filters */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <Input
+              className="w-full"
               placeholder="Search events..."
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
                 setCurrentPage(1); // Reset to first page on search
               }}
-              className="w-full"
             />
             <Select
+              className="w-full"
               placeholder="Filter by status"
               selectedKeys={[statusFilter]}
               onSelectionChange={(keys) => {
                 setStatusFilter(Array.from(keys)[0] as string);
                 setCurrentPage(1); // Reset to first page on filter change
               }}
-              className="w-full"
             >
               <SelectItem key="all">All Status</SelectItem>
               <SelectItem key="draft">Draft</SelectItem>
@@ -385,13 +438,13 @@ export default function PublisherDashboard() {
               <SelectItem key="cancelled">Cancelled</SelectItem>
             </Select>
             <Select
+              className="w-full"
               placeholder="Filter by date"
               selectedKeys={[dateFilter]}
               onSelectionChange={(keys) => {
                 setDateFilter(Array.from(keys)[0] as string);
                 setCurrentPage(1); // Reset to first page on filter change
               }}
-              className="w-full"
             >
               <SelectItem key="all">All Dates</SelectItem>
               <SelectItem key="upcoming">Upcoming</SelectItem>
@@ -417,15 +470,22 @@ export default function PublisherDashboard() {
                     <TableCell>
                       <div className="font-semibold">{event.title}</div>
                     </TableCell>
-                    <TableCell>{new Date(event.date).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(event.date).toLocaleDateString()}
+                    </TableCell>
                     <TableCell>{event.location}</TableCell>
                     <TableCell>
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        event.status === "published" ? "bg-success/20 text-success" :
-                        event.status === "draft" ? "bg-warning/20 text-warning" :
-                        "bg-danger/20 text-danger"
-                      }`}>
-                        {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                          event.status === "published"
+                            ? "bg-success/20 text-success"
+                            : event.status === "draft"
+                              ? "bg-warning/20 text-warning"
+                              : "bg-danger/20 text-danger"
+                        }`}
+                      >
+                        {event.status.charAt(0).toUpperCase() +
+                          event.status.slice(1)}
                       </span>
                     </TableCell>
                     <TableCell>{event.attendees}</TableCell>
@@ -433,43 +493,55 @@ export default function PublisherDashboard() {
                     <TableCell>
                       <Dropdown>
                         <DropdownTrigger>
-                          <Button variant="light" size="sm">
+                          <Button size="sm" variant="light">
                             Actions
                           </Button>
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Event actions">
                           <DropdownItem
                             key="edit"
-                            onClick={() => router.push(`/publisher/dashboard/events/${event.id}/edit`)}
+                            onClick={() =>
+                              router.push(
+                                `/publisher/dashboard/events/${event.id}/edit`,
+                              )
+                            }
                           >
                             Edit
                           </DropdownItem>
                           <DropdownItem
                             key="view"
-                            onClick={() => router.push(`/publisher/dashboard/events/${event.id}`)}
+                            onClick={() =>
+                              router.push(
+                                `/publisher/dashboard/events/${event.id}`,
+                              )
+                            }
                           >
                             View Details
                           </DropdownItem>
                           {event.status === "draft" ? (
                             <DropdownItem
                               key="publish"
-                              onClick={() => handleStatusChange(event.id, "published")}
+                              onClick={() =>
+                                handleStatusChange(event.id, "published")
+                              }
                             >
                               Publish
                             </DropdownItem>
                           ) : event.status === "published" ? (
                             <DropdownItem
                               key="cancel"
-                              onClick={() => handleStatusChange(event.id, "cancelled")}
                               color="danger"
+                              onClick={() =>
+                                handleStatusChange(event.id, "cancelled")
+                              }
                             >
                               Cancel
                             </DropdownItem>
                           ) : null}
                           <DropdownItem
                             key="delete"
-                            onClick={() => handleDelete(event.id)}
                             color="danger"
+                            onClick={() => handleDelete(event.id)}
                           >
                             Delete
                           </DropdownItem>
@@ -486,13 +558,13 @@ export default function PublisherDashboard() {
           {totalPages > 1 && (
             <div className="flex justify-center mt-8">
               <Pagination
-                total={totalPages}
-                page={currentPage}
-                onChange={setCurrentPage}
                 showControls
                 classNames={{
                   cursor: "bg-primary text-primary-foreground",
                 }}
+                page={currentPage}
+                total={totalPages}
+                onChange={setCurrentPage}
               />
             </div>
           )}
@@ -509,7 +581,9 @@ export default function PublisherDashboard() {
               </p>
               <Button
                 color="primary"
-                onClick={() => router.push("/publisher/dashboard/events/create")}
+                onClick={() =>
+                  router.push("/publisher/dashboard/events/create")
+                }
               >
                 Create New Event
               </Button>
@@ -519,4 +593,4 @@ export default function PublisherDashboard() {
       </div>
     </div>
   );
-} 
+}

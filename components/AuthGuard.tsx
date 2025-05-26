@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import { useUser } from "@/contexts/UserContext";
 
 interface AuthGuardProps {
@@ -17,7 +18,9 @@ export default function AuthGuard({ children, requiredRole }: AuthGuardProps) {
     if (!isLoading) {
       if (!user) {
         // Redirect to login if not authenticated
-        router.push("/auth?redirect=" + encodeURIComponent(window.location.pathname));
+        router.push(
+          "/auth?redirect=" + encodeURIComponent(window.location.pathname),
+        );
       } else if (requiredRole && user.role !== requiredRole) {
         // Redirect to home if user doesn't have required role
         router.push("/");
@@ -28,7 +31,7 @@ export default function AuthGuard({ children, requiredRole }: AuthGuardProps) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
       </div>
     );
   }
@@ -38,4 +41,4 @@ export default function AuthGuard({ children, requiredRole }: AuthGuardProps) {
   }
 
   return <>{children}</>;
-} 
+}

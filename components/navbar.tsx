@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@heroui/button";
-import { useUser } from "@/context/UserContext";
-import { Logo } from "./icons";
 import { useTheme } from "next-themes";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+
+import { Logo } from "./icons";
+
+import { useUser } from "@/context/UserContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,7 +22,9 @@ export default function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
+
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -34,15 +38,15 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? "bg-background/80 backdrop-blur-xl border-b border-foreground/10 shadow-lg" 
+        isScrolled
+          ? "bg-background/80 backdrop-blur-xl border-b border-foreground/10 shadow-lg"
           : "bg-background/40 backdrop-blur-md"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link className="flex items-center space-x-2" href="/">
             <Logo className="w-8 h-8" />
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">
               EventHub
@@ -54,12 +58,12 @@ export default function Navbar() {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
                 className={`text-sm font-medium transition-colors duration-200 ${
                   isActive(link.href)
                     ? "text-primary"
                     : "text-foreground/70 hover:text-primary"
                 }`}
+                href={link.href}
               >
                 {link.label}
               </Link>
@@ -70,8 +74,8 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-4">
             <Button
               isIconOnly
-              variant="light"
               className="text-foreground/70 hover:text-primary hover:bg-foreground/5"
+              variant="light"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             >
               {theme === "dark" ? (
@@ -83,18 +87,18 @@ export default function Navbar() {
             {user ? (
               <>
                 <Link href="/dashboard">
-                  <Button 
-                    variant="light" 
+                  <Button
                     className="text-foreground/70 hover:text-primary hover:bg-foreground/5"
+                    variant="light"
                   >
                     Dashboard
                   </Button>
                 </Link>
                 <Button
-                  variant="flat"
-                  color="danger"
-                  onClick={logout}
                   className="text-sm hover:bg-danger/10"
+                  color="danger"
+                  variant="flat"
+                  onClick={logout}
                 >
                   Logout
                 </Button>
@@ -103,24 +107,24 @@ export default function Navbar() {
               <>
                 <Link href="/login">
                   <Button
-                    variant="light"
                     className={`${
                       isActive("/login")
                         ? "text-white bg-primary hover:bg-primary-400"
                         : "text-foreground/70 hover:text-primary hover:bg-foreground/5"
                     }`}
+                    variant="light"
                   >
                     Login
                   </Button>
                 </Link>
                 <Link href="/signup">
                   <Button
-                    color="primary"
                     className={`${
                       isActive("/signup")
                         ? "opacity-50 cursor-not-allowed"
                         : "hover:opacity-90"
                     }`}
+                    color="primary"
                     disabled={isActive("/signup")}
                   >
                     Sign Up
@@ -134,8 +138,8 @@ export default function Navbar() {
           <div className="md:hidden flex items-center space-x-2">
             <Button
               isIconOnly
-              variant="light"
               className="text-foreground/70 hover:text-primary hover:bg-foreground/5"
+              variant="light"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             >
               {theme === "dark" ? (
@@ -156,17 +160,17 @@ export default function Navbar() {
               >
                 {isMenuOpen ? (
                   <path
+                    d="M6 18L18 6M6 6l12 12"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
                   />
                 ) : (
                   <path
+                    d="M4 6h16M4 12h16M4 18h16"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
                   />
                 )}
               </svg>
@@ -182,12 +186,12 @@ export default function Navbar() {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   isActive(link.href)
                     ? "text-primary bg-foreground/5"
                     : "text-foreground/70 hover:text-primary hover:bg-foreground/5"
                 }`}
+                href={link.href}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.label}
@@ -196,18 +200,18 @@ export default function Navbar() {
             {user ? (
               <>
                 <Link
-                  href="/dashboard"
                   className="block px-3 py-2 rounded-md text-base font-medium text-foreground/70 hover:text-primary hover:bg-foreground/5"
+                  href="/dashboard"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Dashboard
                 </Link>
                 <button
+                  className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-danger hover:bg-foreground/5"
                   onClick={() => {
                     logout();
                     setIsMenuOpen(false);
                   }}
-                  className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-danger hover:bg-foreground/5"
                 >
                   Logout
                 </button>
@@ -215,23 +219,23 @@ export default function Navbar() {
             ) : (
               <>
                 <Link
-                  href="/login"
                   className={`block px-3 py-2 rounded-md text-base font-medium ${
                     isActive("/login")
                       ? "text-primary bg-foreground/5"
                       : "text-foreground/70 hover:text-primary hover:bg-foreground/5"
                   }`}
+                  href="/login"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
-                  href="/signup"
                   className={`block px-3 py-2 rounded-md text-base font-medium ${
                     isActive("/signup")
                       ? "text-primary bg-foreground/5"
                       : "text-foreground/70 hover:text-primary hover:bg-foreground/5"
                   }`}
+                  href="/signup"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Sign Up

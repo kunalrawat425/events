@@ -1,9 +1,11 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+
 import { Providers } from "./providers";
-import { fontSans } from "@/config/fonts";
 import ClientLayout from "./ClientLayout";
+
+import { fontSans } from "@/config/fonts";
 import { UserProvider } from "@/context/UserContext";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="en" className="light">
+    <html suppressHydrationWarning className="light" lang="en">
       <head />
       <body
         className={`min-h-screen text-foreground bg-background font-sans antialiased ${fontSans.variable} ${inter.className}`}

@@ -26,6 +26,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Check for existing session in localStorage
     const storedUser = localStorage.getItem("user");
+
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -39,10 +40,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         id: "1",
         email: email,
         name: "Test User",
-        role: "user" as const
+        role: "user" as const,
       };
+
       setUser(mockUserData);
       localStorage.setItem("user", JSON.stringify(mockUserData));
+
       return;
     }
     throw new Error("Invalid email or password");
@@ -54,8 +57,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       id: Date.now().toString(),
       email,
       name,
-      role: "user" as const
+      role: "user" as const,
     };
+
     setUser(mockUserData);
     localStorage.setItem("user", JSON.stringify(mockUserData));
   };
@@ -74,8 +78,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
 export function useUser() {
   const context = useContext(UserContext);
+
   if (context === undefined) {
     throw new Error("useUser must be used within a UserProvider");
   }
+
   return context;
-} 
+}

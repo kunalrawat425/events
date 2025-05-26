@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+
+import { NextResponse } from "next/server";
 
 // Add paths that require authentication
 const protectedPaths = [
@@ -23,13 +24,19 @@ export function middleware(request: NextRequest) {
   const userRole = request.cookies.get("userRole")?.value;
 
   // Check if the path requires authentication
-  const isProtectedPath = protectedPaths.some(path => pathname.startsWith(path));
-  const isPublisherPath = publisherPaths.some(path => pathname.startsWith(path));
+  const isProtectedPath = protectedPaths.some((path) =>
+    pathname.startsWith(path),
+  );
+  const isPublisherPath = publisherPaths.some((path) =>
+    pathname.startsWith(path),
+  );
 
   // Redirect to login if accessing protected path without token
   if (isProtectedPath && !token) {
     const url = new URL("/auth", request.url);
+
     url.searchParams.set("redirect", pathname);
+
     return NextResponse.redirect(url);
   }
 
@@ -53,4 +60,4 @@ export const config = {
      */
     "/((?!api|_next/static|_next/image|favicon.ico|public).*)",
   ],
-}; 
+};

@@ -12,6 +12,8 @@ import {
   Select,
   SelectItem,
 } from "@heroui/react";
+import Image from "next/image";
+
 import { useUser } from "@/contexts/UserContext";
 
 interface Event {
@@ -54,7 +56,8 @@ export default function UserEventRecommendations() {
         {
           id: "1",
           title: "Tech Conference 2024",
-          description: "Annual technology conference featuring the latest innovations",
+          description:
+            "Annual technology conference featuring the latest innovations",
           date: "2024-06-15",
           location: "San Francisco",
           category: "Technology",
@@ -74,6 +77,7 @@ export default function UserEventRecommendations() {
           image: "/images/events/music-festival.jpg",
         },
       ];
+
       setEvents(mockEvents);
     };
 
@@ -85,8 +89,8 @@ export default function UserEventRecommendations() {
       interests.map((interest) =>
         interest.id === interestId
           ? { ...interest, selected: !interest.selected }
-          : interest
-      )
+          : interest,
+      ),
     );
   };
 
@@ -101,10 +105,14 @@ export default function UserEventRecommendations() {
       interests.some(
         (interest) =>
           interest.selected &&
-          event.category.toLowerCase().includes(interest.name.toLowerCase())
+          event.category.toLowerCase().includes(interest.name.toLowerCase()),
       );
 
-    return matchesSearch && matchesCategory && (!interests.some((i) => i.selected) || matchesInterests);
+    return (
+      matchesSearch &&
+      matchesCategory &&
+      (!interests.some((i) => i.selected) || matchesInterests)
+    );
   });
 
   return (
@@ -112,16 +120,16 @@ export default function UserEventRecommendations() {
       {/* Search and Filters */}
       <div className="flex flex-col md:flex-row gap-4">
         <Input
+          className="max-w-xs"
           placeholder="Search events..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="max-w-xs"
         />
         <Select
+          className="max-w-xs"
           placeholder="Select Category"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="max-w-xs"
         >
           <SelectItem key="all" value="all">
             All Categories
@@ -139,11 +147,11 @@ export default function UserEventRecommendations() {
         {interests.map((interest) => (
           <Chip
             key={interest.id}
+            className="cursor-pointer"
             color={interest.selected ? "primary" : "default"}
             variant={interest.selected ? "solid" : "flat"}
-            onClose={() => toggleInterest(interest.id)}
             onClick={() => toggleInterest(interest.id)}
-            className="cursor-pointer"
+            onClose={() => toggleInterest(interest.id)}
           >
             {interest.name}
           </Chip>
@@ -156,10 +164,12 @@ export default function UserEventRecommendations() {
           <Card key={event.id} className="hover:scale-105 transition-transform">
             {event.image && (
               <div className="relative h-48">
-                <img
-                  src={event.image}
+                <Image
                   alt={event.title}
                   className="w-full h-full object-cover rounded-t-lg"
+                  height={200}
+                  src={event.image}
+                  width={300}
                 />
               </div>
             )}
@@ -183,7 +193,7 @@ export default function UserEventRecommendations() {
               </div>
             </CardBody>
             <CardFooter>
-              <Button color="primary" className="w-full">
+              <Button className="w-full" color="primary">
                 View Details
               </Button>
             </CardFooter>
@@ -192,4 +202,4 @@ export default function UserEventRecommendations() {
       </div>
     </div>
   );
-} 
+}

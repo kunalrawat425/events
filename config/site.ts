@@ -7,7 +7,7 @@ export const siteConfig = {
     {
       label: "Home",
       href: "/",
-    }
+    },
   ],
   authItems: {
     login: {
@@ -17,13 +17,13 @@ export const siteConfig = {
     profile: {
       label: "Profile",
       href: "/profile",
-    }
+    },
   },
   navMenuItems: [
     {
       label: "Home",
       href: "/",
-    }
+    },
   ],
   authMenuItems: {
     login: {
@@ -33,7 +33,7 @@ export const siteConfig = {
     profile: {
       label: "Profile",
       href: "/profile",
-    }
+    },
   },
   links: {
     github: "https://github.com/heroui-inc/heroui",

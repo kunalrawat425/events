@@ -1,7 +1,6 @@
 "use client";
 
-import { useUser } from "@/contexts/UserContext";
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
 import { Tabs, Tab } from "@heroui/tabs";
 import {
@@ -11,6 +10,8 @@ import {
   HeartIcon,
   BellIcon,
 } from "@heroicons/react/24/outline";
+
+import { useUser } from "@/contexts/UserContext";
 
 export default function ProfilePage() {
   const { user, logout } = useUser();
@@ -54,11 +55,7 @@ export default function ProfilePage() {
                 <div>
                   <h1 className="text-2xl font-bold mb-2">{user?.name}</h1>
                   <p className="text-foreground/70 mb-4">{user?.email}</p>
-                  <Button
-                    variant="bordered"
-                    color="danger"
-                    onPress={logout}
-                  >
+                  <Button color="danger" variant="bordered" onPress={logout}>
                     Sign Out
                   </Button>
                 </div>
@@ -83,7 +80,9 @@ export default function ProfilePage() {
                     <CardBody className="p-6">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="text-lg font-semibold mb-2">{event.title}</h3>
+                          <h3 className="text-lg font-semibold mb-2">
+                            {event.title}
+                          </h3>
                           <div className="flex items-center gap-4 text-foreground/70">
                             <div className="flex items-center">
                               <CalendarIcon className="w-5 h-5 mr-2" />
@@ -95,11 +94,13 @@ export default function ProfilePage() {
                             </div>
                           </div>
                         </div>
-                        <span className={`px-3 py-1 rounded-full text-sm ${
-                          event.status === "upcoming" 
-                            ? "bg-success-100 text-success-600"
-                            : "bg-foreground/10 text-foreground/70"
-                        }`}>
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm ${
+                            event.status === "upcoming"
+                              ? "bg-success-100 text-success-600"
+                              : "bg-foreground/10 text-foreground/70"
+                          }`}
+                        >
                           {event.status}
                         </span>
                       </div>
@@ -119,11 +120,11 @@ export default function ProfilePage() {
               }
             >
               <div className="mt-4 text-center text-foreground/70">
-                <p>You haven't saved any events yet.</p>
+                <p>`${"You haven't saved any events yet."}`</p>
                 <Button
-                  variant="light"
                   className="mt-4"
-                  onPress={() => window.location.href = "/events"}
+                  variant="light"
+                  onPress={() => (window.location.href = "/events")}
                 >
                   Browse Events
                 </Button>
@@ -148,4 +149,4 @@ export default function ProfilePage() {
       </div>
     </main>
   );
-} 
+}

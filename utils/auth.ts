@@ -1,16 +1,20 @@
 import { useRouter } from "next/navigation";
+
 import { useUser } from "@/contexts/UserContext";
 
-export const handleBookingAuth = (eventId: string) => {
+export const useBookingAuth = () => {
   const router = useRouter();
   const { user } = useUser();
 
-  if (!user) {
-    // Store the event ID in sessionStorage to return after login
-    sessionStorage.setItem("returnToEvent", eventId);
-    router.push("/login");
-    return false;
-  }
+  const handleBookingAuth = async (eventId: string) => {
+    if (!user) {
+      router.push(`/login?redirect=/events/${eventId}/book`);
 
-  return true;
-}; 
+      return false;
+    }
+
+    return true;
+  };
+
+  return { handleBookingAuth };
+};

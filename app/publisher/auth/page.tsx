@@ -8,7 +8,7 @@ import { Card, CardBody, CardHeader } from "@heroui/card";
 
 import { useUser } from "@/contexts/UserContext";
 
-export default function AuthPage() {
+export default function PublisherAuthPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login, signup, isLoading } = useUser();
@@ -19,6 +19,7 @@ export default function AuthPage() {
     email: "",
     password: "",
     name: "",
+    organization: "",
   });
   const [error, setError] = useState("");
 
@@ -32,7 +33,7 @@ export default function AuthPage() {
       } else {
         await signup(formData.email, formData.password, formData.name);
       }
-      router.push("/");
+      router.push("/publisher/dashboard");
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred");
     }
@@ -49,7 +50,13 @@ export default function AuthPage() {
       <div className="w-full max-w-md px-4">
         <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
           <CardHeader className="pb-0">
-            <div className="flex space-x-4 mb-6">
+            <div className="text-center mb-6">
+              <h1 className="text-2xl font-bold">Publisher Portal</h1>
+              <p className="text-default-500">
+                Manage your events and reach your audience
+              </p>
+            </div>
+            <div className="flex space-x-4">
               <Button
                 className={`flex-1 ${activeTab === "login" ? "bg-primary" : "bg-transparent"}`}
                 variant={activeTab === "login" ? "solid" : "light"}
@@ -69,23 +76,42 @@ export default function AuthPage() {
           <CardBody>
             <form className="space-y-6" onSubmit={handleSubmit}>
               {activeTab === "signup" && (
-                <div>
-                  <label
-                    className="block text-sm font-medium mb-2"
-                    htmlFor="name"
-                  >
-                    Full Name
-                  </label>
-                  <Input
-                    required
-                    id="name"
-                    name="name"
-                    placeholder="Enter your full name"
-                    type="text"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
-                </div>
+                <>
+                  <div>
+                    <label
+                      className="block text-sm font-medium mb-2"
+                      htmlFor="name"
+                    >
+                      Full Name
+                    </label>
+                    <Input
+                      required
+                      id="name"
+                      name="name"
+                      placeholder="Enter your full name"
+                      type="text"
+                      value={formData.name}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      className="block text-sm font-medium mb-2"
+                      htmlFor="organization"
+                    >
+                      Organization Name
+                    </label>
+                    <Input
+                      required
+                      id="organization"
+                      name="organization"
+                      placeholder="Enter your organization name"
+                      type="text"
+                      value={formData.organization}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </>
               )}
 
               <div>

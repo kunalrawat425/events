@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Card, CardBody, CardHeader, CardFooter } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Divider } from "@heroui/divider";
-import { useUser } from "@/contexts/UserContext";
 import Link from "next/link";
+
+import { useUser } from "@/contexts/UserContext";
 
 interface FormErrors {
   email?: string;
@@ -17,7 +18,7 @@ interface FormErrors {
 
 export const LoginClient = () => {
   const searchParams = useSearchParams();
-  const role = searchParams.get('role') || 'user';
+  const role = searchParams.get("role") || "user";
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -30,11 +31,13 @@ export const LoginClient = () => {
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     return emailRegex.test(email);
   };
 
   const validateForm = () => {
     const newErrors: FormErrors = {};
+
     setSubmitError("");
 
     // Email validation
@@ -52,20 +55,22 @@ export const LoginClient = () => {
     }
 
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
     // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: undefined
+        [name]: undefined,
       }));
     }
   };
@@ -78,24 +83,30 @@ export const LoginClient = () => {
     setSubmitError("");
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ ...formData, role }),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Authentication failed');
+
+        throw new Error(error.message || "Authentication failed");
       }
 
       const userData = await response.json();
+
       login(userData);
-      router.push(role === 'publisher' ? "/publisher/dashboard" : "/profile");
+      router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Authentication failed. Please try again.");
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : "Authentication failed. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -106,47 +117,56 @@ export const LoginClient = () => {
     setSubmitError("");
 
     try {
-      const response = await fetch('/api/auth/google', {
-        method: 'GET',
+      const response = await fetch("/api/auth/google", {
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ role }),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Google login failed');
+
+        throw new Error(error.message || "Google login failed");
       }
 
       const userData = await response.json();
+
       login(userData);
-      router.push(role === 'publisher' ? "/publisher/dashboard" : "/profile");
+      router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Google login failed. Please try again.");
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : "Google login failed. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const getIllustration = () => {
-    if (role === 'publisher') {
+    if (role === "publisher") {
       return "/images/auth/login.png";
     }
+
     return "/images/auth/login.png";
   };
 
   const getTitle = () => {
-    if (role === 'publisher') {
+    if (role === "publisher") {
       return "Welcome back, Publisher!";
     }
+
     return "Welcome back to Events";
   };
 
   const getSubtitle = () => {
-    if (role === 'publisher') {
+    if (role === "publisher") {
       return "Manage your events and reach your audience";
     }
+
     return "Stay informed with personalized event alerts";
   };
 
@@ -157,19 +177,15 @@ export const LoginClient = () => {
         <div className="hidden md:flex flex-col justify-center items-center">
           <div className="relative w-full h-[600px]">
             <Image
-              src={getIllustration()}
-              alt={`${role} login illustration`}
               fill
-              className="object-contain"
               priority
+              alt={`${role} login illustration`}
+              className="object-contain"
+              src={getIllustration()}
             />
           </div>
-          <h2 className="text-2xl font-bold mt-8 text-center">
-            {getTitle()}
-          </h2>
-          <p className="text-default-500 text-center mt-2">
-            {getSubtitle()}
-          </p>
+          <h2 className="text-2xl font-bold mt-8 text-center">{getTitle()}</h2>
+          <p className="text-default-500 text-center mt-2">{getSubtitle()}</p>
         </div>
 
         {/* Right side - Login Form */}
@@ -182,14 +198,12 @@ export const LoginClient = () => {
             <div className="flex flex-col gap-4">
               <Button
                 className="w-full"
-                variant="bordered"
-                onPress={handleGoogleLogin}
                 isLoading={isLoading}
                 startContent={
                   <svg
                     className="w-5 h-5"
-                    viewBox="0 0 24 24"
                     fill="none"
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
@@ -210,6 +224,8 @@ export const LoginClient = () => {
                     />
                   </svg>
                 }
+                variant="bordered"
+                onPress={handleGoogleLogin}
               >
                 Continue with Google
               </Button>
@@ -221,51 +237,51 @@ export const LoginClient = () => {
                 </span>
               </div>
 
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <Input
-                  label="Email"
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={formData.email}
-                  onChange={handleInputChange}
                   required
+                  classNames={{
+                    label: "text-sm font-medium",
+                    input: "text-base",
+                    description: "text-xs text-default-500",
+                  }}
+                  description="We'll never share your email with anyone else"
                   disabled={isLoading}
                   errorMessage={errors.email}
                   isInvalid={!!errors.email}
-                  description="We'll never share your email with anyone else"
+                  label="Email"
+                  name="email"
+                  placeholder="Enter your email address"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+                <Input
+                  required
                   classNames={{
                     label: "text-sm font-medium",
                     input: "text-base",
                     description: "text-xs text-default-500",
                   }}
-                />
-                <Input
-                  label="Password"
-                  name="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  required
                   disabled={isLoading}
                   errorMessage={errors.password}
                   isInvalid={!!errors.password}
-                  classNames={{
-                    label: "text-sm font-medium",
-                    input: "text-base",
-                    description: "text-xs text-default-500",
-                  }}
+                  label="Password"
+                  name="password"
+                  placeholder="Enter your password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                 />
                 {submitError && (
                   <p className="text-danger text-sm">{submitError}</p>
                 )}
                 <Button
-                  type="submit"
-                  color="primary"
                   className="w-full"
+                  color="primary"
                   isLoading={isLoading}
                   size="lg"
+                  type="submit"
                 >
                   Sign In
                 </Button>
@@ -275,21 +291,27 @@ export const LoginClient = () => {
           <CardFooter>
             <div className="flex flex-col gap-2 w-full">
               <Button
-                variant="light"
                 as={Link}
-                href={`/signup?role=${role}`}
-                disabled={isLoading}
                 className="w-full"
+                disabled={isLoading}
+                href={`/signup?role=${role}`}
+                variant="light"
               >
-                Don't have an account? Sign Up
+                Don&apos;t have an account? Sign Up
               </Button>
-              {role === 'user' && (
-                <Link href="/login?role=publisher" className="text-primary underline font-medium text-center">
+              {role === "user" && (
+                <Link
+                  className="text-primary underline font-medium text-center"
+                  href="/login?role=publisher"
+                >
                   Are you a publisher?
                 </Link>
               )}
-              {role === 'publisher' && (
-                <Link href="/login?role=user" className="text-primary underline font-medium text-center">
+              {role === "publisher" && (
+                <Link
+                  className="text-primary underline font-medium text-center"
+                  href="/login?role=user"
+                >
                   Are you a user?
                 </Link>
               )}
@@ -299,4 +321,4 @@ export const LoginClient = () => {
       </div>
     </div>
   );
-}; 
+};

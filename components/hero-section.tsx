@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
-import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { Card, CardBody, CardHeader } from "@heroui/card";
+import { useRouter } from "next/navigation";
+
+import { useUser } from "@/contexts/UserContext";
 
 const interests = [
   { id: "food", name: "Food & Dining" },
@@ -20,12 +22,51 @@ const interests = [
 ];
 
 export const HeroSection = () => {
+  const router = useRouter();
+  const { user } = useUser();
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [email, setEmail] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
 
-  const handleSubscribe = () => {
-    // TODO: Implement subscription logic
-    console.log("Subscribing with:", { email, interests: selectedInterests });
+  const handleSubscribe = async () => {
+    if (!user) {
+      // Store the selected interests in localStorage
+      localStorage.setItem(
+        "pendingInterests",
+        JSON.stringify(selectedInterests),
+      );
+      localStorage.setItem("pendingEmail", email);
+      router.push("/auth?tab=signup");
+
+      return;
+    }
+
+    setIsSubscribing(true);
+    try {
+      // TODO: Implement actual subscription logic with your backend
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
+
+      // Mock successful subscription
+      alert("Successfully subscribed to alerts for your selected interests!");
+      setSelectedInterests([]);
+      setEmail("");
+    } catch (error) {
+      alert("Failed to subscribe. Please try again.");
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
+
+  const handleInterestChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const options = e.target.options;
+    const selected = [];
+
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        selected.push(options[i].value);
+      }
+    }
+    setSelectedInterests(selected);
   };
 
   return (
@@ -36,62 +77,91 @@ export const HeroSection = () => {
             Never Miss What Matters to You
           </h1>
           <p className="text-xl text-default-600 max-w-2xl mx-auto">
-            Stay updated with events, summits, and activities that match your interests.
-            Subscribe to personalized alerts and be the first to know.
+            Stay updated with events, summits, and activities that match your
+            interests. Subscribe to personalized alerts and be the first to
+            know.
           </p>
         </div>
 
         <Card className="max-w-2xl mx-auto">
           <CardHeader className="pb-0">
-            <h2 className="text-2xl font-semibold">Subscribe to Alerts</h2>
+            <h2 className="text-2xl font-semibold">
+              {user ? "Manage Your Interests" : "Subscribe to Alerts"}
+            </h2>
           </CardHeader>
           <CardBody>
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium mb-2">
+                <label
+                  className="block text-sm font-medium mb-2"
+                  htmlFor="interests"
+                >
                   Select Your Interests
                 </label>
-                <Autocomplete
-                  label="Choose interests"
-                  placeholder="Select multiple interests"
-                  selectionMode="multiple"
-                  selectedKeys={selectedInterests}
-                  onSelectionChange={(keys) => setSelectedInterests(Array.from(keys) as string[])}
-                  className="w-full"
+                <select
+                  multiple
+                  className="w-full px-4 py-2 rounded-lg bg-background border border-divider focus:outline-none focus:ring-2 focus:ring-primary"
+                  id="interests"
+                  value={selectedInterests}
+                  onChange={handleInterestChange}
                 >
                   {interests.map((interest) => (
-                    <AutocompleteItem key={interest.id} value={interest.id}>
+                    <option key={interest.id} value={interest.id}>
                       {interest.name}
-                    </AutocompleteItem>
+                    </option>
                   ))}
-                </Autocomplete>
+                </select>
+                <p className="text-sm text-default-500 mt-1">
+                  Hold Ctrl (Windows) or Command (Mac) to select multiple
+                  interests
+                </p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Email Address
-                </label>
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full"
-                />
-              </div>
+              {!user && (
+                <div>
+                  <label
+                    className="block text-sm font-medium mb-2"
+                    htmlFor="email"
+                  >
+                    Email Address
+                  </label>
+                  <Input
+                    className="w-full"
+                    id="email"
+                    placeholder="Enter your email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+              )}
 
               <Button
-                color="primary"
-                size="lg"
                 className="w-full"
+                color="primary"
+                isLoading={isSubscribing}
+                size="lg"
                 onPress={handleSubscribe}
               >
-                Subscribe to Alerts
+                {user ? "Update Interests" : "Subscribe to Alerts"}
               </Button>
+
+              {!user && (
+                <p className="text-center text-sm text-default-500">
+                  Already have an account?{" "}
+                  <Button
+                    className="p-0 h-auto"
+                    variant="light"
+                    onPress={() => router.push("/auth?tab=login")}
+                  >
+                    Sign In
+                  </Button>
+                </p>
+              )}
             </div>
           </CardBody>
         </Card>
       </div>
     </div>
   );
-}; 
+};

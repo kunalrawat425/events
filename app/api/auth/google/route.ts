@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
   try {
     // TODO: Implement actual Google OAuth logic
     // This is a placeholder that should be replaced with your actual Google OAuth implementation
@@ -13,12 +13,12 @@ export async function GET(request: Request) {
     return NextResponse.json({
       id: "1",
       name: "Google User",
-      email: "google@example.com"
+      email: "google@example.com",
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { message: "Google authentication failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

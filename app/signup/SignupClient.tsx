@@ -7,8 +7,9 @@ import { Card, CardBody, CardHeader, CardFooter } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Divider } from "@heroui/divider";
-import { useUser } from "@/contexts/UserContext";
 import Link from "next/link";
+
+import { useUser } from "@/contexts/UserContext";
 
 interface FormErrors {
   name?: string;
@@ -19,7 +20,7 @@ interface FormErrors {
 
 export const SignupClient = () => {
   const searchParams = useSearchParams();
-  const role = searchParams.get('role') || 'user';
+  const role = searchParams.get("role") || "user";
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -34,17 +35,20 @@ export const SignupClient = () => {
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     return emailRegex.test(email);
   };
 
   const validatePassword = (password: string) => {
     // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
     return passwordRegex.test(password);
   };
 
   const validateForm = () => {
     const newErrors: FormErrors = {};
+
     setSubmitError("");
 
     // Name validation
@@ -55,7 +59,7 @@ export const SignupClient = () => {
     }
 
     // Organization validation for publishers
-    if (role === 'publisher' && !formData.organization.trim()) {
+    if (role === "publisher" && !formData.organization.trim()) {
       newErrors.organization = "Organization name is required";
     }
 
@@ -70,24 +74,27 @@ export const SignupClient = () => {
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (!validatePassword(formData.password)) {
-      newErrors.password = "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number";
+      newErrors.password =
+        "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number";
     }
 
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
     // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: undefined
+        [name]: undefined,
       }));
     }
   };
@@ -100,24 +107,28 @@ export const SignupClient = () => {
     setSubmitError("");
 
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ ...formData, role }),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Signup failed');
+
+        throw new Error(error.message || "Signup failed");
       }
 
       const userData = await response.json();
+
       login(userData);
-      router.push(role === 'publisher' ? "/publisher/dashboard" : "/profile");
+      router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Signup failed. Please try again.");
+      setSubmitError(
+        err instanceof Error ? err.message : "Signup failed. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -128,47 +139,56 @@ export const SignupClient = () => {
     setSubmitError("");
 
     try {
-      const response = await fetch('/api/auth/google', {
-        method: 'GET',
+      const response = await fetch("/api/auth/google", {
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ role }),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Google login failed');
+
+        throw new Error(error.message || "Google login failed");
       }
 
       const userData = await response.json();
+
       login(userData);
-      router.push(role === 'publisher' ? "/publisher/dashboard" : "/profile");
+      router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Google login failed. Please try again.");
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : "Google login failed. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const getIllustration = () => {
-    if (role === 'publisher') {
+    if (role === "publisher") {
       return "/images/auth/signup.png";
     }
+
     return "/images/auth/login.png";
   };
 
   const getTitle = () => {
-    if (role === 'publisher') {
+    if (role === "publisher") {
       return "Join as a Publisher";
     }
+
     return "Join Events Today";
   };
 
   const getSubtitle = () => {
-    if (role === 'publisher') {
+    if (role === "publisher") {
       return "Create your publisher account and start managing events";
     }
+
     return "Create your account and start discovering events";
   };
 
@@ -179,19 +199,15 @@ export const SignupClient = () => {
         <div className="hidden md:flex flex-col justify-center items-center">
           <div className="relative w-full h-[600px]">
             <Image
-              src={getIllustration()}
-              alt={`${role} signup illustration`}
               fill
-              className="object-contain"
               priority
+              alt={`${role} signup illustration`}
+              className="object-contain"
+              src={getIllustration()}
             />
           </div>
-          <h2 className="text-2xl font-bold mt-8 text-center">
-            {getTitle()}
-          </h2>
-          <p className="text-default-500 text-center mt-2">
-            {getSubtitle()}
-          </p>
+          <h2 className="text-2xl font-bold mt-8 text-center">{getTitle()}</h2>
+          <p className="text-default-500 text-center mt-2">{getSubtitle()}</p>
         </div>
 
         {/* Right side - Signup Form */}
@@ -204,14 +220,12 @@ export const SignupClient = () => {
             <div className="flex flex-col gap-4">
               <Button
                 className="w-full"
-                variant="bordered"
-                onPress={handleGoogleLogin}
                 isLoading={isLoading}
                 startContent={
                   <svg
                     className="w-5 h-5"
-                    viewBox="0 0 24 24"
                     fill="none"
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
@@ -232,6 +246,8 @@ export const SignupClient = () => {
                     />
                   </svg>
                 }
+                variant="bordered"
+                onPress={handleGoogleLogin}
               >
                 Continue with Google
               </Button>
@@ -243,88 +259,98 @@ export const SignupClient = () => {
                 </span>
               </div>
 
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <Input
-                  label={role === 'publisher' ? "Organization Name" : "Full Name"}
-                  name="name"
-                  placeholder={role === 'publisher' ? "Enter your organization name" : "Enter your full name"}
-                  value={formData.name}
-                  onChange={handleInputChange}
                   required
-                  disabled={isLoading}
-                  errorMessage={errors.name}
-                  isInvalid={!!errors.name}
-                  description={role === 'publisher' ? "Enter your organization name" : "Enter your full name as you'd like it to appear"}
                   classNames={{
                     label: "text-sm font-medium",
                     input: "text-base",
                     description: "text-xs text-default-500",
                   }}
+                  description={
+                    role === "publisher"
+                      ? "Enter your organization name"
+                      : "Enter your full name as you'd like it to appear"
+                  }
+                  disabled={isLoading}
+                  errorMessage={errors.name}
+                  isInvalid={!!errors.name}
+                  label={
+                    role === "publisher" ? "Organization Name" : "Full Name"
+                  }
+                  name="name"
+                  placeholder={
+                    role === "publisher"
+                      ? "Enter your organization name"
+                      : "Enter your full name"
+                  }
+                  value={formData.name}
+                  onChange={handleInputChange}
                 />
-                {role === 'publisher' && (
+                {role === "publisher" && (
                   <Input
-                    label="Contact Person"
-                    name="organization"
-                    placeholder="Enter contact person's name"
-                    value={formData.organization}
-                    onChange={handleInputChange}
                     required
-                    disabled={isLoading}
-                    errorMessage={errors.organization}
-                    isInvalid={!!errors.organization}
-                    description="Enter the name of the person who will manage this account"
                     classNames={{
                       label: "text-sm font-medium",
                       input: "text-base",
                       description: "text-xs text-default-500",
                     }}
+                    description="Enter the name of the person who will manage this account"
+                    disabled={isLoading}
+                    errorMessage={errors.organization}
+                    isInvalid={!!errors.organization}
+                    label="Contact Person"
+                    name="organization"
+                    placeholder="Enter contact person's name"
+                    value={formData.organization}
+                    onChange={handleInputChange}
                   />
                 )}
                 <Input
-                  label="Email"
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={formData.email}
-                  onChange={handleInputChange}
                   required
+                  classNames={{
+                    label: "text-sm font-medium",
+                    input: "text-base",
+                    description: "text-xs text-default-500",
+                  }}
+                  description="We'll never share your email with anyone else"
                   disabled={isLoading}
                   errorMessage={errors.email}
                   isInvalid={!!errors.email}
-                  description="We'll never share your email with anyone else"
+                  label="Email"
+                  name="email"
+                  placeholder="Enter your email address"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+                <Input
+                  required
                   classNames={{
                     label: "text-sm font-medium",
                     input: "text-base",
                     description: "text-xs text-default-500",
                   }}
-                />
-                <Input
-                  label="Password"
-                  name="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  required
+                  description="Must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number"
                   disabled={isLoading}
                   errorMessage={errors.password}
                   isInvalid={!!errors.password}
-                  description="Must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number"
-                  classNames={{
-                    label: "text-sm font-medium",
-                    input: "text-base",
-                    description: "text-xs text-default-500",
-                  }}
+                  label="Password"
+                  name="password"
+                  placeholder="Enter your password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                 />
                 {submitError && (
                   <p className="text-danger text-sm">{submitError}</p>
                 )}
                 <Button
-                  type="submit"
-                  color="primary"
                   className="w-full"
+                  color="primary"
                   isLoading={isLoading}
                   size="lg"
+                  type="submit"
                 >
                   Sign Up
                 </Button>
@@ -334,21 +360,27 @@ export const SignupClient = () => {
           <CardFooter>
             <div className="flex flex-col gap-2 w-full">
               <Button
-                variant="light"
                 as={Link}
-                href={`/login?role=${role}`}
-                disabled={isLoading}
                 className="w-full"
+                disabled={isLoading}
+                href={`/login?role=${role}`}
+                variant="light"
               >
                 Already have an account? Sign In
               </Button>
-              {role === 'user' && (
-                <Link href="/signup?role=publisher" className="text-primary underline font-medium text-center">
+              {role === "user" && (
+                <Link
+                  className="text-primary underline font-medium text-center"
+                  href="/signup?role=publisher"
+                >
                   Are you a publisher?
                 </Link>
               )}
-              {role === 'publisher' && (
-                <Link href="/signup?role=user" className="text-primary underline font-medium text-center">
+              {role === "publisher" && (
+                <Link
+                  className="text-primary underline font-medium text-center"
+                  href="/signup?role=user"
+                >
                   Are you a user?
                 </Link>
               )}
@@ -358,4 +390,4 @@ export const SignupClient = () => {
       </div>
     </div>
   );
-}; 
+};

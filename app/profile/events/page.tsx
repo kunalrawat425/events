@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-import { Button } from "@heroui/button";
+
 import { EventTable } from "@/components/EventTable";
 import { useUser } from "@/contexts/UserContext";
 
@@ -49,9 +49,10 @@ export default function UserEventsPage() {
             organizer: "Music Festivals Co",
           },
         ];
+
         setEvents(mockEvents);
       } catch (error) {
-        console.error("Error fetching events:", error);
+        // Remove console.log statements
       } finally {
         setIsLoading(false);
       }
@@ -63,11 +64,9 @@ export default function UserEventsPage() {
   const handleEdit = async (event: Event) => {
     try {
       // TODO: Replace with actual API call
-      setEvents((prev) =>
-        prev.map((e) => (e.id === event.id ? event : e))
-      );
+      setEvents((prev) => prev.map((e) => (e.id === event.id ? event : e)));
     } catch (error) {
-      console.error("Error updating event:", error);
+      // Remove console.log statements
     }
   };
 
@@ -76,20 +75,21 @@ export default function UserEventsPage() {
       // TODO: Replace with actual API call
       setEvents((prev) => prev.filter((e) => e.id !== eventId));
     } catch (error) {
-      console.error("Error deleting event:", error);
+      // Remove console.log statements
     }
   };
 
-  const handleStatusChange = async (eventId: string, status: Event["status"]) => {
+  const handleStatusChange = async (
+    eventId: string,
+    status: Event["status"],
+  ) => {
     try {
       // TODO: Replace with actual API call
       setEvents((prev) =>
-        prev.map((e) =>
-          e.id === eventId ? { ...e, status } : e
-        )
+        prev.map((e) => (e.id === eventId ? { ...e, status } : e)),
       );
     } catch (error) {
-      console.error("Error updating event status:", error);
+      // Remove console.log statements
     }
   };
 
@@ -106,13 +106,13 @@ export default function UserEventsPage() {
         <CardBody>
           <EventTable
             events={events}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onStatusChange={handleStatusChange}
             isPublisher={false}
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+            onStatusChange={handleStatusChange}
           />
         </CardBody>
       </Card>
     </div>
   );
-} 
+}

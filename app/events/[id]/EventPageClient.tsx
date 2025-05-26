@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/contexts/UserContext";
 import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
 import {
@@ -10,14 +9,15 @@ import {
   MapPinIcon,
   ClockIcon,
   UserGroupIcon,
-  CurrencyDollarIcon,
   HeartIcon,
   ShareIcon,
-  ChatBubbleLeftIcon,
   UserIcon,
   BuildingOfficeIcon,
   TagIcon,
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
+
+import { useUser } from "@/contexts/UserContext";
 
 interface EventPageClientProps {
   eventId: string;
@@ -61,17 +61,21 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
       <div className="relative h-[400px]">
-        <img
-          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop"
-          alt="Tech Conference 2024"
-          className="w-full h-full object-cover"
+        <Image
+          alt={event.title}
+          className="w-full h-full object-cover rounded-lg"
+          height={400}
+          src={event.imageUrl}
+          width={800}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <div className="container mx-auto">
             <div className="flex justify-between items-start">
               <div>
-                <h1 className="text-4xl font-bold text-white mb-4">Tech Conference 2024</h1>
+                <h1 className="text-4xl font-bold text-white mb-4">
+                  Tech Conference 2024
+                </h1>
                 <div className="flex items-center space-x-4 text-white/90">
                   <div className="flex items-center">
                     <CalendarIcon className="w-5 h-5 mr-2" />
@@ -89,17 +93,19 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
               </div>
               <div className="flex gap-2">
                 <Button
-                  variant="bordered"
-                  color="primary"
                   className="text-white border-white"
+                  color="primary"
+                  variant="bordered"
                   onPress={toggleSave}
                 >
-                  <HeartIcon className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`} />
+                  <HeartIcon
+                    className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`}
+                  />
                 </Button>
                 <Button
-                  variant="bordered"
-                  color="primary"
                   className="text-white border-white"
+                  color="primary"
+                  variant="bordered"
                   onPress={shareEvent}
                 >
                   <ShareIcon className="w-5 h-5" />
@@ -119,9 +125,11 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
               <CardBody className="p-6">
                 <h2 className="text-2xl font-bold mb-4">About This Event</h2>
                 <p className="text-foreground/70 mb-4">
-                  Join us for the biggest tech conference of the year, featuring industry leaders, 
-                  innovative workshops, and networking opportunities. This event brings together 
-                  technology enthusiasts, professionals, and thought leaders from around the world.
+                  Join us for the biggest tech conference of the year, featuring
+                  industry leaders, innovative workshops, and networking
+                  opportunities. This event brings together technology
+                  enthusiasts, professionals, and thought leaders from around
+                  the world.
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="flex items-center text-foreground/70">
@@ -154,22 +162,30 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
                   <div className="flex gap-4">
                     <div className="w-20 text-foreground/70">9:00 AM</div>
                     <div>
-                      <h3 className="font-semibold">Registration & Breakfast</h3>
-                      <p className="text-foreground/70">Check-in and enjoy a light breakfast</p>
+                      <h3 className="font-semibold">
+                        Registration & Breakfast
+                      </h3>
+                      <p className="text-foreground/70">
+                        Check-in and enjoy a light breakfast
+                      </p>
                     </div>
                   </div>
                   <div className="flex gap-4">
                     <div className="w-20 text-foreground/70">10:00 AM</div>
                     <div>
                       <h3 className="font-semibold">Opening Keynote</h3>
-                      <p className="text-foreground/70">Future of Technology by John Doe</p>
+                      <p className="text-foreground/70">
+                        Future of Technology by John Doe
+                      </p>
                     </div>
                   </div>
                   <div className="flex gap-4">
                     <div className="w-20 text-foreground/70">11:30 AM</div>
                     <div>
                       <h3 className="font-semibold">Workshop Sessions</h3>
-                      <p className="text-foreground/70">Choose from various technical workshops</p>
+                      <p className="text-foreground/70">
+                        Choose from various technical workshops
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -183,8 +199,10 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
                   {/* Add map component here */}
                 </div>
                 <p className="text-foreground/70">
-                  Convention Center<br />
-                  123 Tech Street<br />
+                  Convention Center
+                  <br />
+                  123 Tech Street
+                  <br />
                   San Francisco, CA 94105
                 </p>
               </CardBody>
@@ -201,9 +219,9 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
                     <span className="text-2xl font-bold">$299</span>
                   </div>
                   <Button
+                    className="w-full"
                     color="primary"
                     size="lg"
-                    className="w-full"
                     onClick={handleGetTickets}
                   >
                     Get Tickets
@@ -228,4 +246,4 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
   );
 };
 
-export default EventPageClient; 
+export default EventPageClient;

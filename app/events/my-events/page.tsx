@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody, CardHeader, CardFooter } from "@heroui/card";
 import { Button } from "@heroui/button";
-import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+
+import { useUser } from "@/contexts/UserContext";
 
 interface Event {
   id: string;
@@ -27,6 +29,7 @@ export default function MyEventsPage() {
     // Redirect to login if not logged in
     if (!user) {
       router.push("/login");
+
       return;
     }
 
@@ -42,7 +45,8 @@ export default function MyEventsPage() {
           location: "San Francisco, CA",
           category: "Technology",
           status: "upcoming",
-          image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+          image:
+            "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
         },
         {
           id: "2",
@@ -52,9 +56,11 @@ export default function MyEventsPage() {
           location: "Los Angeles, CA",
           category: "Music",
           status: "upcoming",
-          image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+          image:
+            "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
         },
       ];
+
       setEvents(mockEvents);
       setLoading(false);
     };
@@ -78,7 +84,7 @@ export default function MyEventsPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
       </div>
     );
   }
@@ -87,10 +93,7 @@ export default function MyEventsPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">My Events</h1>
-        <Button
-          color="primary"
-          onClick={() => router.push("/events")}
-        >
+        <Button color="primary" onClick={() => router.push("/events")}>
           Discover More Events
         </Button>
       </div>
@@ -99,37 +102,76 @@ export default function MyEventsPage() {
         {events.map((event) => (
           <Card key={event.id} className="hover:shadow-lg transition-shadow">
             <CardHeader className="p-0">
-              <img
-                src={event.image}
+              <Image
                 alt={event.title}
-                className="w-full h-48 object-cover rounded-t-lg"
+                className="w-full h-48 object-cover rounded-lg"
+                height={200}
+                src={event.image}
+                width={300}
               />
             </CardHeader>
             <CardBody>
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-xl font-semibold">{event.title}</h3>
-                <span className={`text-sm font-medium ${getStatusColor(event.status)}`}>
+                <span
+                  className={`text-sm font-medium ${getStatusColor(event.status)}`}
+                >
                   {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
                 </span>
               </div>
               <p className="text-default-600 mb-4">{event.description}</p>
               <div className="flex flex-col gap-2 text-sm text-default-500">
                 <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                    />
                   </svg>
                   {new Date(event.date).toLocaleDateString()}
                 </div>
                 <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                    />
+                    <path
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                    />
                   </svg>
                   {event.location}
                 </div>
                 <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                    />
                   </svg>
                   {event.category}
                 </div>
@@ -137,8 +179,8 @@ export default function MyEventsPage() {
             </CardBody>
             <CardFooter>
               <Button
-                color="primary"
                 className="w-full"
+                color="primary"
                 onClick={() => router.push(`/events/${event.id}`)}
               >
                 View Details
@@ -149,4 +191,4 @@ export default function MyEventsPage() {
       </div>
     </div>
   );
-} 
+}

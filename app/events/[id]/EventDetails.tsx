@@ -8,7 +8,6 @@ import {
   MapPinIcon,
   UserGroupIcon,
   ClockIcon,
-  BuildingOfficeIcon,
   PhoneIcon,
   GlobeAltIcon,
   TicketIcon,
@@ -16,60 +15,62 @@ import {
   HeartIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import Link from "next/link";
 
 // Mock data - replace with actual data fetching
 const eventData = {
   id: "1",
   title: "Tech Conference 2024",
-  description: "Join us for the biggest tech conference of the year, featuring industry leaders, innovative workshops, and networking opportunities. Learn about the latest trends in technology and connect with like-minded professionals.",
+  description:
+    "Join us for the biggest tech conference of the year, featuring industry leaders, innovative workshops, and networking opportunities. Learn about the latest trends in technology and connect with like-minded professionals.",
   date: "March 15, 2024",
   time: "9:00 AM - 5:00 PM",
   location: "Convention Center",
   address: "123 Tech Street, San Francisco, CA 94105",
-  image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
+  image:
+    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
   price: "$299",
   attendees: 500,
   category: "Technology",
   venue: {
     name: "San Francisco Convention Center",
-    description: "A state-of-the-art venue in the heart of San Francisco, perfect for large-scale tech events and conferences.",
+    description:
+      "A state-of-the-art venue in the heart of San Francisco, perfect for large-scale tech events and conferences.",
     amenities: [
       "High-speed WiFi",
       "AV Equipment",
       "Catering Services",
       "Parking Available",
       "Wheelchair Accessible",
-      "Meeting Rooms"
+      "Meeting Rooms",
     ],
     contact: {
       phone: "+1 (555) 123-4567",
       email: "events@sfconvention.com",
-      website: "www.sfconvention.com"
+      website: "www.sfconvention.com",
     },
     images: [
       "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop"
-    ]
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop",
+    ],
   },
   schedule: [
     {
       time: "9:00 AM",
       title: "Registration & Breakfast",
-      description: "Check-in and networking breakfast"
+      description: "Check-in and networking breakfast",
     },
     {
       time: "10:00 AM",
       title: "Opening Keynote",
-      description: "Future of Technology"
+      description: "Future of Technology",
     },
     {
       time: "11:30 AM",
       title: "Workshop Sessions",
-      description: "Multiple tracks available"
-    }
-  ]
+      description: "Multiple tracks available",
+    },
+  ],
 };
 
 export default function EventDetails({ id }: { id: string }) {
@@ -77,16 +78,24 @@ export default function EventDetails({ id }: { id: string }) {
   const [activeImage, setActiveImage] = useState(0);
   const [imageError, setImageError] = useState(false);
 
+  const handleShare = (_id: string) => {
+    // Implementation of handleShare function
+  };
+
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative h-[60vh] w-full" aria-label="Event hero">
+      <section aria-label="Event hero" className="relative h-[60vh] w-full">
         <Image
-          src={imageError ? "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop" : eventData.image}
-          alt={`${eventData.title} - Event Banner`}
           fill
-          className="object-cover"
           priority
+          alt={`${eventData.title} - Event Banner`}
+          className="object-cover"
+          src={
+            imageError
+              ? "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop"
+              : eventData.image
+          }
           onError={() => setImageError(true)}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
@@ -105,19 +114,19 @@ export default function EventDetails({ id }: { id: string }) {
             </h1>
             <div className="flex flex-wrap gap-4 text-white/90">
               <div className="flex items-center">
-                <CalendarIcon className="w-5 h-5 mr-2" aria-hidden="true" />
+                <CalendarIcon aria-hidden="true" className="w-5 h-5 mr-2" />
                 <time dateTime={eventData.date}>{eventData.date}</time>
               </div>
               <div className="flex items-center">
-                <ClockIcon className="w-5 h-5 mr-2" aria-hidden="true" />
+                <ClockIcon aria-hidden="true" className="w-5 h-5 mr-2" />
                 <time dateTime={eventData.time}>{eventData.time}</time>
               </div>
               <div className="flex items-center">
-                <MapPinIcon className="w-5 h-5 mr-2" aria-hidden="true" />
+                <MapPinIcon aria-hidden="true" className="w-5 h-5 mr-2" />
                 <address className="not-italic">{eventData.location}</address>
               </div>
               <div className="flex items-center">
-                <UserGroupIcon className="w-5 h-5 mr-2" aria-hidden="true" />
+                <UserGroupIcon aria-hidden="true" className="w-5 h-5 mr-2" />
                 <span>{eventData.attendees} attending</span>
               </div>
             </div>
@@ -148,13 +157,18 @@ export default function EventDetails({ id }: { id: string }) {
                   {eventData.schedule.map((item, index) => (
                     <div key={index} className="flex gap-4">
                       <div className="w-24 flex-shrink-0">
-                        <time className="text-primary font-medium" dateTime={item.time}>
+                        <time
+                          className="text-primary font-medium"
+                          dateTime={item.time}
+                        >
                           {item.time}
                         </time>
                       </div>
                       <div>
                         <h3 className="font-semibold mb-1">{item.title}</h3>
-                        <p className="text-foreground/70 text-sm">{item.description}</p>
+                        <p className="text-foreground/70 text-sm">
+                          {item.description}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -168,21 +182,42 @@ export default function EventDetails({ id }: { id: string }) {
                 <h2 className="text-2xl font-bold mb-6">Venue</h2>
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">{eventData.venue.name}</h3>
-                    <p className="text-foreground/70 mb-4">{eventData.venue.description}</p>
+                    <h3 className="text-xl font-semibold mb-2">
+                      {eventData.venue.name}
+                    </h3>
+                    <p className="text-foreground/70 mb-4">
+                      {eventData.venue.description}
+                    </p>
                     <div className="flex items-center text-foreground/70 mb-2">
-                      <MapPinIcon className="w-5 h-5 mr-2 text-primary" aria-hidden="true" />
-                      <address className="not-italic">{eventData.address}</address>
+                      <MapPinIcon
+                        aria-hidden="true"
+                        className="w-5 h-5 mr-2 text-primary"
+                      />
+                      <address className="not-italic">
+                        {eventData.address}
+                      </address>
                     </div>
                     <div className="flex items-center text-foreground/70 mb-2">
-                      <PhoneIcon className="w-5 h-5 mr-2 text-primary" aria-hidden="true" />
-                      <a href={`tel:${eventData.venue.contact.phone}`} className="hover:text-primary">
+                      <PhoneIcon
+                        aria-hidden="true"
+                        className="w-5 h-5 mr-2 text-primary"
+                      />
+                      <a
+                        className="hover:text-primary"
+                        href={`tel:${eventData.venue.contact.phone}`}
+                      >
                         {eventData.venue.contact.phone}
                       </a>
                     </div>
                     <div className="flex items-center text-foreground/70">
-                      <GlobeAltIcon className="w-5 h-5 mr-2 text-primary" aria-hidden="true" />
-                      <a href={eventData.venue.contact.website} className="hover:text-primary">
+                      <GlobeAltIcon
+                        aria-hidden="true"
+                        className="w-5 h-5 mr-2 text-primary"
+                      />
+                      <a
+                        className="hover:text-primary"
+                        href={eventData.venue.contact.website}
+                      >
                         {eventData.venue.contact.website}
                       </a>
                     </div>
@@ -195,19 +230,28 @@ export default function EventDetails({ id }: { id: string }) {
                       {eventData.venue.images.map((image, index) => (
                         <div
                           key={index}
-                          className={`relative h-32 rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${
-                            activeImage === index ? 'ring-2 ring-primary' : ''
+                          className={`cursor-pointer rounded-lg overflow-hidden ${
+                            activeImage === index ? "ring-2 ring-primary" : ""
                           }`}
+                          role="button"
+                          tabIndex={0}
                           onClick={() => setActiveImage(index)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              setActiveImage(index);
+                            }
+                          }}
                         >
                           <Image
-                            src={image}
-                            alt={`${eventData.venue.name} - Photo ${index + 1}`}
                             fill
+                            alt={`${eventData.venue.name} - Photo ${index + 1}`}
                             className="object-cover hover:scale-105 transition-transform duration-300"
+                            src={image}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              target.src = "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop";
+
+                              target.src =
+                                "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop";
                             }}
                           />
                         </div>
@@ -224,7 +268,10 @@ export default function EventDetails({ id }: { id: string }) {
                           key={index}
                           className="flex items-center text-foreground/70"
                         >
-                          <span className="w-2 h-2 bg-primary rounded-full mr-2" aria-hidden="true" />
+                          <span
+                            aria-hidden="true"
+                            className="w-2 h-2 bg-primary rounded-full mr-2"
+                          />
                           {amenity}
                         </div>
                       ))}
@@ -241,29 +288,37 @@ export default function EventDetails({ id }: { id: string }) {
               <CardBody className="p-6">
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold">{eventData.price}</span>
+                    <span className="text-2xl font-bold">
+                      {eventData.price}
+                    </span>
                     <Button
                       isIconOnly
-                      variant="light"
+                      aria-label={
+                        isSaved ? "Remove from saved events" : "Save event"
+                      }
                       className={isSaved ? "text-danger" : "text-foreground/70"}
+                      variant="light"
                       onClick={() => setIsSaved(!isSaved)}
-                      aria-label={isSaved ? "Remove from saved events" : "Save event"}
                     >
-                      <HeartIcon className="w-6 h-6" aria-hidden="true" />
+                      <HeartIcon aria-hidden="true" className="w-6 h-6" />
                     </Button>
                   </div>
                   <Button
+                    className="w-full"
                     color="primary"
                     size="lg"
-                    className="w-full"
-                    startContent={<TicketIcon className="w-5 h-5" aria-hidden="true" />}
+                    startContent={
+                      <TicketIcon aria-hidden="true" className="w-5 h-5" />
+                    }
                   >
                     Get Tickets
                   </Button>
                   <Button
-                    variant="bordered"
                     className="w-full"
-                    startContent={<ShareIcon className="w-5 h-5" aria-hidden="true" />}
+                    startContent={
+                      <ShareIcon aria-hidden="true" className="w-5 h-5" />
+                    }
+                    variant="bordered"
                   >
                     Share Event
                   </Button>
@@ -275,4 +330,4 @@ export default function EventDetails({ id }: { id: string }) {
       </div>
     </main>
   );
-} 
+}

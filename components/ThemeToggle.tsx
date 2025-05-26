@@ -10,8 +10,8 @@ export default function ThemeToggle() {
   return (
     <Button
       isIconOnly
-      variant="light"
       className="fixed top-4 right-4 z-50"
+      variant="light"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
       {theme === "dark" ? (
@@ -21,4 +21,4 @@ export default function ThemeToggle() {
       )}
     </Button>
   );
-} 
+}

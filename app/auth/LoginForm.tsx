@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/contexts/UserContext";
 import { Card, CardBody, CardHeader, CardFooter } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
-import { Divider } from "@heroui/divider";
+
+import { useUser } from "@/contexts/UserContext";
 
 export function LoginForm() {
   const [formData, setFormData] = useState({
@@ -26,9 +26,10 @@ export function LoginForm() {
     try {
       // Call login with credentials
       await login(formData.email, formData.password);
-      
+
       // Get the return URL from localStorage or default to dashboard
       const returnTo = localStorage.getItem("returnTo") || "/dashboard";
+
       localStorage.removeItem("returnTo"); // Clean up
       router.push(returnTo);
     } catch (err) {
@@ -40,9 +41,10 @@ export function LoginForm() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -53,48 +55,46 @@ export function LoginForm() {
         <p className="text-default-500">Sign in to your account</p>
       </CardHeader>
       <CardBody>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
+            required
+            classNames={{
+              label: "text-sm font-medium",
+              input: "text-base",
+              description: "text-xs text-default-500",
+            }}
+            description="We'll never share your email with anyone else"
+            disabled={isLoading}
             label="Email"
             name="email"
-            type="email"
             placeholder="Enter your email"
+            type="email"
             value={formData.email}
             onChange={handleInputChange}
-            required
-            disabled={isLoading}
-            description="We'll never share your email with anyone else"
-            classNames={{
-              label: "text-sm font-medium",
-              input: "text-base",
-              description: "text-xs text-default-500",
-            }}
           />
           <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-            value={formData.password}
-            onChange={handleInputChange}
             required
-            disabled={isLoading}
-            description="Must be at least 8 characters"
             classNames={{
               label: "text-sm font-medium",
               input: "text-base",
               description: "text-xs text-default-500",
             }}
+            description="Must be at least 8 characters"
+            disabled={isLoading}
+            label="Password"
+            name="password"
+            placeholder="Enter your password"
+            type="password"
+            value={formData.password}
+            onChange={handleInputChange}
           />
-          {error && (
-            <p className="text-danger text-sm">{error}</p>
-          )}
+          {error && <p className="text-danger text-sm">{error}</p>}
           <Button
-            type="submit"
-            color="primary"
             className="w-full"
+            color="primary"
             isLoading={isLoading}
             size="lg"
+            type="submit"
           >
             Sign In
           </Button>
@@ -103,11 +103,11 @@ export function LoginForm() {
       <CardFooter>
         <div className="w-full text-center">
           <p className="text-sm text-default-500">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Button
+              className="p-0 h-auto"
               variant="light"
               onPress={() => router.push("/auth?tab=signup")}
-              className="p-0 h-auto"
             >
               Sign Up
             </Button>
@@ -116,4 +116,4 @@ export function LoginForm() {
       </CardFooter>
     </Card>
   );
-} 
+}

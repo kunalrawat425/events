@@ -39,10 +39,11 @@ export default function PublisherEventList() {
   const [isEditing, setIsEditing] = useState(false);
 
   // Filter events based on search query
-  const filteredEvents = events.filter((event) =>
-    event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    event.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredEvents = events.filter(
+    (event) =>
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.category.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleCreateEvent = () => {
@@ -76,9 +77,11 @@ export default function PublisherEventList() {
   const handleSaveEvent = () => {
     if (selectedEvent) {
       if (isEditing) {
-        setEvents(events.map((event) =>
-          event.id === selectedEvent.id ? selectedEvent : event
-        ));
+        setEvents(
+          events.map((event) =>
+            event.id === selectedEvent.id ? selectedEvent : event,
+          ),
+        );
       } else {
         setEvents([...events, selectedEvent]);
       }
@@ -103,10 +106,10 @@ export default function PublisherEventList() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <Input
+          className="max-w-xs"
           placeholder="Search events..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="max-w-xs"
         />
         <Button color="primary" onPress={handleCreateEvent}>
           Create New Event
@@ -148,8 +151,8 @@ export default function PublisherEventList() {
                     Edit
                   </Button>
                   <Button
-                    size="sm"
                     color="danger"
+                    size="sm"
                     variant="light"
                     onPress={() => handleDeleteEvent(event.id)}
                   >
@@ -162,7 +165,7 @@ export default function PublisherEventList() {
         </TableBody>
       </Table>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+      <Modal isOpen={isOpen} size="2xl" onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -246,6 +249,7 @@ export default function PublisherEventList() {
                       }
                     />
                     <select
+                      className="w-full p-2 border rounded"
                       value={selectedEvent.status}
                       onChange={(e) =>
                         setSelectedEvent({
@@ -253,7 +257,6 @@ export default function PublisherEventList() {
                           status: e.target.value as Event["status"],
                         })
                       }
-                      className="w-full p-2 border rounded"
                     >
                       <option value="draft">Draft</option>
                       <option value="published">Published</option>
@@ -276,4 +279,4 @@ export default function PublisherEventList() {
       </Modal>
     </div>
   );
-} 
+}

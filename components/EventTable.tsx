@@ -19,6 +19,7 @@ import {
   Input,
   Textarea,
 } from "@heroui/react";
+
 import { useUser } from "@/contexts/UserContext";
 
 interface Event {
@@ -121,8 +122,8 @@ export const EventTable = ({
                   </Button>
                   {isPublisher && (
                     <Button
-                      size="sm"
                       color="danger"
+                      size="sm"
                       variant="light"
                       onPress={() => handleDelete(event.id)}
                     >
@@ -136,7 +137,7 @@ export const EventTable = ({
         </TableBody>
       </Table>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+      <Modal isOpen={isOpen} size="2xl" onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -147,6 +148,7 @@ export const EventTable = ({
                 {selectedEvent && (
                   <div className="flex flex-col gap-4">
                     <Input
+                      disabled={!editMode}
                       label="Title"
                       value={selectedEvent.title}
                       onChange={(e) =>
@@ -155,9 +157,9 @@ export const EventTable = ({
                           title: e.target.value,
                         })
                       }
-                      disabled={!editMode}
                     />
                     <Textarea
+                      disabled={!editMode}
                       label="Description"
                       value={selectedEvent.description}
                       onChange={(e) =>
@@ -166,9 +168,9 @@ export const EventTable = ({
                           description: e.target.value,
                         })
                       }
-                      disabled={!editMode}
                     />
                     <Input
+                      disabled={!editMode}
                       label="Date"
                       type="date"
                       value={selectedEvent.date}
@@ -178,9 +180,9 @@ export const EventTable = ({
                           date: e.target.value,
                         })
                       }
-                      disabled={!editMode}
                     />
                     <Input
+                      disabled={!editMode}
                       label="Location"
                       value={selectedEvent.location}
                       onChange={(e) =>
@@ -189,9 +191,9 @@ export const EventTable = ({
                           location: e.target.value,
                         })
                       }
-                      disabled={!editMode}
                     />
                     <Input
+                      disabled={!editMode}
                       label="Category"
                       value={selectedEvent.category}
                       onChange={(e) =>
@@ -200,10 +202,11 @@ export const EventTable = ({
                           category: e.target.value,
                         })
                       }
-                      disabled={!editMode}
                     />
                     {isPublisher && (
                       <select
+                        className="p-2 border rounded"
+                        disabled={!editMode}
                         value={selectedEvent.status}
                         onChange={(e) =>
                           setSelectedEvent({
@@ -211,8 +214,6 @@ export const EventTable = ({
                             status: e.target.value as Event["status"],
                           })
                         }
-                        disabled={!editMode}
-                        className="p-2 border rounded"
                       >
                         <option value="upcoming">Upcoming</option>
                         <option value="ongoing">Ongoing</option>
@@ -253,4 +254,4 @@ export const EventTable = ({
       </Modal>
     </>
   );
-}; 
+};

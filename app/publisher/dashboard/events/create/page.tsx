@@ -27,11 +27,10 @@ export default function CreateEventPage() {
 
     try {
       // TODO: Implement event creation logic
-      console.log("Creating event:", formData);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Redirect to events list on success
       router.push("/publisher/dashboard/events");
     } catch (error) {
@@ -42,15 +41,18 @@ export default function CreateEventPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFormData(prev => ({ ...prev, image: e.target.files![0] }));
+      setFormData((prev) => ({ ...prev, image: e.target.files![0] }));
     }
   };
 
@@ -67,103 +69,121 @@ export default function CreateEventPage() {
               Fill in the details below to create your amazing event
             </p>
           </div>
-          
+
           <Card className="bg-background/50 backdrop-blur-xl border border-divider/50 shadow-xl">
             <CardBody className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form className="space-y-8" onSubmit={handleSubmit}>
                 {/* Event Title */}
                 <div className="space-y-2">
-                  <label htmlFor="title" className="block text-lg font-medium text-white">
+                  <label
+                    className="block text-lg font-medium text-white"
+                    htmlFor="title"
+                  >
                     Event Title
                   </label>
                   <Input
-                    id="title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    placeholder="Enter a catchy title for your event"
                     required
                     className="w-full bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
+                    id="title"
+                    name="title"
+                    placeholder="Enter a catchy title for your event"
+                    value={formData.title}
+                    onChange={handleChange}
                   />
                 </div>
 
                 {/* Event Description */}
                 <div className="space-y-2">
-                  <label htmlFor="description" className="block text-lg font-medium text-white">
+                  <label
+                    className="block text-lg font-medium text-white"
+                    htmlFor="description"
+                  >
                     Description
                   </label>
                   <textarea
-                    id="description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    placeholder="Describe what makes your event special..."
                     required
                     className="w-full min-h-[200px] px-4 py-3 rounded-lg bg-background/50 border border-divider/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder:text-foreground/50 resize-none"
+                    id="description"
+                    name="description"
+                    placeholder="Describe what makes your event special..."
+                    value={formData.description}
+                    onChange={handleChange}
                   />
                 </div>
 
                 {/* Date and Time */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label htmlFor="date" className="block text-lg font-medium text-white">
+                    <label
+                      className="block text-lg font-medium text-white"
+                      htmlFor="date"
+                    >
                       Date
                     </label>
                     <Input
+                      required
+                      className="w-full bg-background/50 border-divider/50 text-white focus:ring-2 focus:ring-primary/50"
                       id="date"
                       name="date"
                       type="date"
                       value={formData.date}
                       onChange={handleChange}
-                      required
-                      className="w-full bg-background/50 border-divider/50 text-white focus:ring-2 focus:ring-primary/50"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label htmlFor="time" className="block text-lg font-medium text-white">
+                    <label
+                      className="block text-lg font-medium text-white"
+                      htmlFor="time"
+                    >
                       Time
                     </label>
                     <Input
+                      required
+                      className="w-full bg-background/50 border-divider/50 text-white focus:ring-2 focus:ring-primary/50"
                       id="time"
                       name="time"
                       type="time"
                       value={formData.time}
                       onChange={handleChange}
-                      required
-                      className="w-full bg-background/50 border-divider/50 text-white focus:ring-2 focus:ring-primary/50"
                     />
                   </div>
                 </div>
 
                 {/* Location */}
                 <div className="space-y-2">
-                  <label htmlFor="location" className="block text-lg font-medium text-white">
+                  <label
+                    className="block text-lg font-medium text-white"
+                    htmlFor="location"
+                  >
                     Location
                   </label>
                   <Input
-                    id="location"
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    placeholder="Where will your event take place?"
                     required
                     className="w-full bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
+                    id="location"
+                    name="location"
+                    placeholder="Where will your event take place?"
+                    value={formData.location}
+                    onChange={handleChange}
                   />
                 </div>
 
                 {/* Category and Price */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label htmlFor="category" className="block text-lg font-medium text-white">
+                    <label
+                      className="block text-lg font-medium text-white"
+                      htmlFor="category"
+                    >
                       Category
                     </label>
                     <select
+                      required
+                      className="w-full px-4 py-3 rounded-lg bg-background/50 border border-divider/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
                       id="category"
                       name="category"
                       value={formData.category}
                       onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg bg-background/50 border border-divider/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
                     >
                       <option value="">Select a category</option>
                       <option value="conference">Conference</option>
@@ -174,22 +194,27 @@ export default function CreateEventPage() {
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label htmlFor="price" className="block text-lg font-medium text-white">
+                    <label
+                      className="block text-lg font-medium text-white"
+                      htmlFor="price"
+                    >
                       Price
                     </label>
                     <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50">$</span>
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50">
+                        $
+                      </span>
                       <Input
+                        required
+                        className="w-full pl-8 bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
                         id="price"
+                        min="0"
                         name="price"
+                        placeholder="0.00"
+                        step="0.01"
                         type="number"
                         value={formData.price}
                         onChange={handleChange}
-                        placeholder="0.00"
-                        min="0"
-                        step="0.01"
-                        required
-                        className="w-full pl-8 bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
                       />
                     </div>
                   </div>
@@ -197,35 +222,41 @@ export default function CreateEventPage() {
 
                 {/* Capacity */}
                 <div className="space-y-2">
-                  <label htmlFor="capacity" className="block text-lg font-medium text-white">
+                  <label
+                    className="block text-lg font-medium text-white"
+                    htmlFor="capacity"
+                  >
                     Capacity
                   </label>
                   <Input
+                    required
+                    className="w-full bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
                     id="capacity"
+                    min="1"
                     name="capacity"
+                    placeholder="Maximum number of attendees"
                     type="number"
                     value={formData.capacity}
                     onChange={handleChange}
-                    placeholder="Maximum number of attendees"
-                    min="1"
-                    required
-                    className="w-full bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
 
                 {/* Event Image */}
                 <div className="space-y-2">
-                  <label htmlFor="image" className="block text-lg font-medium text-white">
+                  <label
+                    className="block text-lg font-medium text-white"
+                    htmlFor="image"
+                  >
                     Event Image
                   </label>
                   <div className="relative">
                     <Input
+                      accept="image/*"
+                      className="w-full bg-background/50 border-divider/50 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30"
                       id="image"
                       name="image"
                       type="file"
-                      accept="image/*"
                       onChange={handleImageChange}
-                      className="w-full bg-background/50 border-divider/50 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30"
                     />
                   </div>
                   <p className="text-sm text-foreground/50 mt-2">
@@ -236,10 +267,10 @@ export default function CreateEventPage() {
                 {/* Submit Button */}
                 <div className="flex justify-end pt-4">
                   <Button
-                    type="submit"
+                    className="w-full md:w-auto px-8 py-3 text-lg font-semibold bg-gradient-to-r from-primary to-primary-400 hover:from-primary-400 hover:to-primary transition-all duration-300"
                     color="primary"
                     isLoading={isSubmitting}
-                    className="w-full md:w-auto px-8 py-3 text-lg font-semibold bg-gradient-to-r from-primary to-primary-400 hover:from-primary-400 hover:to-primary transition-all duration-300"
+                    type="submit"
                   >
                     {isSubmitting ? "Creating Event..." : "Create Event"}
                   </Button>
@@ -251,4 +282,4 @@ export default function CreateEventPage() {
       </div>
     </div>
   );
-} 
+}

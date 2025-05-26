@@ -1,10 +1,11 @@
 "use client";
 
-import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Button } from "@heroui/button";
 import Image from "next/image";
+
+import { useUser } from "@/contexts/UserContext";
 
 const interestsList = [
   "Tech Conferences",
@@ -21,11 +22,14 @@ export default function ProfileClient() {
 
   if (!user) {
     router.push("/auth");
+
     return null;
   }
 
   // Placeholder interests for demo; replace with user.interests if available
-  const userInterests = Array.isArray((user as any).interests) ? (user as any).interests : ["Tech Conferences", "Music Festivals"];
+  const userInterests = Array.isArray((user as any).interests)
+    ? (user as any).interests
+    : ["Tech Conferences", "Music Festivals"];
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-background p-4">
@@ -33,11 +37,11 @@ export default function ProfileClient() {
         <CardHeader className="flex flex-col items-center gap-2">
           <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-primary-200 bg-default-200">
             <Image
-              src={(user as any).photoURL || "/images/profile-placeholder.png"}
-              alt="Profile picture"
               fill
-              className="object-cover"
               priority
+              alt="Profile picture"
+              className="object-cover"
+              src={(user as any).photoURL || "/images/profile-placeholder.png"}
             />
           </div>
           <h2 className="text-xl font-bold mt-2">{user.name}</h2>
@@ -62,9 +66,9 @@ export default function ProfileClient() {
             </div>
           </div>
           <Button
+            className="w-full mt-4"
             color="danger"
             variant="light"
-            className="w-full mt-4"
             onPress={() => {
               logout();
               router.push("/");
@@ -76,4 +80,4 @@ export default function ProfileClient() {
       </Card>
     </div>
   );
-} 
+}

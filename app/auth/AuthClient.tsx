@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Card, CardBody } from "@heroui/card";
+
 import { LoginForm } from "./LoginForm";
 
 export function AuthClient() {
-  const router = useRouter();
+  const _router = useRouter();
   const searchParams = useSearchParams();
-  const initialTab = searchParams.get("tab") || "login";
+  const _initialTab = searchParams.get("tab") || "login";
 
   return (
     <main className="min-h-screen bg-background py-12">
@@ -19,4 +18,4 @@ export function AuthClient() {
       </div>
     </main>
   );
-} 
+}
