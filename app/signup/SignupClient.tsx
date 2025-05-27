@@ -163,11 +163,7 @@ export const SignupClient = () => {
   };
 
   const getIllustration = () => {
-    if (role === "publisher") {
-      return "/images/auth/signup.png";
-    }
-
-    return "/images/auth/login.png";
+    return "/images/auth/signup.jpg";
   };
 
   const getTitle = () => {
@@ -196,8 +192,10 @@ export const SignupClient = () => {
               fill
               priority
               alt={`${role} signup illustration`}
-              className="object-contain"
+              className="object-cover"
               src={getIllustration()}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={100}
             />
           </div>
           <h2 className="mt-8 text-center text-2xl font-bold">{getTitle()}</h2>
@@ -206,12 +204,12 @@ export const SignupClient = () => {
 
         {/* Right side - Signup Form */}
         <Card className="w-full">
-          <CardHeader className="flex flex-col gap-1">
+          <CardHeader className="flex flex-col gap-1 px-8">
             <h1 className="text-2xl font-bold">Create Account</h1>
             <p className="text-default-500">Sign up as a {role}</p>
           </CardHeader>
-          <CardBody>
-            <div className="flex flex-col gap-4">
+          <CardBody className="px-8">
+            <div className="flex flex-col gap-8">
               <Button
                 className="w-full"
                 isLoading={isLoading}
@@ -253,85 +251,90 @@ export const SignupClient = () => {
                 </span>
               </div>
 
-              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                <Input
-                  required
-                  classNames={{
-                    label: "text-sm font-medium",
-                    input: "text-base",
-                    description: "text-xs text-default-500",
-                  }}
-                  description={
-                    role === "publisher"
-                      ? "Enter your organization name"
-                      : "Enter your full name as you'd like it to appear"
-                  }
-                  disabled={isLoading}
-                  errorMessage={errors.name}
-                  isInvalid={!!errors.name}
-                  label={role === "publisher" ? "Organization Name" : "Full Name"}
-                  name="name"
-                  placeholder={
-                    role === "publisher" ? "Enter your organization name" : "Enter your full name"
-                  }
-                  value={formData.name}
-                  onChange={handleInputChange}
-                />
-                {role === "publisher" && (
-                  <Input
-                    required
-                    classNames={{
-                      label: "text-sm font-medium",
-                      input: "text-base",
-                      description: "text-xs text-default-500",
-                    }}
-                    description="Enter the name of the person who will manage this account"
-                    disabled={isLoading}
-                    errorMessage={errors.organization}
-                    isInvalid={!!errors.organization}
-                    label="Contact Person"
-                    name="organization"
-                    placeholder="Enter contact person's name"
-                    value={formData.organization}
-                    onChange={handleInputChange}
-                  />
-                )}
-                <Input
-                  required
-                  classNames={{
-                    label: "text-sm font-medium",
-                    input: "text-base",
-                    description: "text-xs text-default-500",
-                  }}
-                  description="We'll never share your email with anyone else"
-                  disabled={isLoading}
-                  errorMessage={errors.email}
-                  isInvalid={!!errors.email}
-                  label="Email"
-                  name="email"
-                  placeholder="Enter your email address"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-                <Input
-                  required
-                  classNames={{
-                    label: "text-sm font-medium",
-                    input: "text-base",
-                    description: "text-xs text-default-500",
-                  }}
-                  description="Must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number"
-                  disabled={isLoading}
-                  errorMessage={errors.password}
-                  isInvalid={!!errors.password}
-                  label="Password"
-                  name="password"
-                  placeholder="Enter your password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
+              <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+                <div className="space-y-8">
+                  <div className="space-y-4">
+                    <Input
+                      required
+                      classNames={{
+                        label: "text-sm font-medium mb-2",
+                        input: "text-base",
+                        description: "text-xs text-default-500 mt-1",
+                      }}
+                      // description={
+                      //   role === "publisher"
+                      //     ? "Enter your organization name"
+                      //     : "Enter your full name as you'd like it to appear"
+                      // }
+                      disabled={isLoading}
+                      errorMessage={errors.name}
+                      isInvalid={!!errors.name}
+                      label={role === "publisher" ? "Organization Name" : "Full Name"}
+                      name="name"
+                      placeholder={
+                        role === "publisher" ? "Enter your organization name" : "Enter your full name"
+                      }
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
+                    {role === "publisher" && (
+                      <Input
+                        required
+                        classNames={{
+                          label: "text-sm font-medium mb-2",
+                          input: "text-base",
+                          description: "text-xs text-default-500 mt-1",
+                        }}
+                        // description="Enter the name of the person who will manage this account"
+                        disabled={isLoading}
+                        errorMessage={errors.organization}
+                        isInvalid={!!errors.organization}
+                        label="Contact Person"
+                        name="organization"
+                        placeholder="Enter contact person's name"
+                        value={formData.organization}
+                        onChange={handleInputChange}
+                      />
+                    )}
+                  </div>
+
+                    <Input
+                      required
+                      classNames={{
+                        label: "text-sm font-medium mb-2",
+                        input: "text-base",
+                        description: "text-xs text-default-500 mt-1",
+                      }}
+                      // description="We'll never share your email with anyone else"
+                      disabled={isLoading}
+                      errorMessage={errors.email}
+                      isInvalid={!!errors.email}
+                      label="Email"
+                      name="email"
+                      placeholder="Enter your email address"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                    <Input
+                      required
+                      classNames={{
+                        label: "text-sm font-medium mb-2",
+                        input: "text-base",
+                        description: "text-xs text-default-500 mt-1",
+                      }}
+                      description="Must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number"
+                      disabled={isLoading}
+                      errorMessage={errors.password}
+                      isInvalid={!!errors.password}
+                      label="Password"
+                      name="password"
+                      placeholder="Enter your password"
+                      type="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                    />
+                </div>
                 {submitError && <p className="text-sm text-danger">{submitError}</p>}
                 <Button
                   className="w-full"
@@ -340,12 +343,12 @@ export const SignupClient = () => {
                   size="lg"
                   type="submit"
                 >
-                  Login
+                  Create Account
                 </Button>
               </form>
             </div>
           </CardBody>
-          <CardFooter>
+          <CardFooter className="px-8">
             <div className="flex w-full flex-col gap-2">
               <Button
                 as={Link}

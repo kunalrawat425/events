@@ -144,11 +144,7 @@ export const LoginClient = () => {
   };
 
   const getIllustration = () => {
-    if (role === "publisher") {
-      return "/images/auth/login.png";
-    }
-
-    return "/images/auth/login.png";
+    return "/images/auth/login.jpg";
   };
 
   const getTitle = () => {
@@ -174,11 +170,13 @@ export const LoginClient = () => {
         <div className="hidden flex-col items-center justify-center md:flex">
           <div className="relative h-[600px] w-full">
             <Image
-              fill
-              priority
-              alt={`${role} login illustration`}
-              className="object-contain"
               src={getIllustration()}
+              alt="Authentication"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+              priority
+              quality={100}
             />
           </div>
           <h2 className="mt-8 text-center text-2xl font-bold">{getTitle()}</h2>
@@ -187,12 +185,12 @@ export const LoginClient = () => {
 
         {/* Right side - Login Form */}
         <Card className="w-full">
-          <CardHeader className="flex flex-col gap-1">
+          <CardHeader className="flex flex-col gap-1 px-8 pt-8">
             <h1 className="text-2xl font-bold">Welcome Back</h1>
             <p className="text-default-500">Login to your {role} account</p>
           </CardHeader>
-          <CardBody>
-            <div className="flex flex-col gap-4">
+          <CardBody className="px-8 py-8">
+            <div className="flex flex-col gap-8">
               <Button
                 className="w-full"
                 isLoading={isLoading}
@@ -234,42 +232,48 @@ export const LoginClient = () => {
                 </span>
               </div>
 
-              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                <Input
-                  required
-                  classNames={{
-                    label: "text-sm font-medium",
-                    input: "text-base",
-                    description: "text-xs text-default-500",
-                  }}
-                  description="We'll never share your email with anyone else"
-                  disabled={isLoading}
-                  errorMessage={errors.email}
-                  isInvalid={!!errors.email}
-                  label="Email"
-                  name="email"
-                  placeholder="Enter your email address"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-                <Input
-                  required
-                  classNames={{
-                    label: "text-sm font-medium",
-                    input: "text-base",
-                    description: "text-xs text-default-500",
-                  }}
-                  disabled={isLoading}
-                  errorMessage={errors.password}
-                  isInvalid={!!errors.password}
-                  label="Password"
-                  name="password"
-                  placeholder="Enter your password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
+              <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
+                <div className="space-y-8">
+                  <div className="space-y-6">
+                    <Input
+                      required
+                      classNames={{
+                        label: "text-sm font-medium mb-3",
+                        input: "text-base",
+                        description: "text-xs text-default-500 mt-2",
+                        inputWrapper: "h-12",
+                      }}
+                      description="We'll never share your email with anyone else"
+                      disabled={isLoading}
+                      errorMessage={errors.email}
+                      isInvalid={!!errors.email}
+                      label="Email"
+                      name="email"
+                      placeholder="Enter your email address"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                    <Input
+                      required
+                      classNames={{
+                        label: "text-sm font-medium mb-3",
+                        input: "text-base",
+                        description: "text-xs text-default-500 mt-2",
+                        inputWrapper: "h-12",
+                      }}
+                      disabled={isLoading}
+                      errorMessage={errors.password}
+                      isInvalid={!!errors.password}
+                      label="Password"
+                      name="password"
+                      placeholder="Enter your password"
+                      type="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
                 {submitError && <p className="text-sm text-danger">{submitError}</p>}
                 <Button
                   className="w-full"
@@ -283,7 +287,7 @@ export const LoginClient = () => {
               </form>
             </div>
           </CardBody>
-          <CardFooter>
+          <CardFooter className="px-8 pb-8">
             <div className="flex w-full flex-col gap-2">
               <Button
                 as={Link}
@@ -292,7 +296,7 @@ export const LoginClient = () => {
                 href={`/signup?role=${role}`}
                 variant="light"
               >
-                Don&apos;t have an account?Login
+                Don&apos;t have an account? Signup
               </Button>
             </div>
           </CardFooter>

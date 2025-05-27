@@ -77,7 +77,7 @@ export default function PublisherSignupPage() {
             priority
             alt="PublisherLogin"
             className="object-cover"
-            src="/images/auth/signup.png"
+            src="/images/auth/signup.jpg"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute bottom-8 left-8 text-white">

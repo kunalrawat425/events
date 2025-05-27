@@ -60,7 +60,7 @@ export default function PublisherLoginPage() {
             priority
             alt="Publisher Login"
             className="object-cover"
-            src="/images/publisher-login-illustration.jpg"
+            src="/images/auth/login.jpg"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute bottom-8 left-8 text-white">
@@ -189,7 +189,7 @@ export default function PublisherLoginPage() {
             <p className="mt-6 text-center text-sm text-foreground/60">
               Don&apos;t have a publisher account?{" "}
               <a className="text-primary hover:underline" href="/publisher/signup">
-                Login
+                Singup
               </a>
             </p>
           </CardBody>
