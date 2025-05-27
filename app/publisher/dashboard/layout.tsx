@@ -26,33 +26,36 @@ export default function PublisherDashboardLayout({ children }: { children: React
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const checkPublisherAccess = () => {
+    const checkAuth = () => {
       try {
-        const storedUser = localStorage.getItem("user");
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        const storedUser = localStorage.getItem("currentUser");
 
-        if (!storedUser) {
-          router.replace("/auth?tab=login");
-
+        if (!isLoggedIn || !storedUser) {
+          router.replace("/login");
           return;
         }
 
-        const user = JSON.parse(storedUser);
+        const parsedUser = JSON.parse(storedUser);
 
-        if (!user || user.role !== "publisher") {
-          router.replace("/unauthorized");
-
+        if (!parsedUser || parsedUser.role !== "publisher") {
+          router.replace("/login");
           return;
         }
-      } catch {
-        router.replace("/auth?tab=login");
+
+        setUser(parsedUser);
+      } catch (error) {
+        console.error("Auth check error:", error);
+        router.replace("/login");
       } finally {
         setIsLoading(false);
       }
     };
 
-    checkPublisherAccess();
+    checkAuth();
   }, [router]);
 
   // Show loading state while checking authentication

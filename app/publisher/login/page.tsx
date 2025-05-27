@@ -189,7 +189,7 @@ export default function PublisherLoginPage() {
             <p className="mt-6 text-center text-sm text-foreground/60">
               Don&apos;t have a publisher account?{" "}
               <a className="text-primary hover:underline" href="/publisher/signup">
-                Singup
+                SIng
               </a>
             </p>
           </CardBody>

@@ -89,7 +89,7 @@ export default function HomePage() {
         localStorage.setItem("pendingInterests", JSON.stringify(selectedInterests));
       }
 
-      router.push("/auth?tab=signup");
+      router.push("/signup");
 
       return;
     }

@@ -25,7 +25,7 @@ export function middleware(request: NextRequest) {
     const user = request.cookies.get("user")?.value;
 
     if (!user) {
-      return NextResponse.redirect(new URL("/auth?tab=login", request.url));
+      return NextResponse.redirect(new URL("/login", request.url));
     }
 
     try {
@@ -35,7 +35,7 @@ export function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/unauthorized", request.url));
       }
     } catch {
-      return NextResponse.redirect(new URL("/auth?tab=login", request.url));
+      return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 

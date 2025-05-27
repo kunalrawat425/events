@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Card, CardBody, CardHeader, CardFooter } from "@heroui/card";
@@ -27,28 +27,54 @@ export const SignupClient = () => {
     password: "",
     organization: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [signupStatus, setSignupStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const router = useRouter();
   const { login } = useUser();
 
+  // Load saved email from localStorage
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("userEmail");
+    if (savedEmail) {
+      setFormData(prev => ({ ...prev, email: savedEmail }));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const currentUser = localStorage.getItem("currentUser");
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    
+    if (currentUser && isLoggedIn === "true") {
+      const user = JSON.parse(currentUser);
+      if (user.role === "publisher") {
+        router.push("/publisher/dashboard");
+      } else {
+        router.push("/profile");
+      }
+    }
+  }, [router]);
+
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     return emailRegex.test(email);
   };
 
   const validatePassword = (password: string) => {
     // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasMinLength = password.length >= 8;
 
-    return passwordRegex.test(password);
+    return hasUpperCase && hasLowerCase && hasNumber && hasMinLength;
   };
 
   const validateForm = () => {
     const newErrors: FormErrors = {};
-
     setSubmitError("");
 
     // Name validation
@@ -58,7 +84,7 @@ export const SignupClient = () => {
       newErrors.name = "Name must be at least 2 characters";
     }
 
-    // Organization validation for publishers
+    // Organization validation for publishers only
     if (role === "publisher" && !formData.organization.trim()) {
       newErrors.organization = "Organization name is required";
     }
@@ -74,59 +100,101 @@ export const SignupClient = () => {
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (!validatePassword(formData.password)) {
-      newErrors.password =
-        "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number";
+      newErrors.password = "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number";
     }
 
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    // Clear error when user starts typing
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined,
-      }));
+
+    // Clear error for the field being changed
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[name as keyof FormErrors];
+      return newErrors;
+    });
+
+    // Clear submit error when user makes changes
+    if (submitError) {
+      setSubmitError("");
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    console.log("Signup attempt with:", formData);
+    
+    // Reset previous errors
+    setErrors({});
+    setSubmitError("");
+    
+    // Validate form before submission
+    const isValid = validateForm();
+    console.log("Form validation result:", isValid);
+    console.log("Current errors:", errors);
+    
+    if (!isValid) {
+      console.log("Form validation failed:", errors);
+      setSignupStatus("error");
+      return;
+    }
 
     setIsLoading(true);
-    setSubmitError("");
+    setSignupStatus("loading");
 
     try {
-      const response = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formData, role }),
-      });
+      // Get existing users
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      console.log("Existing users:", users);
 
-      if (!response.ok) {
-        const error = await response.json();
-
-        throw new Error(error.message || "Signup failed");
+      // Check if email already exists
+      if (users.some((u: any) => u.email === formData.email)) {
+        throw new Error("Email already registered. Please login instead.");
       }
 
-      const userData = await response.json();
+      // Create new user
+      const newUser = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: role,
+        provider: "email",
+        ...(role === "publisher" && { organization: formData.organization })
+      };
 
-      login(userData.email, userData.password);
-      router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
+      console.log("Creating new user:", newUser);
+
+      // Add to users list
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // Save current user and login
+      localStorage.setItem("currentUser", JSON.stringify(newUser));
+      localStorage.setItem("userEmail", formData.email);
+      localStorage.setItem("isLoggedIn", "true");
+
+      console.log("Signup successful, redirecting...");
+      setSignupStatus("success");
+
+      // Redirect based on role
+      if (role === "publisher") {
+        await router.push("/publisher/dashboard");
+      } else {
+        await router.push("/profile");
+      }
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Signup failed. Please try again.");
+      console.error("Signup error:", err);
+      setSignupStatus("error");
+      setSubmitError(
+        err instanceof Error ? err.message : "Signup failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -137,26 +205,41 @@ export const SignupClient = () => {
     setSubmitError("");
 
     try {
-      const response = await fetch("/api/auth/google", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ role }),
-      });
+      // For demo purposes, create a mock Google user
+      const mockGoogleUser = {
+        email: "google@example.com",
+        name: "Google User",
+        role: role,
+        provider: "google"
+      };
 
-      if (!response.ok) {
-        const error = await response.json();
+      console.log("Creating mock Google user:", mockGoogleUser);
 
-        throw new Error(error.message || "Google login failed");
+      // Save to localStorage
+      localStorage.setItem("currentUser", JSON.stringify(mockGoogleUser));
+      localStorage.setItem("userEmail", mockGoogleUser.email);
+      localStorage.setItem("isLoggedIn", "true");
+
+      // Add to users list if not exists
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      if (!users.find((u: any) => u.email === mockGoogleUser.email)) {
+        users.push(mockGoogleUser);
+        localStorage.setItem("users", JSON.stringify(users));
       }
 
-      const userData = await response.json();
+      console.log("Google signup successful, redirecting...");
 
-      login(userData.email, userData.password);
-      router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
+      // Redirect based on role
+      if (role === "publisher") {
+        router.push("/publisher/dashboard");
+      } else {
+        router.push("/profile");
+      }
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Google login failed. Please try again.");
+      console.error("Google login error:", err);
+      setSubmitError(
+        err instanceof Error ? err.message : "Google login failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -251,7 +334,7 @@ export const SignupClient = () => {
                 </span>
               </div>
 
-              <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+              <form className="flex flex-col gap-6" onSubmit={handleSubmit} noValidate>
                 <div className="space-y-8">
                   <div className="space-y-4">
                     <Input
@@ -260,12 +343,9 @@ export const SignupClient = () => {
                         label: "text-sm font-medium mb-2",
                         input: "text-base",
                         description: "text-xs text-default-500 mt-1",
+                        inputWrapper: "h-12",
+                        errorMessage: "text-danger text-sm mt-1",
                       }}
-                      // description={
-                      //   role === "publisher"
-                      //     ? "Enter your organization name"
-                      //     : "Enter your full name as you'd like it to appear"
-                      // }
                       disabled={isLoading}
                       errorMessage={errors.name}
                       isInvalid={!!errors.name}
@@ -284,8 +364,9 @@ export const SignupClient = () => {
                           label: "text-sm font-medium mb-2",
                           input: "text-base",
                           description: "text-xs text-default-500 mt-1",
+                          inputWrapper: "h-12",
+                          errorMessage: "text-danger text-sm mt-1",
                         }}
-                        // description="Enter the name of the person who will manage this account"
                         disabled={isLoading}
                         errorMessage={errors.organization}
                         isInvalid={!!errors.organization}
@@ -298,52 +379,136 @@ export const SignupClient = () => {
                     )}
                   </div>
 
-                    <Input
-                      required
-                      classNames={{
-                        label: "text-sm font-medium mb-2",
-                        input: "text-base",
-                        description: "text-xs text-default-500 mt-1",
-                      }}
-                      // description="We'll never share your email with anyone else"
-                      disabled={isLoading}
-                      errorMessage={errors.email}
-                      isInvalid={!!errors.email}
-                      label="Email"
-                      name="email"
-                      placeholder="Enter your email address"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                    />
-                    <Input
-                      required
-                      classNames={{
-                        label: "text-sm font-medium mb-2",
-                        input: "text-base",
-                        description: "text-xs text-default-500 mt-1",
-                      }}
-                      description="Must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number"
-                      disabled={isLoading}
-                      errorMessage={errors.password}
-                      isInvalid={!!errors.password}
-                      label="Password"
-                      name="password"
-                      placeholder="Enter your password"
-                      type="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                    />
+                  <Input
+                    required
+                    classNames={{
+                      label: "text-sm font-medium mb-2",
+                      input: "text-base",
+                      description: "text-xs text-default-500 mt-1",
+                      inputWrapper: "h-12",
+                      errorMessage: "text-danger text-sm mt-1",
+                    }}
+                    disabled={isLoading}
+                    errorMessage={errors.email}
+                    isInvalid={!!errors.email}
+                    label="Email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                  />
+                  <Input
+                    required
+                    classNames={{
+                      label: "text-sm font-medium mb-3",
+                      input: "text-base",
+                      description: "text-xs text-default-500 mt-2",
+                      inputWrapper: "h-12",
+                      errorMessage: "text-danger text-sm mt-1",
+                    }}
+                    description="Must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number"
+                    disabled={isLoading}
+                    errorMessage={errors.password}
+                    isInvalid={!!errors.password}
+                    label="Password"
+                    name="password"
+                    placeholder="Enter your password"
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    endContent={
+                      <button
+                        className="focus:outline-none"
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <svg
+                            className="h-5 w-5 text-default-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            className="h-5 w-5 text-default-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            />
+                          </svg>
+                        )}
+                      </button>
+                    }
+                  />
                 </div>
-                {submitError && <p className="text-sm text-danger">{submitError}</p>}
+                
+                {signupStatus === "error" && submitError && (
+                  <div className="rounded-md bg-danger-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-danger" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm text-danger">{submitError}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {signupStatus === "success" && (
+                  <div className="rounded-md bg-success-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-success" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm text-success">Account created successfully! Redirecting...</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <Button
                   className="w-full"
                   color="primary"
                   isLoading={isLoading}
                   size="lg"
                   type="submit"
+                  disabled={isLoading || signupStatus === "success"}
+                  onClick={() => {
+                    // Force validation on button click
+                    const isValid = validateForm();
+                    if (!isValid) {
+                      setSignupStatus("error");
+                    }
+                  }}
                 >
-                  Create Account
+                  {isLoading ? "Creating Account..." : "Create Account"}
                 </Button>
               </form>
             </div>
@@ -353,8 +518,8 @@ export const SignupClient = () => {
               <Button
                 as={Link}
                 className="w-full"
-                disabled={isLoading}
-                href={`/auth?tab=login`}
+                disabled={isLoading || signupStatus === "success"}
+                href={`/login`}
                 variant="light"
               >
                 Already have an account? Login

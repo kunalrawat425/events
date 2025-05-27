@@ -101,7 +101,7 @@ export function LoginForm() {
             <Button
               className="h-auto p-0"
               variant="light"
-              onPress={() => router.push("/auth?tab=signup")}
+              onPress={() => router.push("/signup")}
             >
               Login
             </Button>

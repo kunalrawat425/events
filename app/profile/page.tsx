@@ -26,27 +26,32 @@ export default function ProfilePage() {
   useEffect(() => {
     const checkAuth = () => {
       try {
-        const storedUser = localStorage.getItem("user");
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        const storedUser = localStorage.getItem("currentUser");
 
-        if (!storedUser) {
-          router.replace("/auth?tab=login");
-
+        if (!isLoggedIn || !storedUser) {
+          console.log("No login state or user found, redirecting to login");
+          router.replace("/login");
           return;
         }
 
         const parsedUser = JSON.parse(storedUser);
 
-        if (!parsedUser || !parsedUser.id) {
-          localStorage.removeItem("user");
-          router.replace("/auth?tab=login");
-
+        if (!parsedUser || !parsedUser.email) {
+          console.log("Invalid user data, redirecting to login");
+          localStorage.removeItem("currentUser");
+          localStorage.removeItem("isLoggedIn");
+          router.replace("/login");
           return;
         }
 
+        console.log("User authenticated:", parsedUser);
         setUser(parsedUser);
-      } catch {
-        localStorage.removeItem("user");
-        router.replace("/auth?tab=login");
+      } catch (error) {
+        console.error("Auth check error:", error);
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("isLoggedIn");
+        router.replace("/login");
       } finally {
         setIsLoading(false);
       }

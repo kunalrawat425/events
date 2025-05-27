@@ -81,7 +81,7 @@ const InterestAlerts = () => {
 
       localStorage.setItem("pendingInterests", JSON.stringify(selectedInterests));
       localStorage.setItem("pendingEmail", email);
-      router.push("/auth?tab=signup");
+      router.push("/signup");
 
       return;
     }

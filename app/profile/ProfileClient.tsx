@@ -60,9 +60,9 @@ export default function ProfileClient() {
             className="mt-4 w-full"
             color="danger"
             variant="light"
-            onPress={() => {
-              logout();
-              router.push("/");
+            onPress={async () => {
+              await logout();
+              router.replace("/");
             }}
           >
             Logout

@@ -29,7 +29,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Check for existing session in localStorage
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("currentUser");
 
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -56,7 +56,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       const userData = await response.json();
 
       setUser(userData);
-      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("currentUser", JSON.stringify(userData));
       document.cookie = `user=${JSON.stringify(userData)}; path=/`;
     } catch (error) {
       throw error;
@@ -76,7 +76,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     };
 
     setUser(mockUserData);
-    localStorage.setItem("user", JSON.stringify(mockUserData));
+    localStorage.setItem("currentUser", JSON.stringify(mockUserData));
     document.cookie = `user=${JSON.stringify(mockUserData)}; path=/`;
   };
 
@@ -91,12 +91,14 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     };
 
     setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("user");
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
     document.cookie = "user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   };
 

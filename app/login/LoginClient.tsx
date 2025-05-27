@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Card, CardBody, CardHeader, CardFooter } from "@heroui/card";
@@ -23,88 +23,121 @@ export const LoginClient = () => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const router = useRouter();
   const { login } = useUser();
 
+  // Load saved email from localStorage
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("userEmail");
+    if (savedEmail) {
+      setFormData(prev => ({ ...prev, email: savedEmail }));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const currentUser = localStorage.getItem("currentUser");
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    
+    if (currentUser && isLoggedIn === "true") {
+      const user = JSON.parse(currentUser);
+      if (user.role === "publisher") {
+        router.push("/publisher/dashboard");
+      } else {
+        router.push("/profile");
+      }
+    }
+  }, [router]);
+
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     return emailRegex.test(email);
   };
 
   const validateForm = () => {
     const newErrors: FormErrors = {};
-
     setSubmitError("");
 
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!validateEmail(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
     }
 
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({
         ...prev,
         [name]: undefined,
       }));
     }
+    if (submitError) {
+      setSubmitError("");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    console.log("Login attempt with:", formData);
+    
+    if (!validateForm()) {
+      console.log("Form validation failed");
+      return;
+    }
 
     setIsLoading(true);
     setSubmitError("");
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formData, role }),
-      });
+      // Get users from localStorage
+      const usersStr = localStorage.getItem("users");
+      const users = usersStr ? JSON.parse(usersStr) : [];
+      console.log("Found users:", users);
 
-      if (!response.ok) {
-        const error = await response.json();
+      const user = users.find(
+        (u: any) => u.email === formData.email && u.password === formData.password
+      );
+      console.log("Found user:", user);
 
-        throw new Error(error.message || "Authentication failed");
+      if (!user) {
+        setSubmitError("Invalid email or password. Please try again.");
+        return;
       }
 
-      const userData = await response.json();
+      // Save current user to localStorage
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      localStorage.setItem("userEmail", formData.email);
+      localStorage.setItem("isLoggedIn", "true");
 
-      // Update the user state with the response data
-      await login(userData.email, userData.password);
+      console.log("Login successful, redirecting...");
 
-      // Redirect based on role
-      router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
+      // Use router.push for client-side navigation
+      if (user.role === "publisher") {
+        await router.push("/publisher/dashboard");
+      } else {
+        await router.push("/profile");
+      }
     } catch (err) {
+      console.error("Login error:", err);
       setSubmitError(
         err instanceof Error ? err.message : "Authentication failed. Please try again."
       );
@@ -118,26 +151,42 @@ export const LoginClient = () => {
     setSubmitError("");
 
     try {
-      const response = await fetch("/api/auth/google", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ role }),
-      });
+      // For demo purposes, create a mock Google user
+      const mockGoogleUser = {
+        email: "google@example.com",
+        name: "Google User",
+        role: role,
+        provider: "google"
+      };
 
-      if (!response.ok) {
-        const error = await response.json();
+      console.log("Creating mock Google user:", mockGoogleUser);
 
-        throw new Error(error.message || "Google login failed");
+      // Save to localStorage
+      localStorage.setItem("currentUser", JSON.stringify(mockGoogleUser));
+      localStorage.setItem("userEmail", mockGoogleUser.email);
+      localStorage.setItem("isLoggedIn", "true");
+
+      // Add to users list if not exists
+      const usersStr = localStorage.getItem("users");
+      const users = usersStr ? JSON.parse(usersStr) : [];
+      if (!users.find((u: any) => u.email === mockGoogleUser.email)) {
+        users.push(mockGoogleUser);
+        localStorage.setItem("users", JSON.stringify(users));
       }
 
-      const userData = await response.json();
+      console.log("Google login successful, redirecting...");
 
-      await login(userData.email, userData.password);
-      router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
+      // Use router.push for client-side navigation
+      if (role === "publisher") {
+        await router.push("/publisher/dashboard");
+      } else {
+        await router.push("/profile");
+      }
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : "Google login failed. Please try again.");
+      console.error("Google login error:", err);
+      setSubmitError(
+        err instanceof Error ? err.message : "Google login failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -151,7 +200,6 @@ export const LoginClient = () => {
     if (role === "publisher") {
       return "Welcome back, Publisher!";
     }
-
     return "Welcome back to Events";
   };
 
@@ -159,7 +207,6 @@ export const LoginClient = () => {
     if (role === "publisher") {
       return "Manage your events and reach your audience";
     }
-
     return "Stay informed with personalized event alerts";
   };
 
@@ -242,6 +289,7 @@ export const LoginClient = () => {
                         input: "text-base",
                         description: "text-xs text-default-500 mt-2",
                         inputWrapper: "h-12",
+                        errorMessage: "text-danger text-sm mt-1",
                       }}
                       description="We'll never share your email with anyone else"
                       disabled={isLoading}
@@ -261,6 +309,7 @@ export const LoginClient = () => {
                         input: "text-base",
                         description: "text-xs text-default-500 mt-2",
                         inputWrapper: "h-12",
+                        errorMessage: "text-danger text-sm mt-1",
                       }}
                       disabled={isLoading}
                       errorMessage={errors.password}
@@ -268,13 +317,69 @@ export const LoginClient = () => {
                       label="Password"
                       name="password"
                       placeholder="Enter your password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       value={formData.password}
                       onChange={handleInputChange}
+                      endContent={
+                        <button
+                          className="focus:outline-none"
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <svg
+                              className="h-5 w-5 text-default-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              className="h-5 w-5 text-default-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                              />
+                            </svg>
+                          )}
+                        </button>
+                      }
                     />
                   </div>
                 </div>
-                {submitError && <p className="text-sm text-danger">{submitError}</p>}
+                {submitError && (
+                  <div className="rounded-md bg-danger-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-danger" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm text-danger">{submitError}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <Button
                   className="w-full"
                   color="primary"
@@ -282,7 +387,7 @@ export const LoginClient = () => {
                   size="lg"
                   type="submit"
                 >
-                  Login
+                  {isLoading ? "Logging in..." : "Login"}
                 </Button>
               </form>
             </div>

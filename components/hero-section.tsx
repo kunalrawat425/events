@@ -55,7 +55,7 @@ export const HeroSection = () => {
 
       localStorage.setItem("pendingInterests", JSON.stringify(selectedInterests));
       localStorage.setItem("pendingEmail", email);
-      router.push("/auth?tab=signup");
+      router.push("/signup");
 
       return;
     }
@@ -154,7 +154,7 @@ export const HeroSection = () => {
                   <Button
                     className="h-auto p-0"
                     variant="light"
-                    onPress={() => router.push("/auth?tab=login")}
+                    onPress={() => router.push("/login")}
                   >
                     Login
                   </Button>
