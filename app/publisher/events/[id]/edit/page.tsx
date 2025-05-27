@@ -105,8 +105,8 @@ export default function EditEventPage({ params }: PageProps) {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Card className="mx-auto max-w-2xl bg-background/50 backdrop-blur-lg">
+    <div className="container mx-auto px-4 py-8 w-full">
+      <Card className="w-full bg-background/50 backdrop-blur-lg">
         <CardHeader>
           <h1 className="text-2xl font-bold">Edit Event</h1>
         </CardHeader>

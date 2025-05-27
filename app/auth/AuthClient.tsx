@@ -69,7 +69,7 @@ export default function AuthClient() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-primary-50 to-background py-12">
       <div className="w-full max-w-md px-4">
-        <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
+        <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm p-8">
           <CardHeader className="pb-0">
             <div className="mb-6 flex space-x-4">
               <Button
