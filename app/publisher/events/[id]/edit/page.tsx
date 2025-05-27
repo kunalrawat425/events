@@ -96,115 +96,114 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card className="max-w-2xl mx-auto bg-background/50 backdrop-blur-lg">
+      <Card className="mx-auto max-w-2xl bg-background/50 backdrop-blur-lg">
         <CardHeader>
           <h1 className="text-2xl font-bold">Edit Event</h1>
         </CardHeader>
         <CardBody>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <Input
-              required
-              label="Event Title"
-              name="title"
-              placeholder="Enter event title"
-              value={formData.title}
-              onChange={handleChange}
-            />
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-foreground/70" htmlFor="title">
+                  Event Title
+                </label>
+                <Input
+                  required
+                  className="mt-1"
+                  id="title"
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                />
+              </div>
 
-            <div className="relative">
-              <label className="block text-sm font-medium text-foreground/80 mb-1">
-                Description
-              </label>
-              <textarea
+              <div className="relative">
+                <label className="mb-1 block text-sm font-medium text-foreground/80">
+                  Description
+                </label>
+                <textarea
+                  required
+                  className="min-h-[100px] w-full rounded-lg border border-foreground/20 bg-background px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  name="description"
+                  placeholder="Enter event description"
+                  value={formData.description}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Input
+                  required
+                  label="Date"
+                  name="date"
+                  type="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                />
+
+                <Input
+                  required
+                  label="Time"
+                  name="time"
+                  type="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <Input
                 required
-                name="description"
-                placeholder="Enter event description"
-                value={formData.description}
+                label="Location"
+                name="location"
+                placeholder="Enter event location"
+                value={formData.location}
                 onChange={handleChange}
-                className="w-full min-h-[100px] px-3 py-2 bg-background border border-foreground/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Input
+                  required
+                  label="Capacity"
+                  name="capacity"
+                  placeholder="Enter maximum capacity"
+                  type="number"
+                  value={formData.capacity}
+                  onChange={handleChange}
+                />
+
+                <Input
+                  required
+                  label="Price"
+                  name="price"
+                  placeholder="Enter ticket price"
+                  type="number"
+                  value={formData.price}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <Input
+                label="Image URL"
+                name="imageUrl"
+                placeholder="Enter image URL"
+                value={formData.imageUrl}
+                onChange={handleChange}
               />
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                required
-                label="Date"
-                name="date"
-                type="date"
-                value={formData.date}
-                onChange={handleChange}
-              />
-
-              <Input
-                required
-                label="Time"
-                name="time"
-                type="time"
-                value={formData.time}
-                onChange={handleChange}
-              />
-            </div>
-
-            <Input
-              required
-              label="Location"
-              name="location"
-              placeholder="Enter event location"
-              value={formData.location}
-              onChange={handleChange}
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                required
-                label="Capacity"
-                name="capacity"
-                type="number"
-                placeholder="Enter maximum capacity"
-                value={formData.capacity}
-                onChange={handleChange}
-              />
-
-              <Input
-                required
-                label="Price"
-                name="price"
-                type="number"
-                placeholder="Enter ticket price"
-                value={formData.price}
-                onChange={handleChange}
-              />
-            </div>
-
-            <Input
-              label="Image URL"
-              name="imageUrl"
-              placeholder="Enter image URL"
-              value={formData.imageUrl}
-              onChange={handleChange}
-            />
 
             <div className="flex justify-end gap-4">
-              <Button
-                variant="bordered"
-                onClick={() => router.push("/publisher/dashboard")}
-              >
+              <Button variant="bordered" onClick={() => router.push("/publisher/dashboard")}>
                 Cancel
               </Button>
-              <Button
-                color="primary"
-                type="submit"
-                isLoading={isLoading}
-              >
+              <Button color="primary" isLoading={isLoading} type="submit">
                 Update Event
               </Button>
             </div>
@@ -213,4 +212,4 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
       </Card>
     </div>
   );
-} 
+}

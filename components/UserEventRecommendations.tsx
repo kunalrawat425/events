@@ -1,15 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardFooter,
-  Button,
-  Chip,
-  Input,
-} from "@heroui/react";
+import { Card, CardBody, CardHeader, CardFooter, Button, Chip, Input } from "@heroui/react";
 import { Select, SelectItem } from "@heroui/select";
 import Image from "next/image";
 
@@ -52,8 +44,7 @@ export default function UserEventRecommendations() {
         {
           id: "1",
           title: "Tech Conference 2024",
-          description:
-            "Annual technology conference featuring the latest innovations",
+          description: "Annual technology conference featuring the latest innovations",
           date: "2024-06-15",
           location: "San Francisco",
           category: "Technology",
@@ -83,31 +74,23 @@ export default function UserEventRecommendations() {
   const toggleInterest = (interestId: string) => {
     setInterests(
       interests.map((interest) =>
-        interest.id === interestId
-          ? { ...interest, selected: !interest.selected }
-          : interest,
-      ),
+        interest.id === interestId ? { ...interest, selected: !interest.selected } : interest
+      )
     );
   };
 
   const filteredEvents = events.filter((event) => {
-    const matchesSearch = event.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "all" || event.category === selectedCategory;
+    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || event.category === selectedCategory;
     const matchesInterests =
       interests.some((interest) => interest.selected) &&
       interests.some(
         (interest) =>
-          interest.selected &&
-          event.category.toLowerCase().includes(interest.name.toLowerCase()),
+          interest.selected && event.category.toLowerCase().includes(interest.name.toLowerCase())
       );
 
     return (
-      matchesSearch &&
-      matchesCategory &&
-      (!interests.some((i) => i.selected) || matchesInterests)
+      matchesSearch && matchesCategory && (!interests.some((i) => i.selected) || matchesInterests)
     );
   });
 
@@ -125,7 +108,7 @@ export default function UserEventRecommendations() {
   return (
     <div className="space-y-6">
       {/* Search and Filters */}
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col gap-4 md:flex-row">
         <Input
           className="max-w-xs"
           placeholder="Search events..."
@@ -159,14 +142,14 @@ export default function UserEventRecommendations() {
       </div>
 
       {/* Event Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredEvents.map((event) => (
-          <Card key={event.id} className="hover:scale-105 transition-transform">
+          <Card key={event.id} className="transition-transform hover:scale-105">
             {event.image && (
               <div className="relative h-48">
                 <Image
                   alt={event.title}
-                  className="w-full h-full object-cover rounded-t-lg"
+                  className="h-full w-full rounded-t-lg object-cover"
                   height={200}
                   src={event.image}
                   width={300}
@@ -181,8 +164,7 @@ export default function UserEventRecommendations() {
               <p className="text-default-600">{event.description}</p>
               <div className="mt-4 space-y-2">
                 <p className="text-sm">
-                  <strong>Date:</strong>{" "}
-                  {new Date(event.date).toLocaleDateString()}
+                  <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
                 </p>
                 <p className="text-sm">
                   <strong>Location:</strong> {event.location}

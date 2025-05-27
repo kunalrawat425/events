@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   description: "Book your tickets for this amazing event",
 };
 
-
-
 export default function BookingPage({ params }: any) {
   return (
     <AuthGuard>

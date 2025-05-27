@@ -3,24 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@heroui/button";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableColumn,
-  TableRow,
-  TableCell,
-} from "@heroui/table";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from "@heroui/dropdown";
+import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/dropdown";
 import { Input } from "@heroui/input";
-import { Listbox, ListboxItem } from "@heroui/listbox";
 import { Pagination } from "@heroui/pagination";
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Card, CardBody } from "@heroui/card";
 import {
   CalendarIcon,
   UserGroupIcon,
@@ -145,7 +132,9 @@ export default function PublisherDashboardClient() {
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [statusFilter, setStatusFilter] = useState<string>(searchParams.get("status") || "all");
   const [dateFilter, setDateFilter] = useState<string>(searchParams.get("date") || "all");
-  const [categoryFilter, setCategoryFilter] = useState<string>(searchParams.get("category") || "all");
+  const [categoryFilter, setCategoryFilter] = useState<string>(
+    searchParams.get("category") || "all"
+  );
   const [sortBy, setSortBy] = useState<string>(searchParams.get("sort") || "dateDesc");
   const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
   const [isLoading, setIsLoading] = useState(true);
@@ -157,13 +146,14 @@ export default function PublisherDashboardClient() {
   useEffect(() => {
     // Update URL with current filters and pagination
     const params = new URLSearchParams();
+
     if (searchQuery) params.set("search", searchQuery);
     if (statusFilter !== "all") params.set("status", statusFilter);
     if (dateFilter !== "all") params.set("date", dateFilter);
     if (categoryFilter !== "all") params.set("category", categoryFilter);
     if (sortBy !== "dateDesc") params.set("sort", sortBy);
     if (currentPage > 1) params.set("page", currentPage.toString());
-    
+
     router.push(`/publisher/dashboard?${params.toString()}`);
   }, [searchQuery, statusFilter, dateFilter, categoryFilter, sortBy, currentPage]);
 
@@ -197,48 +187,55 @@ export default function PublisherDashboardClient() {
     setIsLoading(false);
   };
 
-  const filteredEvents = events.filter((event) => {
-    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         event.location.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === "all" || event.status === statusFilter;
-    const matchesDate = dateFilter === "all" ||
-                       (dateFilter === "upcoming" && new Date(event.date) > new Date()) ||
-                       (dateFilter === "past" && new Date(event.date) < new Date()) ||
-                       (dateFilter === "today" && new Date(event.date).toDateString() === new Date().toDateString()) ||
-                       (dateFilter === "thisWeek" && isThisWeek(new Date(event.date))) ||
-                       (dateFilter === "thisMonth" && isThisMonth(new Date(event.date)));
-    const matchesCategory = categoryFilter === "all" || event.category === categoryFilter;
+  const filteredEvents = events
+    .filter((event) => {
+      const matchesSearch =
+        event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.location.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesStatus = statusFilter === "all" || event.status === statusFilter;
+      const matchesDate =
+        dateFilter === "all" ||
+        (dateFilter === "upcoming" && new Date(event.date) > new Date()) ||
+        (dateFilter === "past" && new Date(event.date) < new Date()) ||
+        (dateFilter === "today" &&
+          new Date(event.date).toDateString() === new Date().toDateString()) ||
+        (dateFilter === "thisWeek" && isThisWeek(new Date(event.date))) ||
+        (dateFilter === "thisMonth" && isThisMonth(new Date(event.date)));
+      const matchesCategory = categoryFilter === "all" || event.category === categoryFilter;
 
-    return matchesSearch && matchesStatus && matchesDate && matchesCategory;
-  }).sort((a, b) => {
-    switch (sortBy) {
-      case "dateAsc":
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      case "dateDesc":
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      case "attendeesAsc":
-        return a.attendees - b.attendees;
-      case "attendeesDesc":
-        return b.attendees - a.attendees;
-      case "revenueAsc":
-        return a.revenue - b.revenue;
-      case "revenueDesc":
-        return b.revenue - a.revenue;
-      default:
-        return 0;
-    }
-  });
+      return matchesSearch && matchesStatus && matchesDate && matchesCategory;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "dateAsc":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "dateDesc":
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case "attendeesAsc":
+          return a.attendees - b.attendees;
+        case "attendeesDesc":
+          return b.attendees - a.attendees;
+        case "revenueAsc":
+          return a.revenue - b.revenue;
+        case "revenueDesc":
+          return b.revenue - a.revenue;
+        default:
+          return 0;
+      }
+    });
 
   // Helper functions for date filtering
   const isThisWeek = (date: Date) => {
     const today = new Date();
     const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
     const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6));
+
     return date >= startOfWeek && date <= endOfWeek;
   };
 
   const isThisMonth = (date: Date) => {
     const today = new Date();
+
     return date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
   };
 
@@ -251,19 +248,19 @@ export default function PublisherDashboardClient() {
 
   const handleDelete = async (eventId: string) => {
     // TODO: Implement actual delete functionality
-    setEvents(events.filter(event => event.id !== eventId));
+    setEvents(events.filter((event) => event.id !== eventId));
   };
 
   const handleStatusChange = async (eventId: string, newStatus: Event["status"]) => {
     // TODO: Implement actual status update functionality
-    setEvents(events.map(event => 
-      event.id === eventId ? { ...event, status: newStatus } : event
-    ));
+    setEvents(
+      events.map((event) => (event.id === eventId ? { ...event, status: newStatus } : event))
+    );
   };
 
   if (isLoading) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="flex h-full items-center justify-center">
         <div className="text-foreground/80">Loading...</div>
       </div>
     );
@@ -272,22 +269,24 @@ export default function PublisherDashboardClient() {
   return (
     <div className="p-6">
       {/* Analytics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
           <Card key={stat.name} className="bg-background/50 backdrop-blur-lg">
             <CardBody>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-foreground/60">{stat.name}</p>
-                  <h3 className="text-2xl font-bold mt-1">{stat.value}</h3>
-                  <p className={`text-sm mt-1 ${
-                    stat.changeType === "increase" ? "text-green-500" : "text-red-500"
-                  }`}>
+                  <h3 className="mt-1 text-2xl font-bold">{stat.value}</h3>
+                  <p
+                    className={`mt-1 text-sm ${
+                      stat.changeType === "increase" ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
                     {stat.change}
                   </p>
                 </div>
-                <div className="p-3 bg-primary/10 rounded-full">
-                  <stat.icon className="w-6 h-6 text-primary" />
+                <div className="rounded-full bg-primary/10 p-3">
+                  <stat.icon className="h-6 w-6 text-primary" />
                 </div>
               </div>
             </CardBody>
@@ -296,25 +295,22 @@ export default function PublisherDashboardClient() {
       </div>
 
       {/* Filters and Search */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="mb-6 flex flex-col gap-4 md:flex-row">
         <Input
+          className="max-w-xs"
           placeholder="Search events..."
+          startContent={<MagnifyingGlassIcon className="h-4 w-4 text-foreground/50" />}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="max-w-xs"
-          startContent={<MagnifyingGlassIcon className="w-4 h-4 text-foreground/50" />}
         />
         <div className="flex flex-wrap gap-4">
           <Dropdown>
             <DropdownTrigger>
-              <Button 
-                variant="bordered" 
-                endContent={<ChevronDownIcon className="w-4 h-4" />}
-              >
-                Status: {statusOptions.find(opt => opt.key === statusFilter)?.label}
+              <Button endContent={<ChevronDownIcon className="h-4 w-4" />} variant="bordered">
+                Status: {statusOptions.find((opt) => opt.key === statusFilter)?.label}
               </Button>
             </DropdownTrigger>
-            <DropdownMenu 
+            <DropdownMenu
               aria-label="Status filter"
               onAction={(key) => setStatusFilter(key as string)}
             >
@@ -326,17 +322,11 @@ export default function PublisherDashboardClient() {
 
           <Dropdown>
             <DropdownTrigger>
-              <Button 
-                variant="bordered" 
-                endContent={<ChevronDownIcon className="w-4 h-4" />}
-              >
-                Date: {dateOptions.find(opt => opt.key === dateFilter)?.label}
+              <Button endContent={<ChevronDownIcon className="h-4 w-4" />} variant="bordered">
+                Date: {dateOptions.find((opt) => opt.key === dateFilter)?.label}
               </Button>
             </DropdownTrigger>
-            <DropdownMenu 
-              aria-label="Date filter"
-              onAction={(key) => setDateFilter(key as string)}
-            >
+            <DropdownMenu aria-label="Date filter" onAction={(key) => setDateFilter(key as string)}>
               {dateOptions.map((option) => (
                 <DropdownItem key={option.key}>{option.label}</DropdownItem>
               ))}
@@ -345,14 +335,11 @@ export default function PublisherDashboardClient() {
 
           <Dropdown>
             <DropdownTrigger>
-              <Button 
-                variant="bordered" 
-                endContent={<ChevronDownIcon className="w-4 h-4" />}
-              >
-                Category: {categoryOptions.find(opt => opt.key === categoryFilter)?.label}
+              <Button endContent={<ChevronDownIcon className="h-4 w-4" />} variant="bordered">
+                Category: {categoryOptions.find((opt) => opt.key === categoryFilter)?.label}
               </Button>
             </DropdownTrigger>
-            <DropdownMenu 
+            <DropdownMenu
               aria-label="Category filter"
               onAction={(key) => setCategoryFilter(key as string)}
             >
@@ -364,39 +351,27 @@ export default function PublisherDashboardClient() {
 
           <Dropdown>
             <DropdownTrigger>
-              <Button 
-                variant="bordered" 
-                endContent={<ChevronDownIcon className="w-4 h-4" />}
-              >
-                Sort: {sortOptions.find(opt => opt.key === sortBy)?.label}
+              <Button endContent={<ChevronDownIcon className="h-4 w-4" />} variant="bordered">
+                Sort: {sortOptions.find((opt) => opt.key === sortBy)?.label}
               </Button>
             </DropdownTrigger>
-            <DropdownMenu 
-              aria-label="Sort options"
-              onAction={(key) => setSortBy(key as string)}
-            >
+            <DropdownMenu aria-label="Sort options" onAction={(key) => setSortBy(key as string)}>
               {sortOptions.map((option) => (
                 <DropdownItem key={option.key}>{option.label}</DropdownItem>
               ))}
             </DropdownMenu>
           </Dropdown>
 
-          <Button
-            color="primary"
-            onClick={() => router.push("/publisher/events/create")}
-          >
+          <Button color="primary" onClick={() => router.push("/publisher/events/create")}>
             Create Event
           </Button>
         </div>
       </div>
 
       {/* Events Table */}
-      <Card className="bg-background/50 backdrop-blur-lg w-full">
+      <Card className="w-full bg-background/50 backdrop-blur-lg">
         <CardBody className="p-0">
-          <Table 
-            aria-label="Events table"
-            className="w-full"
-          >
+          <Table aria-label="Events table" className="w-full">
             <TableHeader>
               <TableColumn>Title</TableColumn>
               <TableColumn>Date</TableColumn>
@@ -416,23 +391,21 @@ export default function PublisherDashboardClient() {
                     <Dropdown>
                       <DropdownTrigger>
                         <Button
-                          size="sm"
-                          variant={event.status === "published" ? "solid" : "bordered"}
                           color={
                             event.status === "published"
                               ? "success"
                               : event.status === "cancelled"
-                              ? "danger"
-                              : "default"
+                                ? "danger"
+                                : "default"
                           }
+                          size="sm"
+                          variant={event.status === "published" ? "solid" : "bordered"}
                         >
                           {event.status}
                         </Button>
                       </DropdownTrigger>
                       <DropdownMenu
-                        onAction={(key) =>
-                          handleStatusChange(event.id, key as Event["status"])
-                        }
+                        onAction={(key) => handleStatusChange(event.id, key as Event["status"])}
                       >
                         <DropdownItem key="draft">Draft</DropdownItem>
                         <DropdownItem key="published">Published</DropdownItem>
@@ -452,8 +425,8 @@ export default function PublisherDashboardClient() {
                         Edit
                       </Button>
                       <Button
-                        size="sm"
                         color="danger"
+                        size="sm"
                         variant="bordered"
                         onClick={() => handleDelete(event.id)}
                       >
@@ -469,15 +442,11 @@ export default function PublisherDashboardClient() {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center p-4">
-              <Pagination
-                total={totalPages}
-                page={currentPage}
-                onChange={setCurrentPage}
-              />
+              <Pagination page={currentPage} total={totalPages} onChange={setCurrentPage} />
             </div>
           )}
         </CardBody>
       </Card>
     </div>
   );
-} 
+}

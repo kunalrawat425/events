@@ -10,15 +10,11 @@ export default function ThemeToggle() {
   return (
     <Button
       isIconOnly
-      className="fixed top-4 right-4 z-50"
+      className="fixed right-4 top-4 z-50"
       variant="light"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
-      {theme === "dark" ? (
-        <SunIcon className="w-5 h-5" />
-      ) : (
-        <MoonIcon className="w-5 h-5" />
-      )}
+      {theme === "dark" ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
     </Button>
   );
 }

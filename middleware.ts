@@ -3,31 +3,17 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 // Add paths that require authentication
-const protectedPaths = [
-  "/dashboard",
-  "/events/create",
-  "/events/edit",
-  "/bookings",
-  "/profile",
-];
+const protectedPaths = ["/dashboard", "/events/create", "/events/edit", "/bookings", "/profile"];
 
 // Add paths that require publisher role
-const publisherPaths = [
-  "/publisher/dashboard",
-  "/publisher/events",
-  "/publisher/analytics",
-];
+const publisherPaths = ["/publisher/dashboard", "/publisher/events", "/publisher/analytics"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Check if the path requires authentication
-  const isProtectedPath = protectedPaths.some((path) =>
-    pathname.startsWith(path),
-  );
-  const isPublisherPath = publisherPaths.some((path) =>
-    pathname.startsWith(path),
-  );
+  const isProtectedPath = protectedPaths.some((path) => pathname.startsWith(path));
+  const isPublisherPath = publisherPaths.some((path) => pathname.startsWith(path));
 
   // For protected paths, we'll let the client-side handle the auth check
   if (isProtectedPath) {
@@ -44,6 +30,7 @@ export function middleware(request: NextRequest) {
 
     try {
       const userData = JSON.parse(user);
+
       if (userData.role !== "publisher") {
         return NextResponse.redirect(new URL("/unauthorized", request.url));
       }

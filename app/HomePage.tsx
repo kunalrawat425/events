@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import {
   RocketLaunchIcon,
   SparklesIcon,
@@ -11,7 +10,6 @@ import {
   BellAlertIcon,
   CalendarIcon,
 } from "@heroicons/react/24/outline";
-
 import { Button } from "@heroui/button";
 import { Card, CardBody } from "@heroui/card";
 
@@ -32,41 +30,38 @@ const interests = [
 
 const features = [
   {
-    icon: <SparklesIcon className="w-6 h-6" />,
+    icon: <SparklesIcon className="h-6 w-6" />,
     title: "AI-Powered Discovery",
     description:
       "Find events tailored to your interests with our intelligent recommendation system",
   },
   {
-    icon: <BellAlertIcon className="w-6 h-6" />,
+    icon: <BellAlertIcon className="h-6 w-6" />,
     title: "Smart Notifications",
-    description:
-      "Get personalized alerts about events you'll love, right when you need them",
+    description: "Get personalized alerts about events you'll love, right when you need them",
   },
   {
-    icon: <CalendarIcon className="w-6 h-6" />,
+    icon: <CalendarIcon className="h-6 w-6" />,
     title: "Smart Scheduling",
-    description:
-      "Let AI help you manage your event calendar and never miss an opportunity",
+    description: "Let AI help you manage your event calendar and never miss an opportunity",
   },
 ];
 
 const painPoints = [
   {
-    icon: <UserGroupIcon className="w-6 h-6" />,
+    icon: <UserGroupIcon className="h-6 w-6" />,
     title: "Finding the Right Events",
     description: "Tired of scrolling through endless event listings?",
-    solution:
-      "Our AI learns your preferences and shows you exactly what you'll love",
+    solution: "Our AI learns your preferences and shows you exactly what you'll love",
   },
   {
-    icon: <ChartBarIcon className="w-6 h-6" />,
+    icon: <ChartBarIcon className="h-6 w-6" />,
     title: "Missing Out",
     description: "Worried about missing important events?",
     solution: "Get smart notifications based on your interests and schedule",
   },
   {
-    icon: <RocketLaunchIcon className="w-6 h-6" />,
+    icon: <RocketLaunchIcon className="h-6 w-6" />,
     title: "Event Discovery",
     description: "Struggling to find events that match your interests?",
     solution: "Our AI-powered search understands what you're looking for",
@@ -91,18 +86,17 @@ export default function HomePage() {
   const handleSubscribe = async () => {
     if (!user) {
       if (selectedInterests.length > 0) {
-        localStorage.setItem(
-          "pendingInterests",
-          JSON.stringify(selectedInterests),
-        );
+        localStorage.setItem("pendingInterests", JSON.stringify(selectedInterests));
       }
 
       router.push("/auth?tab=signup");
+
       return;
     }
 
     if (selectedInterests.length === 0) {
       alert("Please select at least one interest");
+
       return;
     }
 
@@ -121,43 +115,39 @@ export default function HomePage() {
 
   const toggleInterest = (interestId: string) => {
     setSelectedInterests((prev) =>
-      prev.includes(interestId)
-        ? prev.filter((id) => id !== interestId)
-        : [...prev, interestId],
+      prev.includes(interestId) ? prev.filter((id) => id !== interestId) : [...prev, interestId]
     );
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center">
       {/* Interest Alerts Section */}
-      <section className="w-full min-h-screen flex items-center justify-center relative overflow-hidden">
+      <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
 
-        <div className="w-full px-4 py-32 relative z-10">
-          <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">
-              {hasStoredInterests
-                ? "Update Your Interest Alerts"
-                : "Subscribe to Interest Alerts"}
+        <div className="relative z-10 w-full px-4 py-32">
+          <div className="mx-auto max-w-7xl text-center">
+            <h1 className="mb-6 bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-5xl font-bold text-transparent md:text-7xl">
+              {hasStoredInterests ? "Update Your Interest Alerts" : "Subscribe to Interest Alerts"}
             </h1>
-            <p className="text-xl md:text-2xl text-foreground/80 mb-12">
+            <p className="mb-12 text-xl text-foreground/80 md:text-2xl">
               {hasStoredInterests
                 ? "Modify your interests to receive different event alerts."
                 : "Stay updated with events and activities that match your interests. Get notified when new events are posted in your areas of interest."}
             </p>
 
-            <Card className="max-w-2xl mx-auto">
+            <Card className="mx-auto max-w-2xl">
               <CardBody className="p-8">
                 <div className="space-y-6">
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
                     {interests.map((interest) => (
                       <button
                         key={interest.id}
-                        className={`p-3 rounded-lg border text-left transition-colors ${
+                        className={`rounded-lg border p-3 text-left transition-colors ${
                           selectedInterests.includes(interest.id)
-                            ? "bg-primary text-white border-primary"
-                            : "hover:bg-primary/10 border-divider"
+                            ? "border-primary bg-primary text-white"
+                            : "border-divider hover:bg-primary/10"
                         }`}
                         onClick={() => toggleInterest(interest.id)}
                       >
@@ -187,25 +177,23 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="w-full py-32 bg-background/50">
+      <section className="w-full bg-background/50 py-32">
         <div className="w-full px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl font-bold mb-4">AI-Powered Features</h2>
-              <p className="text-xl text-foreground/60">
-                Experience the future of event discovery
-              </p>
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-20 text-center">
+              <h2 className="mb-4 text-4xl font-bold">AI-Powered Features</h2>
+              <p className="text-xl text-foreground/60">Experience the future of event discovery</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
               {features.map((feature, index) => (
                 <Card
                   key={index}
-                  className="bg-background/50 backdrop-blur-lg border border-foreground/10"
+                  className="border border-foreground/10 bg-background/50 backdrop-blur-lg"
                 >
                   <CardBody className="p-8">
-                    <div className="text-primary mb-4">{feature.icon}</div>
-                    <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                    <div className="mb-4 text-primary">{feature.icon}</div>
+                    <h3 className="mb-2 text-xl font-semibold">{feature.title}</h3>
                     <p className="text-foreground/60">{feature.description}</p>
                   </CardBody>
                 </Card>
@@ -218,25 +206,25 @@ export default function HomePage() {
       {/* Pain Points Section */}
       <section className="w-full py-32">
         <div className="w-full px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl font-bold mb-4">We Understand Your Pain Points</h2>
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-20 text-center">
+              <h2 className="mb-4 text-4xl font-bold">We Understand Your Pain Points</h2>
               <p className="text-xl text-foreground/60">
                 Let us help you solve your event discovery challenges
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
               {painPoints.map((point, index) => (
                 <Card
                   key={index}
-                  className="bg-background/50 backdrop-blur-lg border border-foreground/10"
+                  className="border border-foreground/10 bg-background/50 backdrop-blur-lg"
                 >
                   <CardBody className="p-8">
-                    <div className="text-primary mb-4">{point.icon}</div>
-                    <h3 className="text-xl font-semibold mb-2">{point.title}</h3>
-                    <p className="text-foreground/60 mb-4">{point.description}</p>
-                    <p className="text-primary font-medium">{point.solution}</p>
+                    <div className="mb-4 text-primary">{point.icon}</div>
+                    <h3 className="mb-2 text-xl font-semibold">{point.title}</h3>
+                    <p className="mb-4 text-foreground/60">{point.description}</p>
+                    <p className="font-medium text-primary">{point.solution}</p>
                   </CardBody>
                 </Card>
               ))}

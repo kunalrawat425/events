@@ -5,15 +5,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Card, CardBody, CardHeader } from "@heroui/card";
+
 import { useUser } from "@/contexts/UserContext";
 
 export default function PublisherAuthClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login, signup, isLoading } = useUser();
-  const [activeTab, setActiveTab] = useState(
-    searchParams.get("tab") || "login",
-  );
+  const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "login");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -44,19 +43,18 @@ export default function PublisherAuthClient() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-background py-12">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-primary-50 to-background py-12">
       <div className="w-full max-w-md px-4">
-        <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+        <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
           <CardHeader className="pb-0">
-            <div className="text-center mb-6">
+            <div className="mb-6 text-center">
               <h1 className="text-2xl font-bold">Publisher Portal</h1>
-              <p className="text-default-500">
-                Manage your events and reach your audience
-              </p>
+              <p className="text-default-500">Manage your events and reach your audience</p>
             </div>
             <div className="flex space-x-4">
               <Button
@@ -80,10 +78,7 @@ export default function PublisherAuthClient() {
               {activeTab === "signup" && (
                 <>
                   <div>
-                    <label
-                      className="block text-sm font-medium mb-2"
-                      htmlFor="name"
-                    >
+                    <label className="mb-2 block text-sm font-medium" htmlFor="name">
                       Full Name
                     </label>
                     <Input
@@ -97,10 +92,7 @@ export default function PublisherAuthClient() {
                     />
                   </div>
                   <div>
-                    <label
-                      className="block text-sm font-medium mb-2"
-                      htmlFor="organization"
-                    >
+                    <label className="mb-2 block text-sm font-medium" htmlFor="organization">
                       Organization Name
                     </label>
                     <Input
@@ -117,10 +109,7 @@ export default function PublisherAuthClient() {
               )}
 
               <div>
-                <label
-                  className="block text-sm font-medium mb-2"
-                  htmlFor="email"
-                >
+                <label className="mb-2 block text-sm font-medium" htmlFor="email">
                   Email Address
                 </label>
                 <Input
@@ -135,10 +124,7 @@ export default function PublisherAuthClient() {
               </div>
 
               <div>
-                <label
-                  className="block text-sm font-medium mb-2"
-                  htmlFor="password"
-                >
+                <label className="mb-2 block text-sm font-medium" htmlFor="password">
                   Password
                 </label>
                 <Input
@@ -152,7 +138,7 @@ export default function PublisherAuthClient() {
                 />
               </div>
 
-              {error && <div className="text-red-500 text-sm">{error}</div>}
+              {error && <div className="text-sm text-red-500">{error}</div>}
 
               <Button
                 className="w-full"
@@ -169,4 +155,4 @@ export default function PublisherAuthClient() {
       </div>
     </div>
   );
-} 
+}

@@ -43,7 +43,7 @@ export default function PublisherEventList() {
     (event) =>
       event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.category.toLowerCase().includes(searchQuery.toLowerCase()),
+      event.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleCreateEvent = () => {
@@ -77,11 +77,7 @@ export default function PublisherEventList() {
   const handleSaveEvent = () => {
     if (selectedEvent) {
       if (isEditing) {
-        setEvents(
-          events.map((event) =>
-            event.id === selectedEvent.id ? selectedEvent : event,
-          ),
-        );
+        setEvents(events.map((event) => (event.id === selectedEvent.id ? selectedEvent : event)));
       } else {
         setEvents([...events, selectedEvent]);
       }
@@ -104,7 +100,7 @@ export default function PublisherEventList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <Input
           className="max-w-xs"
           placeholder="Search events..."
@@ -143,11 +139,7 @@ export default function PublisherEventList() {
               <TableCell>${event.price}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="light"
-                    onPress={() => handleEditEvent(event)}
-                  >
+                  <Button size="sm" variant="light" onPress={() => handleEditEvent(event)}>
                     Edit
                   </Button>
                   <Button
@@ -169,9 +161,7 @@ export default function PublisherEventList() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>
-                {isEditing ? "Edit Event" : "Create New Event"}
-              </ModalHeader>
+              <ModalHeader>{isEditing ? "Edit Event" : "Create New Event"}</ModalHeader>
               <ModalBody>
                 {selectedEvent && (
                   <div className="space-y-4">
@@ -249,7 +239,7 @@ export default function PublisherEventList() {
                       }
                     />
                     <select
-                      className="w-full p-2 border rounded"
+                      className="w-full rounded border p-2"
                       value={selectedEvent.status}
                       onChange={(e) =>
                         setSelectedEvent({

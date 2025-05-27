@@ -63,10 +63,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-background/80 flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background to-background/80 p-4">
+      <div className="grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-2">
         {/* Left side - Visual */}
-        <div className="hidden md:block relative h-[600px] rounded-2xl overflow-hidden">
+        <div className="relative hidden h-[600px] overflow-hidden rounded-2xl md:block">
           <Image
             fill
             priority
@@ -76,19 +76,17 @@ export default function LoginPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute bottom-8 left-8 text-white">
-            <h2 className="text-3xl font-bold mb-2">Welcome Back!</h2>
+            <h2 className="mb-2 text-3xl font-bold">Welcome Back!</h2>
             <p className="text-white/80">Login to continue your journey</p>
           </div>
         </div>
 
         {/* Right side - Login Form */}
-        <Card className="w-full max-w-md mx-auto bg-background/50 backdrop-blur-lg border border-foreground/10">
+        <Card className="mx-auto w-full max-w-md border border-foreground/10 bg-background/50 backdrop-blur-lg">
           <CardBody className="p-8">
-            <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold mb-2">Login</h1>
-              <p className="text-foreground/60">
-                Enter your credentials to continue
-              </p>
+            <div className="mb-8 text-center">
+              <h1 className="mb-2 text-2xl font-bold">Login</h1>
+              <p className="text-foreground/60">Enter your credentials to continue</p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
@@ -113,18 +111,10 @@ export default function LoginPage() {
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center space-x-2">
-                  <input
-                    className="rounded border-foreground/20"
-                    type="checkbox"
-                  />
-                  <span className="text-sm text-foreground/60">
-                    Remember me
-                  </span>
+                  <input className="rounded border-foreground/20" type="checkbox" />
+                  <span className="text-sm text-foreground/60">Remember me</span>
                 </label>
-                <a
-                  className="text-sm text-primary hover:underline"
-                  href="/forgot-password"
-                >
+                <a className="text-sm text-primary hover:underline" href="/forgot-password">
                   Forgot password?
                 </a>
               </div>
@@ -138,9 +128,7 @@ export default function LoginPage() {
                   <div className="w-full border-t border-foreground/10" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-background text-foreground/60">
-                    Or continue with
-                  </span>
+                  <span className="bg-background px-2 text-foreground/60">Or continue with</span>
                 </div>
               </div>
 

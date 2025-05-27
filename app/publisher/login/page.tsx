@@ -51,10 +51,10 @@ export default function PublisherLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-background/80 flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background to-background/80 p-4">
+      <div className="grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-2">
         {/* Left side - Visual */}
-        <div className="hidden md:block relative h-[600px] rounded-2xl overflow-hidden">
+        <div className="relative hidden h-[600px] overflow-hidden rounded-2xl md:block">
           <Image
             fill
             priority
@@ -64,21 +64,17 @@ export default function PublisherLoginPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute bottom-8 left-8 text-white">
-            <h2 className="text-3xl font-bold mb-2">Welcome Back!</h2>
-            <p className="text-white/80">
-              Manage your events and grow your business
-            </p>
+            <h2 className="mb-2 text-3xl font-bold">Welcome Back!</h2>
+            <p className="text-white/80">Manage your events and grow your business</p>
           </div>
         </div>
 
         {/* Right side - Login Form */}
-        <Card className="w-full max-w-md mx-auto bg-background/50 backdrop-blur-lg border border-foreground/10">
+        <Card className="mx-auto w-full max-w-md border border-foreground/10 bg-background/50 backdrop-blur-lg">
           <CardBody className="p-8">
-            <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold mb-2">Publisher Login</h1>
-              <p className="text-foreground/60">
-                Access your event management dashboard
-              </p>
+            <div className="mb-8 text-center">
+              <h1 className="mb-2 text-2xl font-bold">Publisher Login</h1>
+              <p className="text-foreground/60">Access your event management dashboard</p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
@@ -109,7 +105,7 @@ export default function PublisherLoginPage() {
                   >
                     {showPassword ? (
                       <svg
-                        className="w-5 h-5"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -123,7 +119,7 @@ export default function PublisherLoginPage() {
                       </svg>
                     ) : (
                       <svg
-                        className="w-5 h-5"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -148,13 +144,8 @@ export default function PublisherLoginPage() {
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center">
-                  <input
-                    className="form-checkbox h-4 w-4 text-primary"
-                    type="checkbox"
-                  />
-                  <span className="ml-2 text-sm text-foreground/60">
-                    Remember me
-                  </span>
+                  <input className="form-checkbox h-4 w-4 text-primary" type="checkbox" />
+                  <span className="ml-2 text-sm text-foreground/60">Remember me</span>
                 </label>
                 <a
                   className="text-sm text-primary hover:underline"
@@ -173,9 +164,7 @@ export default function PublisherLoginPage() {
                   <div className="w-full border-t border-foreground/10" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-background text-foreground/60">
-                    Or continue with
-                  </span>
+                  <span className="bg-background px-2 text-foreground/60">Or continue with</span>
                 </div>
               </div>
 
@@ -199,10 +188,7 @@ export default function PublisherLoginPage() {
 
             <p className="mt-6 text-center text-sm text-foreground/60">
               Don&apos;t have a publisher account?{" "}
-              <a
-                className="text-primary hover:underline"
-                href="/publisher/signup"
-              >
+              <a className="text-primary hover:underline" href="/publisher/signup">
                 Login
               </a>
             </p>

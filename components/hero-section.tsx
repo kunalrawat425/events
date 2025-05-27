@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Card, CardBody, CardHeader } from "@heroui/card";
@@ -44,25 +43,26 @@ export const HeroSection = () => {
     if (!user) {
       if (!email) {
         alert("Please enter your email address");
+
         return;
       }
 
       if (selectedInterests.length === 0) {
         alert("Please select at least one interest");
+
         return;
       }
 
-      localStorage.setItem(
-        "pendingInterests",
-        JSON.stringify(selectedInterests),
-      );
+      localStorage.setItem("pendingInterests", JSON.stringify(selectedInterests));
       localStorage.setItem("pendingEmail", email);
       router.push("/auth?tab=signup");
+
       return;
     }
 
     if (selectedInterests.length === 0) {
       alert("Please select at least one interest");
+
       return;
     }
 
@@ -80,9 +80,7 @@ export const HeroSection = () => {
 
   const toggleInterest = (interestId: string) => {
     setSelectedInterests((prev) =>
-      prev.includes(interestId)
-        ? prev.filter((id) => id !== interestId)
-        : [...prev, interestId],
+      prev.includes(interestId) ? prev.filter((id) => id !== interestId) : [...prev, interestId]
     );
   };
 
@@ -91,19 +89,17 @@ export const HeroSection = () => {
   }
 
   return (
-    <div className="relative min-h-[600px] flex items-center justify-center bg-gradient-to-b from-primary-50 to-background">
+    <div className="relative flex min-h-[600px] items-center justify-center bg-gradient-to-b from-primary-50 to-background">
       <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Subscribe to Interest Alerts
-          </h1>
-          <p className="text-xl text-default-600 max-w-2xl mx-auto">
-            Stay updated with events and activities that match your interests.
-            Get notified when new events are posted in your areas of interest.
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold md:text-6xl">Subscribe to Interest Alerts</h1>
+          <p className="mx-auto max-w-2xl text-xl text-default-600">
+            Stay updated with events and activities that match your interests. Get notified when new
+            events are posted in your areas of interest.
           </p>
         </div>
 
-        <Card className="max-w-2xl mx-auto">
+        <Card className="mx-auto max-w-2xl">
           <CardHeader className="pb-0">
             <h2 className="text-2xl font-semibold">
               {user ? "Manage Your Interest Alerts" : "Select Your Interests"}
@@ -111,14 +107,14 @@ export const HeroSection = () => {
           </CardHeader>
           <CardBody>
             <div className="space-y-6">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
                 {interests.map((interest) => (
                   <button
                     key={interest.id}
-                    className={`p-3 rounded-lg border text-left transition-colors ${
+                    className={`rounded-lg border p-3 text-left transition-colors ${
                       selectedInterests.includes(interest.id)
-                        ? "bg-primary text-white border-primary"
-                        : "hover:bg-primary/10 border-divider"
+                        ? "border-primary bg-primary text-white"
+                        : "border-divider hover:bg-primary/10"
                     }`}
                     onClick={() => toggleInterest(interest.id)}
                   >
@@ -129,16 +125,13 @@ export const HeroSection = () => {
 
               {!user && (
                 <div>
-                  <label
-                    className="block text-sm font-medium mb-2"
-                    htmlFor="email"
-                  >
+                  <label className="mb-2 block text-sm font-medium" htmlFor="email">
                     Email Address
                   </label>
                   <Input
+                    required
                     id="email"
                     placeholder="Enter your email"
-                    required
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -159,9 +152,9 @@ export const HeroSection = () => {
                 <p className="text-center text-sm text-default-500">
                   Already have an account?{" "}
                   <Button
-                    className="p-0 h-auto"
-                    onPress={() => router.push("/auth?tab=login")}
+                    className="h-auto p-0"
                     variant="light"
+                    onPress={() => router.push("/auth?tab=login")}
                   >
                     Login
                   </Button>

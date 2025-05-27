@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
+
 import PublisherDashboardClient from "./PublisherDashboardClient";
 
 export default function PublisherDashboard() {

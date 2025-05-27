@@ -39,8 +39,7 @@ const eventData = {
       name: "VIP",
       price: 499,
       available: 20,
-      description:
-        "Access to all sessions, workshops, and exclusive networking events",
+      description: "Access to all sessions, workshops, and exclusive networking events",
     },
   ],
 };
@@ -73,50 +72,44 @@ export default function BookingForm({ eventId }: BookingFormProps) {
     }
   };
 
-  const selectedTicketData = eventData.tickets.find(
-    (t) => t.id === selectedTicket,
-  );
-  const totalPrice = selectedTicketData
-    ? selectedTicketData.price * quantity
-    : 0;
+  const selectedTicketData = eventData.tickets.find((t) => t.id === selectedTicket);
+  const totalPrice = selectedTicketData ? selectedTicketData.price * quantity : 0;
 
   return (
     <main className="min-h-screen bg-background py-12">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8">Book Your Tickets</h1>
+        <div className="mx-auto max-w-4xl">
+          <h1 className="mb-8 text-3xl font-bold">Book Your Tickets</h1>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Left Column - Event Details */}
-            <div className="lg:col-span-2 space-y-6">
-              <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+            <div className="space-y-6 lg:col-span-2">
+              <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
                 <CardBody className="p-6">
-                  <h2 className="text-2xl font-bold mb-4">{eventData.title}</h2>
+                  <h2 className="mb-4 text-2xl font-bold">{eventData.title}</h2>
                   <div className="space-y-4">
                     <div className="flex items-center text-foreground/70">
-                      <CalendarIcon className="w-5 h-5 mr-2" />
+                      <CalendarIcon className="mr-2 h-5 w-5" />
                       <span>{eventData.date}</span>
                     </div>
                     <div className="flex items-center text-foreground/70">
-                      <ClockIcon className="w-5 h-5 mr-2" />
+                      <ClockIcon className="mr-2 h-5 w-5" />
                       <span>{eventData.time}</span>
                     </div>
                     <div className="flex items-center text-foreground/70">
-                      <MapPinIcon className="w-5 h-5 mr-2" />
+                      <MapPinIcon className="mr-2 h-5 w-5" />
                       <span>{eventData.location}</span>
                     </div>
                     <div className="flex items-center text-foreground/70">
-                      <UserGroupIcon className="w-5 h-5 mr-2" />
-                      <span>
-                        {selectedTicketData?.available} tickets available
-                      </span>
+                      <UserGroupIcon className="mr-2 h-5 w-5" />
+                      <span>{selectedTicketData?.available} tickets available</span>
                     </div>
                   </div>
                 </CardBody>
               </Card>
 
               <form className="space-y-6" onSubmit={handleSubmit}>
-                <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+                <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
                   <CardHeader className="p-6">
                     <h3 className="text-xl font-semibold">Select Tickets</h3>
                   </CardHeader>
@@ -127,17 +120,11 @@ export default function BookingForm({ eventId }: BookingFormProps) {
                       onValueChange={setSelectedTicket}
                     >
                       {eventData.tickets.map((ticket) => (
-                        <Radio
-                          key={ticket.id}
-                          className="w-full"
-                          value={ticket.id}
-                        >
-                          <div className="flex justify-between items-start w-full">
+                        <Radio key={ticket.id} className="w-full" value={ticket.id}>
+                          <div className="flex w-full items-start justify-between">
                             <div>
                               <p className="font-medium">{ticket.name}</p>
-                              <p className="text-sm text-foreground/70">
-                                {ticket.description}
-                              </p>
+                              <p className="text-sm text-foreground/70">{ticket.description}</p>
                             </div>
                             <p className="font-semibold">${ticket.price}</p>
                           </div>
@@ -147,10 +134,7 @@ export default function BookingForm({ eventId }: BookingFormProps) {
 
                     {selectedTicket && (
                       <div className="mt-6">
-                        <label
-                          className="block text-sm font-medium mb-2"
-                          htmlFor="quantity"
-                        >
+                        <label className="mb-2 block text-sm font-medium" htmlFor="quantity">
                           Quantity
                         </label>
                         <Input
@@ -160,16 +144,14 @@ export default function BookingForm({ eventId }: BookingFormProps) {
                           min={1}
                           type="number"
                           value={quantity.toString()}
-                          onChange={(e) =>
-                            setQuantity(parseInt(e.target.value))
-                          }
+                          onChange={(e) => setQuantity(parseInt(e.target.value))}
                         />
                       </div>
                     )}
                   </CardBody>
                 </Card>
 
-                <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+                <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
                   <CardHeader className="p-6">
                     <h3 className="text-xl font-semibold">Payment Method</h3>
                   </CardHeader>
@@ -181,17 +163,13 @@ export default function BookingForm({ eventId }: BookingFormProps) {
                     >
                       <Radio className="w-full" value="card">
                         <div className="flex items-center">
-                          <CreditCardIcon className="w-5 h-5 mr-2" />
+                          <CreditCardIcon className="mr-2 h-5 w-5" />
                           <span>Credit Card</span>
                         </div>
                       </Radio>
                       <Radio className="w-full" value="paypal">
                         <div className="flex items-center">
-                          <svg
-                            className="w-5 h-5 mr-2"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
+                          <svg className="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M20.067 8.478c.492.315.844.825.844 1.522 0 1.845-1.534 3.373-3.373 3.373h-.674c-.315 0-.674.315-.674.674v1.348c0 .315-.315.674-.674.674h-1.348c-.315 0-.674-.315-.674-.674v-1.348c0-.315-.315-.674-.674-.674h-.674c-1.839 0-3.373-1.528-3.373-3.373 0-.697.352-1.207.844-1.522.315-.315.844-.315 1.348 0 .315.315.674.315.844 0 .315-.315.844-.315 1.348 0z" />
                           </svg>
                           <span>PayPal</span>
@@ -214,12 +192,7 @@ export default function BookingForm({ eventId }: BookingFormProps) {
                             placeholder="MM/YY"
                             type="text"
                           />
-                          <Input
-                            label="CVV"
-                            maxLength={3}
-                            placeholder="123"
-                            type="text"
-                          />
+                          <Input label="CVV" maxLength={3} placeholder="123" type="text" />
                         </div>
                       </div>
                     )}
@@ -227,10 +200,7 @@ export default function BookingForm({ eventId }: BookingFormProps) {
                 </Card>
 
                 <div className="space-y-4">
-                  <Checkbox
-                    isSelected={agreeToTerms}
-                    onValueChange={setAgreeToTerms}
-                  >
+                  <Checkbox isSelected={agreeToTerms} onValueChange={setAgreeToTerms}>
                     I agree to the terms and conditions
                   </Checkbox>
 
@@ -250,7 +220,7 @@ export default function BookingForm({ eventId }: BookingFormProps) {
 
             {/* Right Column - Order Summary */}
             <div className="lg:col-span-1">
-              <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10 sticky top-24">
+              <Card className="sticky top-24 border border-foreground/10 bg-background/50 backdrop-blur-sm">
                 <CardHeader className="p-6">
                   <h3 className="text-xl font-semibold">Order Summary</h3>
                 </CardHeader>

@@ -9,11 +9,7 @@ export const metadata: Metadata = {
   description: "Your event booking has been confirmed",
 };
 
-export default function ConfirmationPage({
-  params,
-}: {
-  params: any;
-}) {
+export default function ConfirmationPage({ params }: { params: any }) {
   return (
     <AuthGuard>
       <BookingConfirmation eventId={params.id} />

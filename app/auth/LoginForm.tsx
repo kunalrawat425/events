@@ -49,7 +49,7 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="mx-auto w-full max-w-md">
       <CardHeader className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold">Welcome Back</h1>
         <p className="text-default-500">Login to your account</p>
@@ -88,14 +88,8 @@ export function LoginForm() {
             value={formData.password}
             onChange={handleInputChange}
           />
-          {error && <p className="text-danger text-sm">{error}</p>}
-          <Button
-            className="w-full"
-            color="primary"
-            isLoading={isLoading}
-            size="lg"
-            type="submit"
-          >
+          {error && <p className="text-sm text-danger">{error}</p>}
+          <Button className="w-full" color="primary" isLoading={isLoading} size="lg" type="submit">
             Login
           </Button>
         </form>
@@ -105,7 +99,7 @@ export function LoginForm() {
           <p className="text-sm text-default-500">
             Don&apos;t have an account?{" "}
             <Button
-              className="p-0 h-auto"
+              className="h-auto p-0"
               variant="light"
               onPress={() => router.push("/auth?tab=signup")}
             >

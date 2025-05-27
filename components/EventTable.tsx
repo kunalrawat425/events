@@ -149,11 +149,7 @@ export const EventTable = ({
               <TableCell>{event.organizer}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="light"
-                    onPress={() => handleEdit(event)}
-                  >
+                  <Button size="sm" variant="light" onPress={() => handleEdit(event)}>
                     Edit
                   </Button>
                   {isPublisher && (
@@ -177,9 +173,7 @@ export const EventTable = ({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>
-                {editMode ? "Edit Event" : "Event Details"}
-              </ModalHeader>
+              <ModalHeader>{editMode ? "Edit Event" : "Event Details"}</ModalHeader>
               <ModalBody>
                 {selectedEvent && (
                   <div className="flex flex-col gap-4">

@@ -6,6 +6,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Card, CardBody, CardHeader } from "@heroui/card";
+
 import { useUser } from "@/contexts/UserContext";
 
 export default function AuthClient() {
@@ -13,9 +14,7 @@ export default function AuthClient() {
   const searchParams = useSearchParams();
   const { login, signup, isLoading } = useUser();
   const [activeTab, setActiveTab] = useState(
-    searchParams.get("tab") === "signin"
-      ? "login"
-      : searchParams.get("tab") || "login",
+    searchParams.get("tab") === "signin" ? "login" : searchParams.get("tab") || "login"
   );
   const [formData, setFormData] = useState({
     email: "",
@@ -34,11 +33,13 @@ export default function AuthClient() {
     if (activeTab === "signup") {
       if (formData.password !== confirmPassword) {
         setError("Passwords do not match");
+
         return;
       }
 
       if (formData.password.length < 6) {
         setError("Password must be at least 6 characters long");
+
         return;
       }
     }
@@ -61,15 +62,16 @@ export default function AuthClient() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-background py-12">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-primary-50 to-background py-12">
       <div className="w-full max-w-md px-4">
-        <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+        <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
           <CardHeader className="pb-0">
-            <div className="flex space-x-4 mb-6">
+            <div className="mb-6 flex space-x-4">
               <Button
                 className={`flex-1 ${activeTab === "login" ? "bg-primary" : "bg-transparent"}`}
                 variant={activeTab === "login" ? "solid" : "light"}
@@ -90,17 +92,14 @@ export default function AuthClient() {
             <form className="space-y-6" onSubmit={handleSubmit}>
               {activeTab === "signup" && (
                 <div>
-                  <label
-                    className="block text-sm font-medium mb-2"
-                    htmlFor="name"
-                  >
+                  <label className="mb-2 block text-sm font-medium" htmlFor="name">
                     Full Name
                   </label>
                   <Input
+                    required
                     id="name"
                     name="name"
                     placeholder="Enter your full name"
-                    required
                     type="text"
                     value={formData.name}
                     onChange={handleChange}
@@ -109,17 +108,14 @@ export default function AuthClient() {
               )}
 
               <div>
-                <label
-                  className="block text-sm font-medium mb-2"
-                  htmlFor="email"
-                >
+                <label className="mb-2 block text-sm font-medium" htmlFor="email">
                   Email Address
                 </label>
                 <Input
+                  required
                   id="email"
                   name="email"
                   placeholder="Enter your email"
-                  required
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
@@ -127,24 +123,21 @@ export default function AuthClient() {
               </div>
 
               <div>
-                <label
-                  className="block text-sm font-medium mb-2"
-                  htmlFor="password"
-                >
+                <label className="mb-2 block text-sm font-medium" htmlFor="password">
                   Password
                 </label>
                 <div className="relative">
                   <Input
+                    required
                     id="password"
                     name="password"
                     placeholder="Enter your password"
-                    required
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={handleChange}
                   />
                   <button
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-foreground/60 hover:text-foreground"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-foreground/60 hover:text-foreground"
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                   >
@@ -159,28 +152,23 @@ export default function AuthClient() {
 
               {activeTab === "signup" && (
                 <div>
-                  <label
-                    className="block text-sm font-medium mb-2"
-                    htmlFor="confirmPassword"
-                  >
+                  <label className="mb-2 block text-sm font-medium" htmlFor="confirmPassword">
                     Confirm Password
                   </label>
                   <div className="relative">
                     <Input
+                      required
                       id="confirmPassword"
                       name="confirmPassword"
                       placeholder="Confirm your password"
-                      required
                       type={showConfirmPassword ? "text" : "password"}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <button
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-foreground/60 hover:text-foreground"
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-foreground/60 hover:text-foreground"
                       type="button"
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
                       {showConfirmPassword ? (
                         <EyeSlashIcon className="h-5 w-5" />
@@ -193,17 +181,10 @@ export default function AuthClient() {
               )}
 
               {error && (
-                <div className="p-3 rounded-lg bg-danger/10 text-danger text-sm">
-                  {error}
-                </div>
+                <div className="rounded-lg bg-danger/10 p-3 text-sm text-danger">{error}</div>
               )}
 
-              <Button
-                className="w-full"
-                color="primary"
-                isLoading={isLoading}
-                type="submit"
-              >
+              <Button className="w-full" color="primary" isLoading={isLoading} type="submit">
                 {activeTab === "login" ? "Login" : "Sign Up"}
               </Button>
             </form>

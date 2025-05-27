@@ -67,11 +67,11 @@ export default function PublisherSignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-background/80 flex items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background to-background/80 p-4">
       <ThemeToggle />
-      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div className="grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-2">
         {/* Left side - Visual */}
-        <div className="hidden md:block relative h-[600px] rounded-2xl overflow-hidden">
+        <div className="relative hidden h-[600px] overflow-hidden rounded-2xl md:block">
           <Image
             fill
             priority
@@ -81,9 +81,7 @@ export default function PublisherSignupPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute bottom-8 left-8 text-white">
-            <h2 className="text-3xl font-bold mb-2">
-              Grow Your Event Business
-            </h2>
+            <h2 className="mb-2 text-3xl font-bold">Grow Your Event Business</h2>
             <p className="text-white/80">
               Join our platform and reach thousands of potential attendees
             </p>
@@ -91,15 +89,11 @@ export default function PublisherSignupPage() {
         </div>
 
         {/* Right side - Signup Form */}
-        <Card className="w-full max-w-md mx-auto bg-background/50 backdrop-blur-lg border border-foreground/10">
+        <Card className="mx-auto w-full max-w-md border border-foreground/10 bg-background/50 backdrop-blur-lg">
           <CardBody className="p-8">
-            <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold mb-2">
-                Create Publisher Account
-              </h1>
-              <p className="text-foreground/60">
-                Start managing your events with AI-powered tools
-              </p>
+            <div className="mb-8 text-center">
+              <h1 className="mb-2 text-2xl font-bold">Create Publisher Account</h1>
+              <p className="text-foreground/60">Start managing your events with AI-powered tools</p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
@@ -157,7 +151,7 @@ export default function PublisherSignupPage() {
                   >
                     {showPassword ? (
                       <svg
-                        className="w-5 h-5"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -171,7 +165,7 @@ export default function PublisherSignupPage() {
                       </svg>
                     ) : (
                       <svg
-                        className="w-5 h-5"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -209,7 +203,7 @@ export default function PublisherSignupPage() {
                   >
                     {showConfirmPassword ? (
                       <svg
-                        className="w-5 h-5"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -223,7 +217,7 @@ export default function PublisherSignupPage() {
                       </svg>
                     ) : (
                       <svg
-                        className="w-5 h-5"
+                        className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -255,9 +249,7 @@ export default function PublisherSignupPage() {
                   <div className="w-full border-t border-foreground/10" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-background text-foreground/60">
-                    Or sign up with
-                  </span>
+                  <span className="bg-background px-2 text-foreground/60">Or sign up with</span>
                 </div>
               </div>
 
@@ -281,10 +273,7 @@ export default function PublisherSignupPage() {
 
             <p className="mt-6 text-center text-sm text-foreground/60">
               Already have an account?{" "}
-              <a
-                className="text-primary hover:underline"
-                href="/publisher/login"
-              >
+              <a className="text-primary hover:underline" href="/publisher/login">
                 Login
               </a>
             </p>

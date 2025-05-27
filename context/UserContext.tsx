@@ -67,9 +67,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, login, signup, logout }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={{ user, login, signup, logout }}>{children}</UserContext.Provider>
   );
 }
 

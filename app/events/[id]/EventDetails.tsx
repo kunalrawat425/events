@@ -96,33 +96,31 @@ export default function EventDetails() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="px-3 py-1 text-sm font-medium rounded-full bg-primary/90 text-white backdrop-blur-sm">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-4 flex items-center gap-2">
+              <span className="rounded-full bg-primary/90 px-3 py-1 text-sm font-medium text-white backdrop-blur-sm">
                 {eventData.category}
               </span>
-              <span className="px-3 py-1 text-sm font-medium rounded-full bg-background/90 text-foreground backdrop-blur-sm">
+              <span className="rounded-full bg-background/90 px-3 py-1 text-sm font-medium text-foreground backdrop-blur-sm">
                 {eventData.price}
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {eventData.title}
-            </h1>
+            <h1 className="mb-4 text-4xl font-bold text-white md:text-5xl">{eventData.title}</h1>
             <div className="flex flex-wrap gap-4 text-white/90">
               <div className="flex items-center">
-                <CalendarIcon aria-hidden="true" className="w-5 h-5 mr-2" />
+                <CalendarIcon aria-hidden="true" className="mr-2 h-5 w-5" />
                 <time dateTime={eventData.date}>{eventData.date}</time>
               </div>
               <div className="flex items-center">
-                <ClockIcon aria-hidden="true" className="w-5 h-5 mr-2" />
+                <ClockIcon aria-hidden="true" className="mr-2 h-5 w-5" />
                 <time dateTime={eventData.time}>{eventData.time}</time>
               </div>
               <div className="flex items-center">
-                <MapPinIcon aria-hidden="true" className="w-5 h-5 mr-2" />
+                <MapPinIcon aria-hidden="true" className="mr-2 h-5 w-5" />
                 <address className="not-italic">{eventData.location}</address>
               </div>
               <div className="flex items-center">
-                <UserGroupIcon aria-hidden="true" className="w-5 h-5 mr-2" />
+                <UserGroupIcon aria-hidden="true" className="mr-2 h-5 w-5" />
                 <span>{eventData.attendees} attending</span>
               </div>
             </div>
@@ -131,40 +129,33 @@ export default function EventDetails() {
       </section>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="mx-auto max-w-7xl px-4 py-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Left Column - Event Details */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="space-y-8 lg:col-span-2">
             {/* Description */}
-            <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+            <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
               <CardBody className="p-6">
-                <h2 className="text-2xl font-bold mb-4">About This Event</h2>
-                <p className="text-foreground/70 leading-relaxed">
-                  {eventData.description}
-                </p>
+                <h2 className="mb-4 text-2xl font-bold">About This Event</h2>
+                <p className="leading-relaxed text-foreground/70">{eventData.description}</p>
               </CardBody>
             </Card>
 
             {/* Schedule */}
-            <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+            <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
               <CardBody className="p-6">
-                <h2 className="text-2xl font-bold mb-6">Schedule</h2>
+                <h2 className="mb-6 text-2xl font-bold">Schedule</h2>
                 <div className="space-y-6">
                   {eventData.schedule.map((item, index) => (
                     <div key={index} className="flex gap-4">
                       <div className="w-24 flex-shrink-0">
-                        <time
-                          className="text-primary font-medium"
-                          dateTime={item.time}
-                        >
+                        <time className="font-medium text-primary" dateTime={item.time}>
                           {item.time}
                         </time>
                       </div>
                       <div>
-                        <h3 className="font-semibold mb-1">{item.title}</h3>
-                        <p className="text-foreground/70 text-sm">
-                          {item.description}
-                        </p>
+                        <h3 className="mb-1 font-semibold">{item.title}</h3>
+                        <p className="text-sm text-foreground/70">{item.description}</p>
                       </div>
                     </div>
                   ))}
@@ -173,31 +164,19 @@ export default function EventDetails() {
             </Card>
 
             {/* Venue Details */}
-            <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+            <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
               <CardBody className="p-6">
-                <h2 className="text-2xl font-bold mb-6">Venue</h2>
+                <h2 className="mb-6 text-2xl font-bold">Venue</h2>
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">
-                      {eventData.venue.name}
-                    </h3>
-                    <p className="text-foreground/70 mb-4">
-                      {eventData.venue.description}
-                    </p>
-                    <div className="flex items-center text-foreground/70 mb-2">
-                      <MapPinIcon
-                        aria-hidden="true"
-                        className="w-5 h-5 mr-2 text-primary"
-                      />
-                      <address className="not-italic">
-                        {eventData.address}
-                      </address>
+                    <h3 className="mb-2 text-xl font-semibold">{eventData.venue.name}</h3>
+                    <p className="mb-4 text-foreground/70">{eventData.venue.description}</p>
+                    <div className="mb-2 flex items-center text-foreground/70">
+                      <MapPinIcon aria-hidden="true" className="mr-2 h-5 w-5 text-primary" />
+                      <address className="not-italic">{eventData.address}</address>
                     </div>
-                    <div className="flex items-center text-foreground/70 mb-2">
-                      <PhoneIcon
-                        aria-hidden="true"
-                        className="w-5 h-5 mr-2 text-primary"
-                      />
+                    <div className="mb-2 flex items-center text-foreground/70">
+                      <PhoneIcon aria-hidden="true" className="mr-2 h-5 w-5 text-primary" />
                       <a
                         className="hover:text-primary"
                         href={`tel:${eventData.venue.contact.phone}`}
@@ -206,14 +185,8 @@ export default function EventDetails() {
                       </a>
                     </div>
                     <div className="flex items-center text-foreground/70">
-                      <GlobeAltIcon
-                        aria-hidden="true"
-                        className="w-5 h-5 mr-2 text-primary"
-                      />
-                      <a
-                        className="hover:text-primary"
-                        href={eventData.venue.contact.website}
-                      >
+                      <GlobeAltIcon aria-hidden="true" className="mr-2 h-5 w-5 text-primary" />
+                      <a className="hover:text-primary" href={eventData.venue.contact.website}>
                         {eventData.venue.contact.website}
                       </a>
                     </div>
@@ -226,7 +199,7 @@ export default function EventDetails() {
                       {eventData.venue.images.map((image, index) => (
                         <div
                           key={index}
-                          className={`cursor-pointer rounded-lg overflow-hidden ${
+                          className={`cursor-pointer overflow-hidden rounded-lg ${
                             activeImage === index ? "ring-2 ring-primary" : ""
                           }`}
                           role="button"
@@ -241,7 +214,7 @@ export default function EventDetails() {
                           <Image
                             fill
                             alt={`${eventData.venue.name} - Photo ${index + 1}`}
-                            className="object-cover hover:scale-105 transition-transform duration-300"
+                            className="object-cover transition-transform duration-300 hover:scale-105"
                             src={image}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
@@ -257,16 +230,13 @@ export default function EventDetails() {
 
                   {/* Amenities */}
                   <div>
-                    <h3 className="font-semibold mb-4">Amenities</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <h3 className="mb-4 font-semibold">Amenities</h3>
+                    <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
                       {eventData.venue.amenities.map((amenity, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center text-foreground/70"
-                        >
+                        <div key={index} className="flex items-center text-foreground/70">
                           <span
                             aria-hidden="true"
-                            className="w-2 h-2 bg-primary rounded-full mr-2"
+                            className="mr-2 h-2 w-2 rounded-full bg-primary"
                           />
                           {amenity}
                         </div>
@@ -280,40 +250,32 @@ export default function EventDetails() {
 
           {/* Right Column - Actions */}
           <div className="space-y-6">
-            <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10 sticky top-24">
+            <Card className="sticky top-24 border border-foreground/10 bg-background/50 backdrop-blur-sm">
               <CardBody className="p-6">
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold">
-                      {eventData.price}
-                    </span>
+                    <span className="text-2xl font-bold">{eventData.price}</span>
                     <Button
                       isIconOnly
-                      aria-label={
-                        isSaved ? "Remove from saved events" : "Save event"
-                      }
+                      aria-label={isSaved ? "Remove from saved events" : "Save event"}
                       className={isSaved ? "text-danger" : "text-foreground/70"}
                       variant="light"
                       onClick={() => setIsSaved(!isSaved)}
                     >
-                      <HeartIcon aria-hidden="true" className="w-6 h-6" />
+                      <HeartIcon aria-hidden="true" className="h-6 w-6" />
                     </Button>
                   </div>
                   <Button
                     className="w-full"
                     color="primary"
                     size="lg"
-                    startContent={
-                      <TicketIcon aria-hidden="true" className="w-5 h-5" />
-                    }
+                    startContent={<TicketIcon aria-hidden="true" className="h-5 w-5" />}
                   >
                     Get Tickets
                   </Button>
                   <Button
                     className="w-full"
-                    startContent={
-                      <ShareIcon aria-hidden="true" className="w-5 h-5" />
-                    }
+                    startContent={<ShareIcon aria-hidden="true" className="h-5 w-5" />}
                     variant="bordered"
                   >
                     Share Event

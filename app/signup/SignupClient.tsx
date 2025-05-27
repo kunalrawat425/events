@@ -126,9 +126,7 @@ export const SignupClient = () => {
       login(userData.email, userData.password);
       router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
-      setSubmitError(
-        err instanceof Error ? err.message : "Signup failed. Please try again.",
-      );
+      setSubmitError(err instanceof Error ? err.message : "Signup failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -158,11 +156,7 @@ export const SignupClient = () => {
       login(userData.email, userData.password);
       router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
-      setSubmitError(
-        err instanceof Error
-          ? err.message
-          : "Google login failed. Please try again.",
-      );
+      setSubmitError(err instanceof Error ? err.message : "Google login failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -193,11 +187,11 @@ export const SignupClient = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-background p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-primary-50 to-background p-4">
+      <div className="grid w-full max-w-6xl grid-cols-1 gap-8 md:grid-cols-2">
         {/* Left side - Image */}
-        <div className="hidden md:flex flex-col justify-center items-center">
-          <div className="relative w-full h-[600px]">
+        <div className="hidden flex-col items-center justify-center md:flex">
+          <div className="relative h-[600px] w-full">
             <Image
               fill
               priority
@@ -206,8 +200,8 @@ export const SignupClient = () => {
               src={getIllustration()}
             />
           </div>
-          <h2 className="text-2xl font-bold mt-8 text-center">{getTitle()}</h2>
-          <p className="text-default-500 text-center mt-2">{getSubtitle()}</p>
+          <h2 className="mt-8 text-center text-2xl font-bold">{getTitle()}</h2>
+          <p className="mt-2 text-center text-default-500">{getSubtitle()}</p>
         </div>
 
         {/* Right side - Signup Form */}
@@ -223,7 +217,7 @@ export const SignupClient = () => {
                 isLoading={isLoading}
                 startContent={
                   <svg
-                    className="w-5 h-5"
+                    className="h-5 w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
@@ -275,14 +269,10 @@ export const SignupClient = () => {
                   disabled={isLoading}
                   errorMessage={errors.name}
                   isInvalid={!!errors.name}
-                  label={
-                    role === "publisher" ? "Organization Name" : "Full Name"
-                  }
+                  label={role === "publisher" ? "Organization Name" : "Full Name"}
                   name="name"
                   placeholder={
-                    role === "publisher"
-                      ? "Enter your organization name"
-                      : "Enter your full name"
+                    role === "publisher" ? "Enter your organization name" : "Enter your full name"
                   }
                   value={formData.name}
                   onChange={handleInputChange}
@@ -342,9 +332,7 @@ export const SignupClient = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                 />
-                {submitError && (
-                  <p className="text-danger text-sm">{submitError}</p>
-                )}
+                {submitError && <p className="text-sm text-danger">{submitError}</p>}
                 <Button
                   className="w-full"
                   color="primary"
@@ -358,7 +346,7 @@ export const SignupClient = () => {
             </div>
           </CardBody>
           <CardFooter>
-            <div className="flex flex-col gap-2 w-full">
+            <div className="flex w-full flex-col gap-2">
               <Button
                 as={Link}
                 className="w-full"

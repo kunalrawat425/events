@@ -41,9 +41,7 @@ export default function CreateEventPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
 
@@ -59,31 +57,28 @@ export default function CreateEventPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
       <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto max-w-4xl">
           {/* Header Section */}
-          <div className="text-center mb-12 space-y-4">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">
+          <div className="mb-12 space-y-4 text-center">
+            <h1 className="bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-4xl font-bold text-transparent">
               Create New Event
             </h1>
-            <p className="text-foreground/70 text-lg">
+            <p className="text-lg text-foreground/70">
               Fill in the details below to create your amazing event
             </p>
           </div>
 
-          <Card className="bg-background/50 backdrop-blur-xl border border-divider/50 shadow-xl">
+          <Card className="border border-divider/50 bg-background/50 shadow-xl backdrop-blur-xl">
             <CardBody className="p-8">
               <form className="space-y-8" onSubmit={handleSubmit}>
                 {/* Event Title */}
                 <div className="space-y-2">
-                  <label
-                    className="block text-lg font-medium text-white"
-                    htmlFor="title"
-                  >
+                  <label className="block text-lg font-medium text-white" htmlFor="title">
                     Event Title
                   </label>
                   <Input
                     required
-                    className="w-full bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
+                    className="w-full border-divider/50 bg-background/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
                     id="title"
                     name="title"
                     placeholder="Enter a catchy title for your event"
@@ -94,15 +89,12 @@ export default function CreateEventPage() {
 
                 {/* Event Description */}
                 <div className="space-y-2">
-                  <label
-                    className="block text-lg font-medium text-white"
-                    htmlFor="description"
-                  >
+                  <label className="block text-lg font-medium text-white" htmlFor="description">
                     Description
                   </label>
                   <textarea
                     required
-                    className="w-full min-h-[200px] px-4 py-3 rounded-lg bg-background/50 border border-divider/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-white placeholder:text-foreground/50 resize-none"
+                    className="min-h-[200px] w-full resize-none rounded-lg border border-divider/50 bg-background/50 px-4 py-3 text-white placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50"
                     id="description"
                     name="description"
                     placeholder="Describe what makes your event special..."
@@ -112,17 +104,14 @@ export default function CreateEventPage() {
                 </div>
 
                 {/* Date and Time */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <label
-                      className="block text-lg font-medium text-white"
-                      htmlFor="date"
-                    >
+                    <label className="block text-lg font-medium text-white" htmlFor="date">
                       Date
                     </label>
                     <Input
                       required
-                      className="w-full bg-background/50 border-divider/50 text-white focus:ring-2 focus:ring-primary/50"
+                      className="w-full border-divider/50 bg-background/50 text-white focus:ring-2 focus:ring-primary/50"
                       id="date"
                       name="date"
                       type="date"
@@ -131,15 +120,12 @@ export default function CreateEventPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label
-                      className="block text-lg font-medium text-white"
-                      htmlFor="time"
-                    >
+                    <label className="block text-lg font-medium text-white" htmlFor="time">
                       Time
                     </label>
                     <Input
                       required
-                      className="w-full bg-background/50 border-divider/50 text-white focus:ring-2 focus:ring-primary/50"
+                      className="w-full border-divider/50 bg-background/50 text-white focus:ring-2 focus:ring-primary/50"
                       id="time"
                       name="time"
                       type="time"
@@ -151,15 +137,12 @@ export default function CreateEventPage() {
 
                 {/* Location */}
                 <div className="space-y-2">
-                  <label
-                    className="block text-lg font-medium text-white"
-                    htmlFor="location"
-                  >
+                  <label className="block text-lg font-medium text-white" htmlFor="location">
                     Location
                   </label>
                   <Input
                     required
-                    className="w-full bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
+                    className="w-full border-divider/50 bg-background/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
                     id="location"
                     name="location"
                     placeholder="Where will your event take place?"
@@ -169,17 +152,14 @@ export default function CreateEventPage() {
                 </div>
 
                 {/* Category and Price */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <label
-                      className="block text-lg font-medium text-white"
-                      htmlFor="category"
-                    >
+                    <label className="block text-lg font-medium text-white" htmlFor="category">
                       Category
                     </label>
                     <select
                       required
-                      className="w-full px-4 py-3 rounded-lg bg-background/50 border border-divider/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
+                      className="w-full rounded-lg border border-divider/50 bg-background/50 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
                       id="category"
                       name="category"
                       value={formData.category}
@@ -194,10 +174,7 @@ export default function CreateEventPage() {
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label
-                      className="block text-lg font-medium text-white"
-                      htmlFor="price"
-                    >
+                    <label className="block text-lg font-medium text-white" htmlFor="price">
                       Price
                     </label>
                     <div className="relative">
@@ -206,7 +183,7 @@ export default function CreateEventPage() {
                       </span>
                       <Input
                         required
-                        className="w-full pl-8 bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
+                        className="w-full border-divider/50 bg-background/50 pl-8 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
                         id="price"
                         min="0"
                         name="price"
@@ -222,15 +199,12 @@ export default function CreateEventPage() {
 
                 {/* Capacity */}
                 <div className="space-y-2">
-                  <label
-                    className="block text-lg font-medium text-white"
-                    htmlFor="capacity"
-                  >
+                  <label className="block text-lg font-medium text-white" htmlFor="capacity">
                     Capacity
                   </label>
                   <Input
                     required
-                    className="w-full bg-background/50 border-divider/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
+                    className="w-full border-divider/50 bg-background/50 text-white placeholder:text-foreground/50 focus:ring-2 focus:ring-primary/50"
                     id="capacity"
                     min="1"
                     name="capacity"
@@ -243,23 +217,20 @@ export default function CreateEventPage() {
 
                 {/* Event Image */}
                 <div className="space-y-2">
-                  <label
-                    className="block text-lg font-medium text-white"
-                    htmlFor="image"
-                  >
+                  <label className="block text-lg font-medium text-white" htmlFor="image">
                     Event Image
                   </label>
                   <div className="relative">
                     <Input
                       accept="image/*"
-                      className="w-full bg-background/50 border-divider/50 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30"
+                      className="w-full border-divider/50 bg-background/50 text-white file:mr-4 file:rounded-full file:border-0 file:bg-primary/20 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary hover:file:bg-primary/30"
                       id="image"
                       name="image"
                       type="file"
                       onChange={handleImageChange}
                     />
                   </div>
-                  <p className="text-sm text-foreground/50 mt-2">
+                  <p className="mt-2 text-sm text-foreground/50">
                     Recommended size: 1200x630 pixels. Max file size: 5MB
                   </p>
                 </div>
@@ -267,7 +238,7 @@ export default function CreateEventPage() {
                 {/* Submit Button */}
                 <div className="flex justify-end pt-4">
                   <Button
-                    className="w-full md:w-auto px-8 py-3 text-lg font-semibold bg-gradient-to-r from-primary to-primary-400 hover:from-primary-400 hover:to-primary transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-primary to-primary-400 px-8 py-3 text-lg font-semibold transition-all duration-300 hover:from-primary-400 hover:to-primary md:w-auto"
                     color="primary"
                     isLoading={isSubmitting}
                     type="submit"

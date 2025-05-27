@@ -77,15 +77,10 @@ export default function UserEventsPage() {
     }
   };
 
-  const handleStatusChange = async (
-    eventId: string,
-    status: Event["status"],
-  ) => {
+  const handleStatusChange = async (eventId: string, status: Event["status"]) => {
     try {
       // TODO: Replace with actual API call
-      setEvents((prev) =>
-        prev.map((e) => (e.id === eventId ? { ...e, status } : e)),
-      );
+      setEvents((prev) => prev.map((e) => (e.id === eventId ? { ...e, status } : e)));
     } catch {
       // Handle error silently or show a toast notification
     }
@@ -98,7 +93,7 @@ export default function UserEventsPage() {
   return (
     <div className="container mx-auto p-4">
       <Card>
-        <CardHeader className="flex justify-between items-center">
+        <CardHeader className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">My Events</h1>
         </CardHeader>
         <CardBody>

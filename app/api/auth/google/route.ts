@@ -16,9 +16,6 @@ export async function GET(_request: Request) {
       email: "google@example.com",
     });
   } catch {
-    return NextResponse.json(
-      { message: "Google authentication failed" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "Google authentication failed" }, { status: 500 });
   }
 }

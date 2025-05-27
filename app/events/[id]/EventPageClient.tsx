@@ -52,16 +52,19 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
         const mockEvent: Event = {
           id: eventId,
           title: "Tech Conference 2024",
-          description: "Join us for the biggest tech conference of the year, featuring industry leaders, innovative workshops, and networking opportunities.",
+          description:
+            "Join us for the biggest tech conference of the year, featuring industry leaders, innovative workshops, and networking opportunities.",
           date: "March 15, 2024",
           time: "9:00 AM - 5:00 PM",
           location: "Convention Center",
-          imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
+          imageUrl:
+            "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
           price: 299,
           attendees: 234,
           category: "Technology",
-          organizer: "Tech Events Inc."
+          organizer: "Tech Events Inc.",
         };
+
         setEvent(mockEvent);
       } catch (error) {
         console.error("Error fetching event:", error);
@@ -90,7 +93,7 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
 
   const shareEvent = () => {
     if (!event) return;
-    
+
     if (navigator.share) {
       navigator.share({
         title: event.title,
@@ -106,7 +109,7 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-foreground/80">Loading...</div>
       </div>
     );
@@ -114,7 +117,7 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
 
   if (!event) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-foreground/80">Event not found</div>
       </div>
     );
@@ -126,7 +129,7 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
       <div className="relative h-[400px]">
         <Image
           alt={event.title}
-          className="w-full h-full object-cover rounded-lg"
+          className="h-full w-full rounded-lg object-cover"
           height={400}
           src={event.imageUrl}
           width={800}
@@ -134,44 +137,40 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <div className="container mx-auto">
-            <div className="flex justify-between items-start">
+            <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-4xl font-bold text-white mb-4">
-                  {event.title}
-                </h1>
+                <h1 className="mb-4 text-4xl font-bold text-white">{event.title}</h1>
                 <div className="flex items-center space-x-4 text-white/90">
                   <div className="flex items-center">
-                    <CalendarIcon className="w-5 h-5 mr-2" />
+                    <CalendarIcon className="mr-2 h-5 w-5" />
                     <span>{event.date}</span>
                   </div>
                   <div className="flex items-center">
-                    <ClockIcon className="w-5 h-5 mr-2" />
+                    <ClockIcon className="mr-2 h-5 w-5" />
                     <span>{event.time}</span>
                   </div>
                   <div className="flex items-center">
-                    <MapPinIcon className="w-5 h-5 mr-2" />
+                    <MapPinIcon className="mr-2 h-5 w-5" />
                     <span>{event.location}</span>
                   </div>
                 </div>
               </div>
               <div className="flex gap-2">
                 <Button
-                  className="text-white border-white"
+                  className="border-white text-white"
                   color="primary"
                   variant="bordered"
                   onPress={toggleSave}
                 >
-                  <HeartIcon
-                    className={`w-5 h-5 ${isSaved ? "fill-current" : ""}`}
-                  />
+                  <HeartIcon className={`h-5 w-5 ${isSaved ? "fill-current" : ""}`} />
                 </Button>
                 <Button
-                  className="text-white border-white"
+                  className="border-white text-white"
                   color="primary"
                   variant="bordered"
                   onPress={shareEvent}
                 >
-                  <ShareIcon className="w-5 h-5" />
+                  <ShareIcon className="h-5 w-5" />
                 </Button>
               </div>
             </div>
@@ -181,113 +180,96 @@ const EventPageClient = ({ eventId }: EventPageClientProps) => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Left Column - Event Details */}
-          <div className="lg:col-span-2 space-y-6">
-            <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+          <div className="space-y-6 lg:col-span-2">
+            <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
               <CardBody className="p-6">
-                <h2 className="text-2xl font-bold mb-4">About This Event</h2>
-                <p className="text-foreground/70 mb-4">
-                  {event.description}
-                </p>
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <h2 className="mb-4 text-2xl font-bold">About This Event</h2>
+                <p className="mb-4 text-foreground/70">{event.description}</p>
+                <div className="mb-4 grid grid-cols-2 gap-4">
                   <div className="flex items-center text-foreground/70">
-                    <BuildingOfficeIcon className="w-5 h-5 mr-2" />
+                    <BuildingOfficeIcon className="mr-2 h-5 w-5" />
                     <span>Organized by {event.organizer}</span>
                   </div>
                   <div className="flex items-center text-foreground/70">
-                    <UserIcon className="w-5 h-5 mr-2" />
+                    <UserIcon className="mr-2 h-5 w-5" />
                     <span>{event.attendees} attendees</span>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 rounded-full bg-primary-100 text-primary-600 text-sm">
+                  <span className="rounded-full bg-primary-100 px-3 py-1 text-sm text-primary-600">
                     {event.category}
                   </span>
-                  <span className="px-3 py-1 rounded-full bg-primary-100 text-primary-600 text-sm">
+                  <span className="rounded-full bg-primary-100 px-3 py-1 text-sm text-primary-600">
                     Conference
                   </span>
-                  <span className="px-3 py-1 rounded-full bg-primary-100 text-primary-600 text-sm">
+                  <span className="rounded-full bg-primary-100 px-3 py-1 text-sm text-primary-600">
                     Networking
                   </span>
                 </div>
               </CardBody>
             </Card>
 
-            <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+            <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
               <CardBody className="p-6">
-                <h2 className="text-2xl font-bold mb-4">Event Schedule</h2>
+                <h2 className="mb-4 text-2xl font-bold">Event Schedule</h2>
                 <div className="space-y-4">
                   <div className="flex gap-4">
                     <div className="w-20 text-foreground/70">9:00 AM</div>
                     <div>
-                      <h3 className="font-semibold">
-                        Registration & Breakfast
-                      </h3>
-                      <p className="text-foreground/70">
-                        Check-in and enjoy a light breakfast
-                      </p>
+                      <h3 className="font-semibold">Registration & Breakfast</h3>
+                      <p className="text-foreground/70">Check-in and enjoy a light breakfast</p>
                     </div>
                   </div>
                   <div className="flex gap-4">
                     <div className="w-20 text-foreground/70">10:00 AM</div>
                     <div>
                       <h3 className="font-semibold">Opening Keynote</h3>
-                      <p className="text-foreground/70">
-                        Future of Technology by John Doe
-                      </p>
+                      <p className="text-foreground/70">Future of Technology by John Doe</p>
                     </div>
                   </div>
                   <div className="flex gap-4">
                     <div className="w-20 text-foreground/70">11:30 AM</div>
                     <div>
                       <h3 className="font-semibold">Workshop Sessions</h3>
-                      <p className="text-foreground/70">
-                        Choose from various technical workshops
-                      </p>
+                      <p className="text-foreground/70">Choose from various technical workshops</p>
                     </div>
                   </div>
                 </div>
               </CardBody>
             </Card>
 
-            <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10">
+            <Card className="border border-foreground/10 bg-background/50 backdrop-blur-sm">
               <CardBody className="p-6">
-                <h2 className="text-2xl font-bold mb-4">Location</h2>
-                <div className="aspect-video bg-foreground/10 rounded-lg mb-4">
+                <h2 className="mb-4 text-2xl font-bold">Location</h2>
+                <div className="mb-4 aspect-video rounded-lg bg-foreground/10">
                   {/* Add map component here */}
                 </div>
-                <p className="text-foreground/70">
-                  {event.location}
-                </p>
+                <p className="text-foreground/70">{event.location}</p>
               </CardBody>
             </Card>
           </div>
 
           {/* Right Column - Action Card */}
           <div className="lg:col-span-1">
-            <Card className="bg-background/50 backdrop-blur-sm border border-foreground/10 sticky top-24">
+            <Card className="sticky top-24 border border-foreground/10 bg-background/50 backdrop-blur-sm">
               <CardBody className="p-6">
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <span className="text-foreground/70">Price</span>
                     <span className="text-2xl font-bold">${event.price}</span>
                   </div>
-                  <Button
-                    className="w-full"
-                    color="primary"
-                    size="lg"
-                    onClick={handleGetTickets}
-                  >
+                  <Button className="w-full" color="primary" size="lg" onClick={handleGetTickets}>
                     Get Tickets
                   </Button>
-                  <div className="text-sm text-foreground/70 space-y-2">
+                  <div className="space-y-2 text-sm text-foreground/70">
                     <p className="flex items-center">
-                      <UserGroupIcon className="w-5 h-5 mr-2" />
+                      <UserGroupIcon className="mr-2 h-5 w-5" />
                       {event.attendees} people are attending
                     </p>
                     <p className="flex items-center">
-                      <TagIcon className="w-5 h-5 mr-2" />
+                      <TagIcon className="mr-2 h-5 w-5" />
                       Early bird pricing ends in 5 days
                     </p>
                   </div>

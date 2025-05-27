@@ -49,10 +49,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
       if (!response.ok) {
         const error = await response.json();
+
         throw new Error(error.message || "Authentication failed");
       }
 
       const userData = await response.json();
+
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
       document.cookie = `user=${JSON.stringify(userData)}; path=/`;
@@ -99,9 +101,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <UserContext.Provider
-      value={{ user, isLoading, login, signup, logout, updateInterests }}
-    >
+    <UserContext.Provider value={{ user, isLoading, login, signup, logout, updateInterests }}>
       {children}
     </UserContext.Provider>
   );

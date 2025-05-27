@@ -40,8 +40,7 @@ function EventsClient() {
       {
         id: "1",
         title: "Summer Music Festival",
-        description:
-          "Join us for an unforgettable weekend of music, food, and fun!",
+        description: "Join us for an unforgettable weekend of music, food, and fun!",
         date: "2024-07-15",
         location: "Central Park",
         category: "Music",
@@ -74,8 +73,7 @@ function EventsClient() {
       event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.location.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory =
-      categoryFilter === "all" || event.category === categoryFilter;
+    const matchesCategory = categoryFilter === "all" || event.category === categoryFilter;
     const matchesDate =
       dateFilter === "all" ||
       (dateFilter === "upcoming" && new Date(event.date) > new Date()) ||
@@ -86,7 +84,7 @@ function EventsClient() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-foreground/80">Loading...</div>
       </div>
     );
@@ -95,16 +93,16 @@ function EventsClient() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative overflow-hidden py-20">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary-400/20 blur-3xl" />
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">
+        <div className="container relative mx-auto px-4">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="mb-6 bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-5xl font-bold text-transparent md:text-6xl">
               Discover Amazing Events
             </h1>
-            <p className="text-xl text-foreground/80 mb-8">
-              Find and join events that match your interests. From concerts to
-              workshops, we&apos;ve got something for everyone.
+            <p className="mb-8 text-xl text-foreground/80">
+              Find and join events that match your interests. From concerts to workshops, we&apos;ve
+              got something for everyone.
             </p>
           </div>
         </div>
@@ -113,7 +111,7 @@ function EventsClient() {
       {/* Filters */}
       <section className="py-8">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Input
               className="w-full"
               placeholder="Search events..."
@@ -124,9 +122,7 @@ function EventsClient() {
               className="w-full"
               placeholder="Filter by category"
               selectedKeys={[categoryFilter]}
-              onSelectionChange={(keys) =>
-                setCategoryFilter(Array.from(keys)[0] as string)
-              }
+              onSelectionChange={(keys) => setCategoryFilter(Array.from(keys)[0] as string)}
             >
               <SelectItem key="all" textValue="all">
                 All Categories
@@ -141,9 +137,7 @@ function EventsClient() {
               className="w-full"
               placeholder="Filter by date"
               selectedKeys={[dateFilter]}
-              onSelectionChange={(keys) =>
-                setDateFilter(Array.from(keys)[0] as string)
-              }
+              onSelectionChange={(keys) => setDateFilter(Array.from(keys)[0] as string)}
             >
               <SelectItem key="all">All Dates</SelectItem>
               <SelectItem key="upcoming">Upcoming</SelectItem>
@@ -156,38 +150,34 @@ function EventsClient() {
       {/* Events Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredEvents.map((event) => (
               <Card
                 key={event.id}
-                className="bg-background/50 backdrop-blur-sm border border-divider/50 hover:border-primary/50 transition-all duration-300 hover:scale-105"
+                className="border border-divider/50 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-primary/50"
               >
                 <CardBody className="p-0">
                   <div className="relative h-48">
                     <Image
                       alt={event.title}
-                      className="w-full h-full object-cover rounded-t-lg"
+                      className="h-full w-full rounded-t-lg object-cover"
                       height={200}
                       src={event.image}
                       width={300}
                     />
-                    <div className="absolute top-4 right-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-background/80 backdrop-blur-sm">
+                    <div className="absolute right-4 top-4">
+                      <span className="rounded-full bg-background/80 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
                         {event.category}
                       </span>
                     </div>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-2">
-                      {event.title}
-                    </h3>
-                    <p className="text-foreground/80 mb-4 line-clamp-2">
-                      {event.description}
-                    </p>
+                    <h3 className="mb-2 text-xl font-semibold">{event.title}</h3>
+                    <p className="mb-4 line-clamp-2 text-foreground/80">{event.description}</p>
                     <div className="flex items-center gap-4 text-sm text-foreground/60">
                       <div className="flex items-center gap-1">
                         <svg
-                          className="w-4 h-4"
+                          className="h-4 w-4"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -203,7 +193,7 @@ function EventsClient() {
                       </div>
                       <div className="flex items-center gap-1">
                         <svg
-                          className="w-4 h-4"
+                          className="h-4 w-4"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -226,12 +216,9 @@ function EventsClient() {
                     </div>
                   </div>
                 </CardBody>
-                <CardFooter className="flex justify-between items-center p-6 pt-0">
+                <CardFooter className="flex items-center justify-between p-6 pt-0">
                   <div className="text-lg font-semibold">${event.price}</div>
-                  <Button
-                    color="primary"
-                    onClick={() => router.push(`/events/${event.id}`)}
-                  >
+                  <Button color="primary" onClick={() => router.push(`/events/${event.id}`)}>
                     View Details
                   </Button>
                 </CardFooter>
@@ -241,10 +228,10 @@ function EventsClient() {
 
           {/* Empty State */}
           {filteredEvents.length === 0 && (
-            <div className="text-center py-12">
-              <div className="text-4xl mb-4">🔍</div>
-              <h3 className="text-xl font-semibold mb-2">No events found</h3>
-              <p className="text-foreground/80 mb-4">
+            <div className="py-12 text-center">
+              <div className="mb-4 text-4xl">🔍</div>
+              <h3 className="mb-2 text-xl font-semibold">No events found</h3>
+              <p className="mb-4 text-foreground/80">
                 {searchQuery || categoryFilter !== "all" || dateFilter !== "all"
                   ? "Try adjusting your filters"
                   : "Check back later for new events"}

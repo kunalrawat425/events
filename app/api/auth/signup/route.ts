@@ -16,14 +16,8 @@ export async function POST(request: Request) {
       });
     }
 
-    return NextResponse.json(
-      { message: "Invalid signup data" },
-      { status: 400 },
-    );
+    return NextResponse.json({ message: "Invalid signup data" }, { status: 400 });
   } catch {
-    return NextResponse.json(
-      { message: "Internal server error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Card, CardBody, CardHeader } from "@heroui/card";
@@ -48,10 +47,7 @@ const InterestAlerts = () => {
     if (!mounted) return;
 
     function handleClickOutside(event: MouseEvent) {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
-      ) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setShowSuggestions(false);
       }
     }
@@ -65,8 +61,7 @@ const InterestAlerts = () => {
     const searchLower = searchQuery.toLowerCase();
 
     return (
-      interest.name.toLowerCase().includes(searchLower) &&
-      !selectedInterests.includes(interest.id)
+      interest.name.toLowerCase().includes(searchLower) && !selectedInterests.includes(interest.id)
     );
   });
 
@@ -74,25 +69,26 @@ const InterestAlerts = () => {
     if (!user) {
       if (!email) {
         alert("Please enter your email address");
+
         return;
       }
 
       if (selectedInterests.length === 0) {
         alert("Please select at least one interest");
+
         return;
       }
 
-      localStorage.setItem(
-        "pendingInterests",
-        JSON.stringify(selectedInterests),
-      );
+      localStorage.setItem("pendingInterests", JSON.stringify(selectedInterests));
       localStorage.setItem("pendingEmail", email);
       router.push("/auth?tab=signup");
+
       return;
     }
 
     if (selectedInterests.length === 0) {
       alert("Please select at least one interest");
+
       return;
     }
 
@@ -125,21 +121,16 @@ const InterestAlerts = () => {
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="mx-auto w-full max-w-2xl">
       <CardHeader className="pb-0">
         <h2 className="text-2xl font-semibold">
-          {user
-            ? "Manage Your Interest Alerts"
-            : "Subscribe to Interest Alerts"}
+          {user ? "Manage Your Interest Alerts" : "Subscribe to Interest Alerts"}
         </h2>
       </CardHeader>
       <CardBody>
         <div className="space-y-6">
           <div ref={searchRef}>
-            <label
-              className="block text-sm font-medium mb-2"
-              htmlFor="interest-search"
-            >
+            <label className="mb-2 block text-sm font-medium" htmlFor="interest-search">
               Search and Add Your Interests
             </label>
             <div className="relative">
@@ -156,10 +147,10 @@ const InterestAlerts = () => {
                   }}
                   onFocus={() => setShowSuggestions(true)}
                 />
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-default-400" />
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-default-400" />
               </div>
               {showSuggestions && searchQuery && (
-                <div className="absolute z-10 w-full mt-1 bg-background border border-divider rounded-lg shadow-lg max-h-60 overflow-auto">
+                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-divider bg-background shadow-lg">
                   {filteredInterests.length > 0 ? (
                     filteredInterests.map((interest) => (
                       <button
@@ -171,9 +162,7 @@ const InterestAlerts = () => {
                       </button>
                     ))
                   ) : (
-                    <div className="px-4 py-2 text-default-500">
-                      No matching interests found
-                    </div>
+                    <div className="px-4 py-2 text-default-500">No matching interests found</div>
                   )}
                 </div>
               )}
@@ -188,7 +177,7 @@ const InterestAlerts = () => {
               return (
                 <div
                   key={interestId}
-                  className="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full"
+                  className="flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-primary"
                 >
                   <span>{interest?.name}</span>
                   <button
@@ -204,16 +193,13 @@ const InterestAlerts = () => {
 
           {!user && (
             <div>
-              <label
-                className="block text-sm font-medium mb-2"
-                htmlFor="email"
-              >
+              <label className="mb-2 block text-sm font-medium" htmlFor="email">
                 Email Address
               </label>
               <Input
+                required
                 id="email"
                 placeholder="Enter your email"
-                required
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
