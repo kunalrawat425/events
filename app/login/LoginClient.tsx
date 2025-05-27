@@ -27,7 +27,7 @@ export const LoginClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const router = useRouter();
-  const { login } = useUser();
+  const { login, user } = useUser();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -93,13 +93,15 @@ export const LoginClient = () => {
 
       if (!response.ok) {
         const error = await response.json();
-
         throw new Error(error.message || "Authentication failed");
       }
 
       const userData = await response.json();
-
+      
+      // Update the user state with the response data
       await login(userData.email, userData.password);
+      
+      // Redirect based on role
       router.push(role === "publisher" ? "/publisher/dashboard" : "/profile");
     } catch (err) {
       setSubmitError(
@@ -299,22 +301,9 @@ export const LoginClient = () => {
               >
                 Don&apos;t have an account?Login
               </Button>
-              {role === "user" && (
-                <Link
-                  className="text-primary underline font-medium text-center"
-                  href="/login?role=publisher"
-                >
-                  Are you a publisher?
-                </Link>
-              )}
-              {role === "publisher" && (
-                <Link
-                  className="text-primary underline font-medium text-center"
-                  href="/login?role=user"
-                >
-                  Are you a user?
-                </Link>
-              )}
+
+
+              
             </div>
           </CardFooter>
         </Card>

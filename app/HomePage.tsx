@@ -134,8 +134,8 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
 
-        <div className="container mx-auto px-4 py-32 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+        <div className="w-full px-4 py-32 relative z-10">
+          <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">
               {hasStoredInterests
                 ? "Update Your Interest Alerts"
@@ -188,55 +188,59 @@ export default function HomePage() {
 
       {/* Features Section */}
       <section className="w-full py-32 bg-background/50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl font-bold mb-4">AI-Powered Features</h2>
-            <p className="text-xl text-foreground/60">
-              Experience the future of event discovery
-            </p>
-          </div>
+        <div className="w-full px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-20">
+              <h2 className="text-4xl font-bold mb-4">AI-Powered Features</h2>
+              <p className="text-xl text-foreground/60">
+                Experience the future of event discovery
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card
-                key={index}
-                className="bg-background/50 backdrop-blur-lg border border-foreground/10"
-              >
-                <CardBody className="p-8">
-                  <div className="text-primary mb-4">{feature.icon}</div>
-                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-foreground/60">{feature.description}</p>
-                </CardBody>
-              </Card>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {features.map((feature, index) => (
+                <Card
+                  key={index}
+                  className="bg-background/50 backdrop-blur-lg border border-foreground/10"
+                >
+                  <CardBody className="p-8">
+                    <div className="text-primary mb-4">{feature.icon}</div>
+                    <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                    <p className="text-foreground/60">{feature.description}</p>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Pain Points Section */}
       <section className="w-full py-32">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl font-bold mb-4">We Understand Your Pain Points</h2>
-            <p className="text-xl text-foreground/60">
-              Let us help you solve your event discovery challenges
-            </p>
-          </div>
+        <div className="w-full px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-20">
+              <h2 className="text-4xl font-bold mb-4">We Understand Your Pain Points</h2>
+              <p className="text-xl text-foreground/60">
+                Let us help you solve your event discovery challenges
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {painPoints.map((point, index) => (
-              <Card
-                key={index}
-                className="bg-background/50 backdrop-blur-lg border border-foreground/10"
-              >
-                <CardBody className="p-8">
-                  <div className="text-primary mb-4">{point.icon}</div>
-                  <h3 className="text-xl font-semibold mb-2">{point.title}</h3>
-                  <p className="text-foreground/60 mb-4">{point.description}</p>
-                  <p className="text-primary font-medium">{point.solution}</p>
-                </CardBody>
-              </Card>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {painPoints.map((point, index) => (
+                <Card
+                  key={index}
+                  className="bg-background/50 backdrop-blur-lg border border-foreground/10"
+                >
+                  <CardBody className="p-8">
+                    <div className="text-primary mb-4">{point.icon}</div>
+                    <h3 className="text-xl font-semibold mb-2">{point.title}</h3>
+                    <p className="text-foreground/60 mb-4">{point.description}</p>
+                    <p className="text-primary font-medium">{point.solution}</p>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>

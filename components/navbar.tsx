@@ -42,10 +42,19 @@ const Navbar = () => {
 
   const isActive = (path: string) => pathname === path;
 
-  const navLinks = [
-    { href: "/events", label: "Discover Events" },
-    { href: "/publisher", label: "Are you a Publisher?" },
-  ];
+
+  // Navigation links based on user role and login status
+  const navLinks = [];
+  
+  // Only show Discover Events for non-publishers
+  if (!user || (user && user.role !== "publisher")) {
+    navLinks.push({ href: "/events", label: "Discover Events" });
+  }
+  
+  // Only show Become a Publisher for non-logged in users
+  if (!user) {
+    navLinks.push({ href: "/publisher", label: "Become a Publisher" });
+  }
 
   return (
     <nav
@@ -115,50 +124,22 @@ const Navbar = () => {
                       className="text-foreground/70 hover:text-primary hover:bg-foreground/5"
                       variant="light"
                     >
-                      <Avatar className="w-8 h-8" name={user.name} />
+                      <Avatar
+                        name={user.name}
+                        className="w-8 h-8"
+                      />
                     </Button>
                   </DropdownTrigger>
-                  <DropdownMenu aria-label="Profile Actions">
-                    <DropdownItem key="profile" className="gap-2">
-                      <Link className="flex items-center gap-2" href="/profile">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                          />
-                        </svg>
-                        View Profile
-                      </Link>
+                  <DropdownMenu aria-label="User menu">
+                    <DropdownItem key="profile">
+                      <Link href="/profile">View Profile</Link>
                     </DropdownItem>
                     <DropdownItem
                       key="logout"
                       className="text-danger"
-                      color="danger"
                       onClick={handleLogout}
                     >
-                      <div className="flex items-center gap-2">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                          />
-                        </svg>
-                        Logout
-                      </div>
+                      Logout
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -167,28 +148,14 @@ const Navbar = () => {
               <>
                 <Link href="/login">
                   <Button
-                    className={`${
-                      isActive("/login")
-                        ? "text-white bg-primary hover:bg-primary-400"
-                        : "text-foreground/70 hover:text-primary hover:bg-foreground/5"
-                    }`}
+                    className="text-foreground/70 hover:text-primary hover:bg-foreground/5"
                     variant="light"
                   >
                     Login
                   </Button>
                 </Link>
                 <Link href="/signup">
-                  <Button
-                    className={`${
-                      isActive("/signup")
-                        ? "opacity-50 cursor-not-allowed"
-                        : "hover:opacity-90"
-                    }`}
-                    color="primary"
-                    disabled={isActive("/signup")}
-                  >
-                    Sign Up
-                  </Button>
+                  <Button color="primary">Sign Up</Button>
                 </Link>
               </>
             )}
@@ -288,22 +255,14 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    isActive("/login")
-                      ? "text-primary bg-foreground/5"
-                      : "text-foreground/70 hover:text-primary hover:bg-foreground/5"
-                  }`}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-foreground/70 hover:text-primary hover:bg-foreground/5"
                   href="/login"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    isActive("/signup")
-                      ? "text-primary bg-foreground/5"
-                      : "text-foreground/70 hover:text-primary hover:bg-foreground/5"
-                  }`}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-foreground/70 hover:text-primary hover:bg-foreground/5"
                   href="/signup"
                   onClick={() => setIsMenuOpen(false)}
                 >

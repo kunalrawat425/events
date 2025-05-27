@@ -36,7 +36,20 @@ export function middleware(request: NextRequest) {
 
   // For publisher paths, we'll let the client-side handle the role check
   if (isPublisherPath) {
-    return NextResponse.next();
+    const user = request.cookies.get("user")?.value;
+
+    if (!user) {
+      return NextResponse.redirect(new URL("/auth?tab=login", request.url));
+    }
+
+    try {
+      const userData = JSON.parse(user);
+      if (userData.role !== "publisher") {
+        return NextResponse.redirect(new URL("/unauthorized", request.url));
+      }
+    } catch {
+      return NextResponse.redirect(new URL("/auth?tab=login", request.url));
+    }
   }
 
   return NextResponse.next();
@@ -54,5 +67,6 @@ export const config = {
      */
     "/((?!api|_next/static|_next/image|favicon.ico|public).*)",
     "/profile/:path*",
+    "/publisher/:path*",
   ],
 };

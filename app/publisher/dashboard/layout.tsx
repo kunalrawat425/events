@@ -1,117 +1,130 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
-  HomeIcon,
   CalendarIcon,
   ChartBarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  HomeIcon,
   UserGroupIcon,
-  Cog6ToothIcon,
-  ArrowLeftOnRectangleIcon,
+  UsersIcon,
 } from "@heroicons/react/24/outline";
 
 const navigation = [
   { name: "Dashboard", href: "/publisher/dashboard", icon: HomeIcon },
   { name: "Events", href: "/publisher/events", icon: CalendarIcon },
-  { name: "Analytics", href: "/publisher/analytics", icon: ChartBarIcon },
   { name: "Attendees", href: "/publisher/attendees", icon: UserGroupIcon },
-  { name: "Settings", href: "/publisher/settings", icon: Cog6ToothIcon },
+  { name: "Analytics", href: "/publisher/analytics", icon: ChartBarIcon },
+  { name: "Users", href: "/publisher/users", icon: UsersIcon },
 ];
 
-export default function PublisherLayout({
+export default function PublisherDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkPublisherAccess = () => {
+      try {
+        const storedUser = localStorage.getItem("user");
+        
+        if (!storedUser) {
+          router.replace("/auth?tab=login");
+          return;
+        }
+
+        const user = JSON.parse(storedUser);
+        
+        if (!user || user.role !== "publisher") {
+          router.replace("/unauthorized");
+          return;
+        }
+      } catch {
+        router.replace("/auth?tab=login");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkPublisherAccess();
+  }, [router]);
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-foreground/60">Checking access...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex min-h-screen w-full bg-background">
       {/* Sidebar */}
-      <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-background/50 backdrop-blur-sm border-r border-foreground/10 transform transition-transform duration-200 ease-in-out ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      <div
+        className={`relative bg-background/50 backdrop-blur-lg border-r border-foreground/10 transition-all duration-300 ${
+          isCollapsed ? "w-16" : "w-64"
         }`}
       >
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="flex items-center justify-between h-16 px-4 border-b border-foreground/10">
-            <Link className="text-xl font-bold" href="/publisher/dashboard">
-              EventHub
-            </Link>
-            <button
-              className="p-2 rounded-lg hover:bg-foreground/5"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <ArrowLeftOnRectangleIcon className="w-5 h-5" />
-            </button>
-          </div>
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="absolute -right-3 top-6 bg-background border border-foreground/10 rounded-full p-1 hover:bg-foreground/5"
+        >
+          {isCollapsed ? (
+            <ChevronRightIcon className="w-4 h-4" />
+          ) : (
+            <ChevronLeftIcon className="w-4 h-4" />
+          )}
+        </button>
 
-          {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-1">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href;
-
-              return (
-                <Link
-                  key={item.name}
-                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                    isActive
-                      ? "bg-primary text-white"
-                      : "text-foreground/70 hover:bg-foreground/5"
-                  }`}
-                  href={item.href}
-                >
-                  <item.icon className="w-5 h-5 mr-3" />
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* User Profile */}
-          <div className="p-4 border-t border-foreground/10">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                <span className="text-sm font-medium text-primary">JD</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">John Doe</p>
-                <p className="text-xs text-foreground/70">Publisher</p>
-              </div>
-            </div>
-          </div>
+        {/* Logo */}
+        <div className="h-16 flex items-center px-4">
+          {!isCollapsed && (
+            <h1 className="font-bold text-xl">Publisher</h1>
+          )}
         </div>
-      </aside>
+
+        {/* Navigation */}
+        <nav className="space-y-1 px-2">
+          {navigation.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
+                  isActive
+                    ? "bg-primary/10 text-primary"
+                    : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground"
+                }`}
+              >
+                <item.icon className="w-6 h-6" />
+                {!isCollapsed && (
+                  <span className="ml-3 text-sm font-medium">
+                    {item.name}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
 
       {/* Main Content */}
-      <div
-        className={`transition-all duration-200 ease-in-out ${
-          isSidebarOpen ? "ml-64" : "ml-0"
-        }`}
-      >
-        {/* Top Bar */}
-        <header className="h-16 border-b border-foreground/10 bg-background/50 backdrop-blur-sm">
-          <div className="flex items-center justify-between h-full px-6">
-            <button
-              className="p-2 rounded-lg hover:bg-foreground/5"
-              onClick={() => setIsSidebarOpen(true)}
-            >
-              <ArrowLeftOnRectangleIcon className="w-5 h-5 rotate-180" />
-            </button>
-            <div className="flex items-center space-x-4">
-              <button className="p-2 rounded-lg hover:bg-foreground/5">
-                <Cog6ToothIcon className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </header>
-
-        {/* Page Content */}
-        <main className="p-6">{children}</main>
+      <div className="flex-1 w-full overflow-auto">
+        <main className="h-full w-full">{children}</main>
       </div>
     </div>
   );

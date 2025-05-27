@@ -38,22 +38,27 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    // Mock login - in a real app, this would be handled by the backend
-    if (email === "test@example.com" && password === "password123") {
-      const mockUserData = {
-        id: "1",
-        email: email,
-        name: "Test User",
-        role: "user" as const,
-        interests: [],
-      };
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      setUser(mockUserData);
-      localStorage.setItem("user", JSON.stringify(mockUserData));
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Authentication failed");
+      }
 
-      return;
+      const userData = await response.json();
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      document.cookie = `user=${JSON.stringify(userData)}; path=/`;
+    } catch (error) {
+      throw error;
     }
-    throw new Error("Invalid email or password");
   };
 
   const signup = async (email: string, password: string, userData: Partial<User>) => {
@@ -70,6 +75,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     setUser(mockUserData);
     localStorage.setItem("user", JSON.stringify(mockUserData));
+    document.cookie = `user=${JSON.stringify(mockUserData)}; path=/`;
   };
 
   const updateInterests = async (interests: string[]) => {
@@ -89,6 +95,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    document.cookie = "user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   };
 
   return (

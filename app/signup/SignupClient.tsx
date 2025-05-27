@@ -368,22 +368,6 @@ export const SignupClient = () => {
               >
                 Already have an account? Login
               </Button>
-              {role === "user" && (
-                <Link
-                  className="text-primary underline font-medium text-center"
-                  href="/signup?role=publisher"
-                >
-                  Are you a publisher?
-                </Link>
-              )}
-              {role === "publisher" && (
-                <Link
-                  className="text-primary underline font-medium text-center"
-                  href="/signup?role=user"
-                >
-                  Are you a user?
-                </Link>
-              )}
             </div>
           </CardFooter>
         </Card>

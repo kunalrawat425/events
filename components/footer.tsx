@@ -4,11 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
+import { useUser } from "@/contexts/UserContext";
 
 import { TwitterIcon, FacebookIcon, InstagramIcon } from "@/components/icons";
 
 export default function Footer() {
   const pathname = usePathname();
+  const { user } = useUser();
   const isLandingPage = pathname === "/";
 
   if (!isLandingPage) return null;
@@ -61,14 +63,16 @@ export default function Footer() {
                   Browse Events
                 </Link>
               </li>
-              <li>
-                <Link
-                  className="text-foreground/70 hover:text-white transition-colors"
-                  href="/publisher"
-                >
-                  Become a Publisher
-                </Link>
-              </li>
+              {!user && (
+                <li>
+                  <Link
+                    className="text-foreground/70 hover:text-white transition-colors"
+                    href="/publisher"
+                  >
+                    Become a Publisher
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link
                   className="text-foreground/70 hover:text-white transition-colors"

@@ -13,12 +13,19 @@ export default function ClientLayout({
   const pathname = usePathname();
   const isAuthPage =
     pathname === "/auth" || pathname === "/login" || pathname === "/signup";
+  const isLandingPage = pathname === "/";
 
   return (
     <div className="relative flex flex-col min-h-screen">
       <NavbarComponent />
       <main
-        className={`container mx-auto max-w-7xl ${isAuthPage ? "" : "pt-16"} px-6 flex-grow`}
+        className={`${
+          isLandingPage
+            ? "pt-16"
+            : isAuthPage
+            ? ""
+            : "container mx-auto max-w-7xl pt-16"
+        } flex-grow`}
       >
         {children}
       </main>

@@ -71,7 +71,7 @@ export default function ProfilePage() {
   }
 
   const userInterests = interests.filter((interest) =>
-    user.interests.includes(interest.id),
+    user?.interests?.includes(interest.id) ?? false
   );
 
   return (
