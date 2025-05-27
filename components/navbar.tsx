@@ -5,13 +5,13 @@ import { NavbarClient } from "./navbar-client";
 export default async function Navbar() {
   // Get user data from cookies
   const cookieStore = cookies();
-  const userCookie = cookieStore.get("user");
+  const userCookie = (await cookieStore).get("user");
   let user = null;
 
   if (userCookie?.value) {
     try {
       user = JSON.parse(userCookie.value);
-    } catch (error) {
+    } catch {
       // Silently handle parsing error
     }
   }

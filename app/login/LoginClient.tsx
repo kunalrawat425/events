@@ -27,7 +27,7 @@ export const LoginClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const router = useRouter();
-  const { login, user } = useUser();
+  const { login } = useUser();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

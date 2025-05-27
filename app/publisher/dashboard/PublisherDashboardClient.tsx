@@ -97,33 +97,6 @@ const sortOptions = [
   { key: "revenueDesc", label: "Revenue (High to Low)" },
 ];
 
-const recentEvents = [
-  {
-    id: "1",
-    title: "Tech Conference 2024",
-    date: "March 15, 2024",
-    attendees: 234,
-    revenue: "$23,400",
-    status: "upcoming",
-  },
-  {
-    id: "2",
-    title: "Workshop: Web Development",
-    date: "March 10, 2024",
-    attendees: 45,
-    revenue: "$4,500",
-    status: "completed",
-  },
-  {
-    id: "3",
-    title: "Networking Mixer",
-    date: "March 5, 2024",
-    attendees: 89,
-    revenue: "$8,900",
-    status: "completed",
-  },
-];
-
 export default function PublisherDashboardClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
