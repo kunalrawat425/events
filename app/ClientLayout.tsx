@@ -15,7 +15,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <Navbar />
       <main
         className={`${
-          isLandingPage ? "pt-16" : isAuthPage ? "" : "container mx-auto max-w-7xl pt-16"
+          isLandingPage ? "pt-16" : isAuthPage ? "" : "pt-16"
         } flex-grow`}
       >
         {children}
