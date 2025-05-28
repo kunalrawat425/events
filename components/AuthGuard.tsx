@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 import { useUser } from "@/contexts/UserContext";
 
@@ -13,18 +13,20 @@ interface AuthGuardProps {
 export default function AuthGuard({ children, requiredRole }: AuthGuardProps) {
   const { user, isLoading } = useUser();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!isLoading) {
       if (!user) {
-        // Redirect to login if not authenticated
-        router.push("/auth?redirect=" + encodeURIComponent(window.location.pathname));
+        // Store the current path as the redirect destination
+        const redirectPath = encodeURIComponent(pathname);
+        router.push(`/login?redirect=${redirectPath}`);
       } else if (requiredRole && user.role !== requiredRole) {
         // Redirect to home if user doesn't have required role
         router.push("/");
       }
     }
-  }, [user, isLoading, requiredRole, router]);
+  }, [user, isLoading, requiredRole, router, pathname]);
 
   if (isLoading) {
     return (

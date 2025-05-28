@@ -187,7 +187,7 @@ export const SignupClient = () => {
       if (role === "publisher") {
         await router.push("/publisher/dashboard");
       } else {
-        await router.push("/profile");
+        await router.push("/");
       }
     } catch (err) {
       console.error("Signup error:", err);

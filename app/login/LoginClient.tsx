@@ -48,7 +48,7 @@ export const LoginClient = () => {
       if (user.role === "publisher") {
         router.push("/publisher/dashboard");
       } else {
-        router.push("/profile");
+        router.push("/");
       }
     }
   }, [router]);
@@ -134,7 +134,7 @@ export const LoginClient = () => {
       if (user.role === "publisher") {
         await router.push("/publisher/dashboard");
       } else {
-        await router.push("/profile");
+        await router.push("/");
       }
     } catch (err) {
       console.error("Login error:", err);
@@ -180,7 +180,7 @@ export const LoginClient = () => {
       if (role === "publisher") {
         await router.push("/publisher/dashboard");
       } else {
-        await router.push("/profile");
+        await router.push("/");
       }
     } catch (err) {
       console.error("Google login error:", err);
